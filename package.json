@@ -1,0 +1,38 @@
+{
+  "name": "twx-parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "commit": "git-cz"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.0.2",
+    "eslint": "^6.5.1",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^3.0.9",
+    "validate-commit-msg": "^2.14.0"
+  },
+  "dependencies": {
+    "adm-zip": "^0.4.13",
+    "bcrypt": "^3.0.6",
+    "cli-progress": "^3.3.1",
+    "sqlite3": "^4.1.0",
+    "sqlite3-transactions": "0.0.5",
+    "xml2js": "^0.4.22",
+    "xml2js-xpath": "^0.10.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

@@ -1,0 +1,4 @@
+create table if not exists ObjectDependency (
+  parentObjectVersionId text not null,
+  childObjectVersionId text not null
+);
