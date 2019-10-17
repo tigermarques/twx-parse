@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
     "commit": "git-cz"
   },
   "author": "",
@@ -18,7 +19,7 @@
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "husky": "^3.0.9",
+    "husky": "^2.4.1",
     "validate-commit-msg": "^2.14.0"
   },
   "dependencies": {
