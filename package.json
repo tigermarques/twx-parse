@@ -42,7 +42,6 @@
     "mocha": "^6.2.1",
     "nyc": "^14.1.1",
     "semantic-release": "^15.13.24",
-    "semantic-release-cli": "^5.2.1",
     "validate-commit-msg": "^2.14.0"
   },
   "dependencies": {
