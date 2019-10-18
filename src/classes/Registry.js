@@ -17,8 +17,8 @@ const AppSnapshotObj = {
 
 const ObjectVersionObj = {
   register: (databaseName, item) => ObjectVersion.register(databaseName, item),
-  getAll: (databaseName) => ObjectVersion.getAll(databaseName),
   registerMany: (databaseName, items) => ObjectVersion.registerMany(databaseName, items),
+  getAll: (databaseName) => ObjectVersion.getAll(databaseName),
   getById: (databaseName, objectVersionId) => ObjectVersion.getById(databaseName, objectVersionId),
   where: (databaseName, obj, snapshotObj) => ObjectVersion.where(databaseName, obj, snapshotObj),
   find: (databaseName, obj) => ObjectVersion.find(databaseName, obj),
