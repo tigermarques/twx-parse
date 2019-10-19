@@ -505,6 +505,132 @@ describe('Classes - Workspace', () => {
     })
   })
 
+  it('should return an array of objects when the "getSnapshotObjects" method is invoked with a single snapshot', () => {
+    const stubDependencies = sinon.stub(Registry.SnapshotObjectDependency, 'getByParentId').returns(defer(true, [{
+      snapshotId: 'snapshot1',
+      objectVersionId: 'version1',
+      objectId: 'objectId1'
+    }, {
+      snapshotId: 'snapshot1',
+      objectVersionId: 'version2',
+      objectId: 'objectId2'
+    }]))
+    const stubObjects = sinon.stub(Registry.ObjectVersion, 'where').returns(defer(true, [{
+      workspace: 'name1',
+      objectVersionId: 'version1',
+      objectId: 'objectId1',
+      name: 'name1',
+      type: 'type1',
+      subtype: 'subtype1'
+    }, {
+      workspace: 'name1',
+      objectVersionId: 'version2',
+      objectId: 'objectId2',
+      name: 'name2',
+      type: 'type2',
+      subtype: 'subtype2'
+    }]))
+    expect(stubDependencies).not.to.have.been.called
+    expect(stubObjects).not.to.have.been.called
+
+    const result = workspace.getSnapshotObjects({ snapshotId: 'snapshot1' })
+    expect(stubDependencies).to.have.been.calledOnce
+    expect(stubDependencies).to.have.been.calledWith('name1', 'snapshot1')
+    stubDependencies.restore()
+
+    return expect(result).to.eventually.be.fulfilled.then(data => {
+      expect(stubObjects).to.have.been.calledOnce
+      expect(stubObjects).to.have.been.calledWith('name1', { objectVersionId: ['version1', 'version2'] })
+      stubObjects.restore()
+      expect(data.length).to.equal(2)
+      expect(data).to.containSubset([{
+        workspace: 'name1',
+        objectVersionId: 'version1',
+        objectId: 'objectId1',
+        name: 'name1',
+        type: 'type1',
+        subtype: 'subtype1'
+      }, {
+        workspace: 'name1',
+        objectVersionId: 'version2',
+        objectId: 'objectId2',
+        name: 'name2',
+        type: 'type2',
+        subtype: 'subtype2'
+      }])
+    })
+  })
+
+  it('should return an array of arrays of objects when the "getSnapshotObjects" method is invoked with an array of snapshots', () => {
+    const stubDependencies = sinon.stub(Registry.SnapshotObjectDependency, 'getByParentId').returns(defer(true, [{
+      snapshotId: 'snapshot1',
+      objectVersionId: 'version1',
+      objectId: 'objectId1'
+    }, {
+      snapshotId: 'snapshot1',
+      objectVersionId: 'version2',
+      objectId: 'objectId2'
+    }, {
+      snapshotId: 'snapshot2',
+      objectVersionId: 'version2',
+      objectId: 'objectId2'
+    }]))
+    const stubObjects = sinon.stub(Registry.ObjectVersion, 'where').returns(defer(true, [{
+      workspace: 'name1',
+      objectVersionId: 'version1',
+      objectId: 'objectId1',
+      name: 'name1',
+      type: 'type1',
+      subtype: 'subtype1'
+    }, {
+      workspace: 'name1',
+      objectVersionId: 'version2',
+      objectId: 'objectId2',
+      name: 'name2',
+      type: 'type2',
+      subtype: 'subtype2'
+    }]))
+    expect(stubDependencies).not.to.have.been.called
+    expect(stubObjects).not.to.have.been.called
+
+    const result = workspace.getSnapshotObjects([{ snapshotId: 'snapshot1' }, { snapshotId: 'snapshot2' }])
+    expect(stubDependencies).to.have.been.calledOnce
+    expect(stubDependencies).to.have.been.calledWith('name1', ['snapshot1', 'snapshot2'])
+    stubDependencies.restore()
+
+    return expect(result).to.eventually.be.fulfilled.then(data => {
+      expect(stubObjects).to.have.been.calledOnce
+      expect(stubObjects).to.have.been.calledWith('name1', { objectVersionId: ['version1', 'version2', 'version2'] })
+      stubObjects.restore()
+      expect(data.length).to.equal(2)
+      expect(data).to.containSubset([
+        [{
+          workspace: 'name1',
+          objectVersionId: 'version1',
+          objectId: 'objectId1',
+          name: 'name1',
+          type: 'type1',
+          subtype: 'subtype1'
+        }, {
+          workspace: 'name1',
+          objectVersionId: 'version2',
+          objectId: 'objectId2',
+          name: 'name2',
+          type: 'type2',
+          subtype: 'subtype2'
+        }],
+        [{
+          workspace: 'name1',
+          objectVersionId: 'version2',
+          objectId: 'objectId2',
+          name: 'name2',
+          type: 'type2',
+          subtype: 'subtype2'
+        }]
+      ])
+    })
+  })
+
   it('should make all the correct calls in the "getObjects" method', () => {
     const stubEmpty = sinon.stub(Registry.ObjectVersion, 'where').returns(defer(true, []))
     expect(stubEmpty).not.to.have.been.called
@@ -563,5 +689,561 @@ describe('Classes - Workspace', () => {
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
+  })
+
+  it('should return an array of objects when the "getObjectDependencies" method is invoked with a single object version', () => {
+    const stubDependencies = sinon.stub(Registry.ObjectDependency, 'getByParentId').returns(defer(true, [{
+      parentObjectVersionId: 'version1',
+      childObjectVersionId: 'version2'
+    }, {
+      parentObjectVersionId: 'version1',
+      childObjectVersionId: 'version3'
+    }]))
+    const stubObjects = sinon.stub(Registry.ObjectVersion, 'where').returns(defer(true, [{
+      workspace: 'name1',
+      objectVersionId: 'version2',
+      objectId: 'objectId2',
+      name: 'versionName2',
+      type: 'type2',
+      subtype: 'subtype2'
+    }, {
+      workspace: 'name1',
+      objectVersionId: 'version3',
+      objectId: 'objectId3',
+      name: 'versionName3',
+      type: 'type3',
+      subtype: 'subtype3'
+    }]))
+    expect(stubDependencies).not.to.have.been.called
+    expect(stubObjects).not.to.have.been.called
+
+    const result = workspace.getObjectDependencies({ objectVersionId: 'version1' })
+    expect(stubDependencies).to.have.been.calledOnce
+    expect(stubDependencies).to.have.been.calledWith('name1', 'version1')
+    stubDependencies.restore()
+
+    return expect(result).to.eventually.be.fulfilled.then(data => {
+      expect(stubObjects).to.have.been.calledOnce
+      expect(stubObjects).to.have.been.calledWith('name1', { objectVersionId: ['version2', 'version3'] })
+      stubObjects.restore()
+      expect(data.length).to.equal(2)
+      expect(data).to.containSubset([{
+        workspace: 'name1',
+        objectVersionId: 'version2',
+        objectId: 'objectId2',
+        name: 'versionName2',
+        type: 'type2',
+        subtype: 'subtype2'
+      }, {
+        workspace: 'name1',
+        objectVersionId: 'version3',
+        objectId: 'objectId3',
+        name: 'versionName3',
+        type: 'type3',
+        subtype: 'subtype3'
+      }])
+    })
+  })
+
+  it('should return an array of arrays of objects when the "getObjectDependencies" method is invoked with an array of object versions', () => {
+    const stubDependencies = sinon.stub(Registry.ObjectDependency, 'getByParentId').returns(defer(true, [{
+      parentObjectVersionId: 'version1',
+      childObjectVersionId: 'version2'
+    }, {
+      parentObjectVersionId: 'version1',
+      childObjectVersionId: 'version3'
+    }, {
+      parentObjectVersionId: 'version3',
+      childObjectVersionId: 'version2'
+    }]))
+    const stubObjects = sinon.stub(Registry.ObjectVersion, 'where').returns(defer(true, [{
+      workspace: 'name1',
+      objectVersionId: 'version2',
+      objectId: 'objectId2',
+      name: 'versionName2',
+      type: 'type2',
+      subtype: 'subtype2'
+    }, {
+      workspace: 'name1',
+      objectVersionId: 'version3',
+      objectId: 'objectId3',
+      name: 'versionName3',
+      type: 'type3',
+      subtype: 'subtype3'
+    }]))
+    expect(stubDependencies).not.to.have.been.called
+    expect(stubObjects).not.to.have.been.called
+
+    const result = workspace.getObjectDependencies([{ objectVersionId: 'version1' }, { objectVersionId: 'version3' }])
+    expect(stubDependencies).to.have.been.calledOnce
+    expect(stubDependencies).to.have.been.calledWith('name1', ['version1', 'version3'])
+    stubDependencies.restore()
+
+    return expect(result).to.eventually.be.fulfilled.then(data => {
+      expect(stubObjects).to.have.been.calledOnce
+      expect(stubObjects).to.have.been.calledWith('name1', { objectVersionId: ['version2', 'version3', 'version2'] })
+      stubObjects.restore()
+      expect(data.length).to.equal(2)
+      expect(data).to.containSubset([
+        [{
+          workspace: 'name1',
+          objectVersionId: 'version2',
+          objectId: 'objectId2',
+          name: 'versionName2',
+          type: 'type2',
+          subtype: 'subtype2'
+        }, {
+          workspace: 'name1',
+          objectVersionId: 'version3',
+          objectId: 'objectId3',
+          name: 'versionName3',
+          type: 'type3',
+          subtype: 'subtype3'
+        }],
+        [{
+          workspace: 'name1',
+          objectVersionId: 'version2',
+          objectId: 'objectId2',
+          name: 'versionName2',
+          type: 'type2',
+          subtype: 'subtype2'
+        }]
+      ])
+    })
+  })
+
+  it('should filter results when the "getObjectDependencies" method is invoked with snapshot context', () => {
+    const stubSnapshots = sinon.stub(Registry.AppSnapshot, 'where').returns(defer(true, [{
+      workspace: 'name1',
+      snapshotId: 'snapshot1',
+      appId: 'appId1',
+      branchId: 'branchId1',
+      appShortName: 'appShortName1',
+      snapshotName: 'snapshotName1',
+      appName: 'appName1',
+      branchName: 'branchName1',
+      isToolkit: true,
+      isObjectsProcessed: false
+    }]))
+    const stubSnapshotObjectsDependencies = sinon.stub(Registry.SnapshotObjectDependency, 'getByParentId').returns(defer(true, [{
+      snapshotId: 'snapshot1',
+      objectVersionId: 'version2',
+      objectId: 'objectId2'
+    }, {
+      snapshotId: 'snapshot2',
+      objectVersionId: 'version3',
+      objectId: 'objectId3'
+    }]))
+    const stubObjectDependencies = sinon.stub(Registry.ObjectDependency, 'getByParentId').returns(defer(true, [{
+      parentObjectVersionId: 'version1',
+      childObjectVersionId: 'version2'
+    }, {
+      parentObjectVersionId: 'version1',
+      childObjectVersionId: 'version3'
+    }]))
+    const stubObjects = sinon.stub(Registry.ObjectVersion, 'where').returns(defer(true, [{
+      workspace: 'name1',
+      objectVersionId: 'version2',
+      objectId: 'objectId2',
+      name: 'versionName2',
+      type: 'type2',
+      subtype: 'subtype2'
+    }, {
+      workspace: 'name1',
+      objectVersionId: 'version3',
+      objectId: 'objectId3',
+      name: 'versionName3',
+      type: 'type3',
+      subtype: 'subtype3'
+    }]))
+    expect(stubSnapshots).not.to.have.been.called
+    expect(stubSnapshotObjectsDependencies).not.to.have.been.called
+    expect(stubObjectDependencies).not.to.have.been.called
+    expect(stubObjects).not.to.have.been.called
+
+    const result = workspace.getObjectDependencies({ objectVersionId: 'version1' }, { snapshotId: 'snapshot1' })
+    expect(stubObjectDependencies).to.have.been.calledOnce
+    expect(stubObjectDependencies).to.have.been.calledWith('name1', 'version1')
+    stubObjectDependencies.restore()
+
+    return expect(result).to.eventually.be.fulfilled.then(data => {
+      expect(stubSnapshots).to.have.been.calledOnce
+      expect(stubSnapshots).to.have.been.calledWith('name1', { snapshotId: 'snapshot1' })
+      expect(stubSnapshotObjectsDependencies).to.have.been.calledOnce
+      expect(stubSnapshotObjectsDependencies).to.have.been.calledWith('name1', ['snapshot1'])
+      expect(stubObjects).to.have.been.calledTwice
+      expect(stubObjects).to.have.been.calledWith('name1', { objectVersionId: ['version2', 'version3'] })
+      stubObjects.restore()
+      stubSnapshots.restore()
+      stubSnapshotObjectsDependencies.restore()
+      expect(data.length).to.equal(1)
+      expect(data).to.containSubset([{
+        workspace: 'name1',
+        objectVersionId: 'version2',
+        objectId: 'objectId2',
+        name: 'versionName2',
+        type: 'type2',
+        subtype: 'subtype2'
+      }])
+    })
+  })
+
+  it('should return an array of objects when the "getObjectWhereUsed" method is invoked with a single object version', () => {
+    const stubDependencies = sinon.stub(Registry.ObjectDependency, 'getByChildId').returns(defer(true, [{
+      parentObjectVersionId: 'version1',
+      childObjectVersionId: 'version2'
+    }, {
+      parentObjectVersionId: 'version3',
+      childObjectVersionId: 'version2'
+    }]))
+    const stubObjects = sinon.stub(Registry.ObjectVersion, 'where').returns(defer(true, [{
+      workspace: 'name1',
+      objectVersionId: 'version1',
+      objectId: 'objectId1',
+      name: 'versionName1',
+      type: 'type1',
+      subtype: 'subtype1'
+    }, {
+      workspace: 'name1',
+      objectVersionId: 'version3',
+      objectId: 'objectId3',
+      name: 'versionName3',
+      type: 'type3',
+      subtype: 'subtype3'
+    }]))
+    expect(stubDependencies).not.to.have.been.called
+    expect(stubObjects).not.to.have.been.called
+
+    const result = workspace.getObjectWhereUsed({ objectVersionId: 'version2' })
+    expect(stubDependencies).to.have.been.calledOnce
+    expect(stubDependencies).to.have.been.calledWith('name1', 'version2')
+    stubDependencies.restore()
+
+    return expect(result).to.eventually.be.fulfilled.then(data => {
+      expect(stubObjects).to.have.been.calledOnce
+      expect(stubObjects).to.have.been.calledWith('name1', { objectVersionId: ['version1', 'version3'] })
+      stubObjects.restore()
+      expect(data.length).to.equal(2)
+      expect(data).to.containSubset([{
+        workspace: 'name1',
+        objectVersionId: 'version1',
+        objectId: 'objectId1',
+        name: 'versionName1',
+        type: 'type1',
+        subtype: 'subtype1'
+      }, {
+        workspace: 'name1',
+        objectVersionId: 'version3',
+        objectId: 'objectId3',
+        name: 'versionName3',
+        type: 'type3',
+        subtype: 'subtype3'
+      }])
+    })
+  })
+
+  it('should return an array of arrays of objects when the "getObjectWhereUsed" method is invoked with an array of object versions', () => {
+    const stubDependencies = sinon.stub(Registry.ObjectDependency, 'getByChildId').returns(defer(true, [{
+      parentObjectVersionId: 'version1',
+      childObjectVersionId: 'version2'
+    }, {
+      parentObjectVersionId: 'version3',
+      childObjectVersionId: 'version2'
+    }, {
+      parentObjectVersionId: 'version1',
+      childObjectVersionId: 'version3'
+    }]))
+    const stubObjects = sinon.stub(Registry.ObjectVersion, 'where').returns(defer(true, [{
+      workspace: 'name1',
+      objectVersionId: 'version1',
+      objectId: 'objectId1',
+      name: 'versionName1',
+      type: 'type1',
+      subtype: 'subtype1'
+    }, {
+      workspace: 'name1',
+      objectVersionId: 'version3',
+      objectId: 'objectId3',
+      name: 'versionName3',
+      type: 'type3',
+      subtype: 'subtype3'
+    }]))
+    expect(stubDependencies).not.to.have.been.called
+    expect(stubObjects).not.to.have.been.called
+
+    const result = workspace.getObjectWhereUsed([{ objectVersionId: 'version2' }, { objectVersionId: 'version3' }])
+    expect(stubDependencies).to.have.been.calledOnce
+    expect(stubDependencies).to.have.been.calledWith('name1', ['version2', 'version3'])
+    stubDependencies.restore()
+
+    return expect(result).to.eventually.be.fulfilled.then(data => {
+      expect(stubObjects).to.have.been.calledOnce
+      expect(stubObjects).to.have.been.calledWith('name1', { objectVersionId: ['version1', 'version3', 'version1'] })
+      stubObjects.restore()
+      expect(data.length).to.equal(2)
+      expect(data).to.containSubset([
+        [{
+          workspace: 'name1',
+          objectVersionId: 'version1',
+          objectId: 'objectId1',
+          name: 'versionName1',
+          type: 'type1',
+          subtype: 'subtype1'
+        }, {
+          workspace: 'name1',
+          objectVersionId: 'version3',
+          objectId: 'objectId3',
+          name: 'versionName3',
+          type: 'type3',
+          subtype: 'subtype3'
+        }],
+        [{
+          workspace: 'name1',
+          objectVersionId: 'version1',
+          objectId: 'objectId1',
+          name: 'versionName1',
+          type: 'type1',
+          subtype: 'subtype1'
+        }]
+      ])
+    })
+  })
+
+  it('should filter results when the "getObjectWhereUsed" method is invoked with snapshot context', () => {
+    const stubSnapshots = sinon.stub(Registry.AppSnapshot, 'where').returns(defer(true, [{
+      workspace: 'name1',
+      snapshotId: 'snapshot1',
+      appId: 'appId1',
+      branchId: 'branchId1',
+      appShortName: 'appShortName1',
+      snapshotName: 'snapshotName1',
+      appName: 'appName1',
+      branchName: 'branchName1',
+      isToolkit: true,
+      isObjectsProcessed: false
+    }]))
+    const stubSnapshotObjectsDependencies = sinon.stub(Registry.SnapshotObjectDependency, 'getByParentId').returns(defer(true, [{
+      snapshotId: 'snapshot1',
+      objectVersionId: 'version1',
+      objectId: 'objectId1'
+    }, {
+      snapshotId: 'snapshot2',
+      objectVersionId: 'version3',
+      objectId: 'objectId3'
+    }]))
+    const stubObjectDependencies = sinon.stub(Registry.ObjectDependency, 'getByChildId').returns(defer(true, [{
+      parentObjectVersionId: 'version1',
+      childObjectVersionId: 'version2'
+    }, {
+      parentObjectVersionId: 'version3',
+      childObjectVersionId: 'version2'
+    }]))
+    const stubObjects = sinon.stub(Registry.ObjectVersion, 'where').returns(defer(true, [{
+      workspace: 'name1',
+      objectVersionId: 'version1',
+      objectId: 'objectId1',
+      name: 'versionName1',
+      type: 'type1',
+      subtype: 'subtype1'
+    }, {
+      workspace: 'name1',
+      objectVersionId: 'version3',
+      objectId: 'objectId3',
+      name: 'versionName3',
+      type: 'type3',
+      subtype: 'subtype3'
+    }]))
+    expect(stubSnapshots).not.to.have.been.called
+    expect(stubSnapshotObjectsDependencies).not.to.have.been.called
+    expect(stubObjectDependencies).not.to.have.been.called
+    expect(stubObjects).not.to.have.been.called
+
+    const result = workspace.getObjectWhereUsed({ objectVersionId: 'version2' }, { snapshotId: 'snapshot1' })
+    expect(stubObjectDependencies).to.have.been.calledOnce
+    expect(stubObjectDependencies).to.have.been.calledWith('name1', 'version2')
+    stubObjectDependencies.restore()
+
+    return expect(result).to.eventually.be.fulfilled.then(data => {
+      expect(stubSnapshots).to.have.been.calledOnce
+      expect(stubSnapshots).to.have.been.calledWith('name1', { snapshotId: 'snapshot1' })
+      expect(stubSnapshotObjectsDependencies).to.have.been.calledOnce
+      expect(stubSnapshotObjectsDependencies).to.have.been.calledWith('name1', ['snapshot1'])
+      expect(stubObjects).to.have.been.calledTwice
+      expect(stubObjects).to.have.been.calledWith('name1', { objectVersionId: ['version1', 'version3'] })
+      stubObjects.restore()
+      stubSnapshots.restore()
+      stubSnapshotObjectsDependencies.restore()
+      expect(data.length).to.equal(1)
+      expect(data).to.containSubset([{
+        workspace: 'name1',
+        objectVersionId: 'version1',
+        objectId: 'objectId1',
+        name: 'versionName1',
+        type: 'type1',
+        subtype: 'subtype1'
+      }])
+    })
+  })
+
+  it('should return an array of snapshots when the "getObjectSnapshots" method is invoked with a single object version', () => {
+    const stubDependencies = sinon.stub(Registry.SnapshotObjectDependency, 'getByChildId').returns(defer(true, [{
+      snapshotId: 'snapshot1',
+      objectVersionId: 'version1',
+      objectId: 'objectId1'
+    }, {
+      snapshotId: 'snapshot2',
+      objectVersionId: 'version1',
+      objectId: 'objectId1'
+    }]))
+    const stubSnapshots = sinon.stub(Registry.AppSnapshot, 'where').returns(defer(true, [{
+      workspace: 'name1',
+      snapshotId: 'snapshot1',
+      appId: 'appId1',
+      branchId: 'branchId1',
+      appShortName: 'appShortName1',
+      snapshotName: 'snapshotName1',
+      appName: 'appName1',
+      branchName: 'branchName1',
+      isToolkit: true,
+      isObjectsProcessed: false
+    }, {
+      workspace: 'name1',
+      snapshotId: 'snapshot2',
+      appId: 'appId2',
+      branchId: 'branchId2',
+      appShortName: 'appShortName2',
+      snapshotName: 'snapshotName2',
+      appName: 'appName2',
+      branchName: 'branchName2',
+      isToolkit: false,
+      isObjectsProcessed: false
+    }]))
+    expect(stubDependencies).not.to.have.been.called
+    expect(stubSnapshots).not.to.have.been.called
+
+    const result = workspace.getObjectSnapshots({ objectVersionId: 'version1' })
+    expect(stubDependencies).to.have.been.calledOnce
+    expect(stubDependencies).to.have.been.calledWith('name1', 'version1')
+    stubDependencies.restore()
+
+    return expect(result).to.eventually.be.fulfilled.then(data => {
+      expect(stubSnapshots).to.have.been.calledOnce
+      expect(stubSnapshots).to.have.been.calledWith('name1', { snapshotId: ['snapshot1', 'snapshot2'] })
+      stubSnapshots.restore()
+      expect(data.length).to.equal(2)
+      expect(data).to.containSubset([{
+        workspace: 'name1',
+        snapshotId: 'snapshot1',
+        appId: 'appId1',
+        branchId: 'branchId1',
+        appShortName: 'appShortName1',
+        snapshotName: 'snapshotName1',
+        appName: 'appName1',
+        branchName: 'branchName1',
+        isToolkit: true,
+        isObjectsProcessed: false
+      }, {
+        workspace: 'name1',
+        snapshotId: 'snapshot2',
+        appId: 'appId2',
+        branchId: 'branchId2',
+        appShortName: 'appShortName2',
+        snapshotName: 'snapshotName2',
+        appName: 'appName2',
+        branchName: 'branchName2',
+        isToolkit: false,
+        isObjectsProcessed: false
+      }])
+    })
+  })
+
+  it('should return an array of arrays of snapshots when the "getObjectSnapshots" method is invoked with an array of object versions', () => {
+    const stubDependencies = sinon.stub(Registry.SnapshotObjectDependency, 'getByChildId').returns(defer(true, [{
+      snapshotId: 'snapshot1',
+      objectVersionId: 'version1',
+      objectId: 'objectId1'
+    }, {
+      snapshotId: 'snapshot2',
+      objectVersionId: 'version1',
+      objectId: 'objectId1'
+    }, {
+      snapshotId: 'snapshot2',
+      objectVersionId: 'version3',
+      objectId: 'objectId3'
+    }]))
+    const stubSnapshots = sinon.stub(Registry.AppSnapshot, 'where').returns(defer(true, [{
+      workspace: 'name1',
+      snapshotId: 'snapshot1',
+      appId: 'appId1',
+      branchId: 'branchId1',
+      appShortName: 'appShortName1',
+      snapshotName: 'snapshotName1',
+      appName: 'appName1',
+      branchName: 'branchName1',
+      isToolkit: true,
+      isObjectsProcessed: false
+    }, {
+      workspace: 'name1',
+      snapshotId: 'snapshot2',
+      appId: 'appId2',
+      branchId: 'branchId2',
+      appShortName: 'appShortName2',
+      snapshotName: 'snapshotName2',
+      appName: 'appName2',
+      branchName: 'branchName2',
+      isToolkit: false,
+      isObjectsProcessed: false
+    }]))
+    expect(stubDependencies).not.to.have.been.called
+    expect(stubSnapshots).not.to.have.been.called
+
+    const result = workspace.getObjectSnapshots([{ objectVersionId: 'version1' }, { objectVersionId: 'version3' }])
+    expect(stubDependencies).to.have.been.calledOnce
+    expect(stubDependencies).to.have.been.calledWith('name1', ['version1', 'version3'])
+    stubDependencies.restore()
+
+    return expect(result).to.eventually.be.fulfilled.then(data => {
+      expect(stubSnapshots).to.have.been.calledOnce
+      expect(stubSnapshots).to.have.been.calledWith('name1', { snapshotId: ['snapshot1', 'snapshot2', 'snapshot2'] })
+      stubSnapshots.restore()
+      expect(data.length).to.equal(2)
+      expect(data).to.containSubset([
+        [{
+          workspace: 'name1',
+          snapshotId: 'snapshot1',
+          appId: 'appId1',
+          branchId: 'branchId1',
+          appShortName: 'appShortName1',
+          snapshotName: 'snapshotName1',
+          appName: 'appName1',
+          branchName: 'branchName1',
+          isToolkit: true,
+          isObjectsProcessed: false
+        }, {
+          workspace: 'name1',
+          snapshotId: 'snapshot2',
+          appId: 'appId2',
+          branchId: 'branchId2',
+          appShortName: 'appShortName2',
+          snapshotName: 'snapshotName2',
+          appName: 'appName2',
+          branchName: 'branchName2',
+          isToolkit: false,
+          isObjectsProcessed: false
+        }],
+        [{
+          workspace: 'name1',
+          snapshotId: 'snapshot2',
+          appId: 'appId2',
+          branchId: 'branchId2',
+          appShortName: 'appShortName2',
+          snapshotName: 'snapshotName2',
+          appName: 'appName2',
+          branchName: 'branchName2',
+          isToolkit: false,
+          isObjectsProcessed: false
+        }]
+      ])
+    })
   })
 })
