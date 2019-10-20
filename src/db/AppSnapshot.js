@@ -2,7 +2,7 @@ const Performance = require('../utils/Performance')
 const { getDB } = require('./common')
 
 const getParamsFromItem = item =>
-  [item.snapshotId, item.appId, item.branchId, item.snapshotName, item.branchName, item.appShortName, item.appName, item.isToolkit ? 1 : 0, item.isObjectsProcessed]
+  [item.snapshotId, item.appId, item.branchId, item.snapshotName, item.branchName, item.appShortName, item.appName, item.isToolkit ? 1 : 0, item.isObjectsProcessed ? 1 : 0]
 
 const buildWhereQuery = obj => {
   let whereClause = '1 = 1'

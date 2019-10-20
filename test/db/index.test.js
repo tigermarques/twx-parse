@@ -1,25 +1,30 @@
-const path = require('path')
 const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
+const chaiAsPromised = require('chai-as-promised')
 let db = require('../../src/db/index')
 let commonDB = require('../../src/db/common')
 const { defer } = require('../test-utilities')
 
-const TEST_PATH = path.resolve(__dirname, 'data')
-
 chai.use(sinonChai)
+chai.use(chaiAsPromised)
 const { expect } = chai
 
 describe('DB - Index', () => {
-  before(() => {
+  let checkAccessStub, getDBStub
+  beforeEach(() => {
+    delete require.cache[require.resolve('../../src/db/common')]
     delete require.cache[require.resolve('../../src/db/index')]
     commonDB = require('../../src/db/common')
-  })
-  afterEach(() => {
-    delete require.cache[require.resolve('../../src/db/index')]
+    checkAccessStub = sinon.stub(commonDB, 'checkAccess')
+    getDBStub = sinon.stub(commonDB, 'getDB')
     db = require('../../src/db/index')
   })
+  afterEach(() => {
+    checkAccessStub.restore()
+    getDBStub.restore()
+  })
+
   it('should have the correct methods and objects', () => {
     expect(db).to.be.an('object')
     expect(db).to.respondTo('initialize')
@@ -31,59 +36,46 @@ describe('DB - Index', () => {
   })
 
   it('should reject initialization when check password fails', () => {
-    const stub = sinon.stub(commonDB, 'checkAccess').returns(defer(false))
-    delete require.cache[require.resolve('../../src/db/index')]
-    db = require('../../src/db/index')
-    expect(stub).not.to.have.been.called
+    checkAccessStub.returns(defer(false))
+    expect(checkAccessStub).not.to.have.been.called
     const result = db.initialize('username', 'password')
-    expect(stub).to.have.been.calledOnce
-    expect(stub).to.have.been.calledWith('username', 'password')
-    stub.restore()
+    expect(checkAccessStub).to.have.been.calledOnce
+    expect(checkAccessStub).to.have.been.calledWith('username', 'password')
     return expect(result).to.eventually.be.rejected
   })
 
   it('should reject initialization when sql execution fails', () => {
-    const accessStub = sinon.stub(commonDB, 'checkAccess').returns(defer(true))
-    const dbStub = sinon.stub(commonDB, 'getDB').returns({
+    checkAccessStub.returns(defer(true))
+    getDBStub.returns({
       exec: sinon.stub().callsArgWith(1, new Error('error')),
       close: sinon.stub().resolves()
     })
-    process.env.TWXPARSE_DATA_FOLDER = TEST_PATH
-    delete require.cache[require.resolve('../../src/db/index')]
-    db = require('../../src/db/index')
-    expect(accessStub).not.to.have.been.called
-    expect(dbStub).not.to.have.been.called
+    expect(checkAccessStub).not.to.have.been.called
+    expect(getDBStub).not.to.have.been.called
     const result = db.initialize('username', 'password')
-    expect(accessStub).to.have.been.calledOnce
-    expect(accessStub).to.have.been.calledWith('username', 'password')
-    accessStub.restore()
+    expect(checkAccessStub).to.have.been.calledOnce
+    expect(checkAccessStub).to.have.been.calledWith('username', 'password')
     return expect(result).to.eventually.be.rejected.then((error) => {
-      expect(dbStub).to.have.been.calledOnce
-      expect(dbStub).to.have.been.calledWith('username')
-      dbStub.restore()
+      expect(getDBStub).to.have.been.calledOnce
+      expect(getDBStub).to.have.been.calledWith('username')
       expect(error.message).to.equal('error')
     })
   })
 
   it('should resolve initialization when sql execution succeeds', () => {
-    const accessStub = sinon.stub(commonDB, 'checkAccess').returns(defer(true))
-    const dbStub = sinon.stub(commonDB, 'getDB').returns({
+    checkAccessStub.returns(defer(true))
+    getDBStub.returns({
       exec: sinon.stub().callsArgWith(1, null),
       close: sinon.stub().resolves()
     })
-    process.env.TWXPARSE_DATA_FOLDER = TEST_PATH
-    delete require.cache[require.resolve('../../src/db/index')]
-    db = require('../../src/db/index')
-    expect(accessStub).not.to.have.been.called
-    expect(dbStub).not.to.have.been.called
+    expect(checkAccessStub).not.to.have.been.called
+    expect(getDBStub).not.to.have.been.called
     const result = db.initialize('username', 'password')
-    expect(accessStub).to.have.been.calledOnce
-    expect(accessStub).to.have.been.calledWith('username', 'password')
-    accessStub.restore()
+    expect(checkAccessStub).to.have.been.calledOnce
+    expect(checkAccessStub).to.have.been.calledWith('username', 'password')
     return expect(result).to.eventually.be.fulfilled.then(() => {
-      expect(dbStub).to.have.been.calledOnce
-      expect(dbStub).to.have.been.calledWith('username')
-      dbStub.restore()
+      expect(getDBStub).to.have.been.calledOnce
+      expect(getDBStub).to.have.been.calledWith('username')
     })
   })
 })
