@@ -21,16 +21,12 @@ const loadSchema = (databaseName) => {
     db.exec([appSnapshot, objectVersion, objectDependency, snapshotDependency, snapshotObjectDependency, tags].join('\n\n'), err => {
       if (err) {
         reject(err)
-      }
-    })
-
-    db.close(err => {
-      if (err) {
-        reject(err)
         return
       }
       resolve()
     })
+
+    db.close()
   })
 }
 

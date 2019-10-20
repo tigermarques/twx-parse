@@ -3,14 +3,14 @@ const fs = require('fs')
 const bcrypt = require('bcrypt')
 const sqlite3 = require('sqlite3').verbose()
 
-const dir = path.join(__dirname, '..', '..', 'data')
+const dir = process.env.TWXPARSE_DATA_FOLDER || path.join(__dirname, '..', '..', 'data')
 if (!fs.existsSync(dir)) {
   fs.mkdirSync(dir)
 }
 
 const getDBName = (name) => path.join(dir, name || 'database.db')
 
-const getDBPassName = (name) => path.join(dir, (name || 'database.db') + '.txt')
+const getDBPassName = (name) => path.join(dir, name + '.txt')
 
 const getDB = (name) => new sqlite3.Database(getDBName(name))
 

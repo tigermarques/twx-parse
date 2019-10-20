@@ -2,7 +2,7 @@ const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
 const chaiAsPromised = require('chai-as-promised')
-// const chaiSubset = require('chai-subset')
+const chaiSubset = require('chai-subset')
 const Workspace = require('../../src/classes/Workspace')
 const Registry = require('../../src/classes/Registry')
 const Parser = require('../../src/parser')
@@ -10,7 +10,7 @@ const { defer } = require('../test-utilities')
 
 chai.use(sinonChai)
 chai.use(chaiAsPromised)
-// chai.use(chaiSubset)
+chai.use(chaiSubset)
 const { expect } = chai
 
 describe('Classes - Workspace', () => {
