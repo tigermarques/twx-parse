@@ -3,7 +3,7 @@ const { isPromise } = require('util').types
 
 const map = {}
 
-const ENABLED = true
+const ENABLED = process.env.TWXPARSE_PERFORMANCE_ENABLED === '1' || false
 
 const finishExecution = (name, startTime) => {
   const endTime = performance.now()

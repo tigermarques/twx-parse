@@ -1,10 +1,12 @@
 
 const chai = require('chai')
 const sinon = require('sinon')
+const sinonChai = require('sinon-chai')
 const chaiAsPromised = require('chai-as-promised')
 let ObjectVersion = require('../../src/db/ObjectVersion')
 let commonDB = require('../../src/db/common')
 
+chai.use(sinonChai)
 chai.use(chaiAsPromised)
 const { expect } = chai
 
@@ -21,6 +23,7 @@ describe('DB - ObjectVersion', () => {
 
   afterEach(() => {
     dbStub.restore()
+    delete require.cache[require.resolve('../../src/db/ObjectVersion')]
   })
 
   it('should have the correct methods', () => {

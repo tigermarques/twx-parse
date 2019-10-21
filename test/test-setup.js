@@ -3,8 +3,6 @@ const fs = require('fs')
 
 const TEST_PATH = path.resolve(__dirname, 'data')
 
-process.env.TWXPARSE_DATA_FOLDER = TEST_PATH
-
 const deleteFolderRecursive = (path) => {
   if (fs.existsSync(path)) {
     fs.readdirSync(path).forEach((file, index) => {
@@ -20,6 +18,7 @@ const deleteFolderRecursive = (path) => {
 }
 
 beforeEach(() => {
+  process.env.TWXPARSE_DATA_FOLDER = TEST_PATH
   deleteFolderRecursive(process.env.TWXPARSE_DATA_FOLDER)
 })
 

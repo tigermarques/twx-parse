@@ -1,10 +1,12 @@
 
 const chai = require('chai')
 const sinon = require('sinon')
+const sinonChai = require('sinon-chai')
 const chaiAsPromised = require('chai-as-promised')
 let AppSnapshot = require('../../src/db/AppSnapshot')
 let commonDB = require('../../src/db/common')
 
+chai.use(sinonChai)
 chai.use(chaiAsPromised)
 const { expect } = chai
 
@@ -21,6 +23,7 @@ describe('DB - AppSnapshot', () => {
 
   afterEach(() => {
     dbStub.restore()
+    delete require.cache[require.resolve('../../src/db/AppSnapshot')]
   })
 
   it('should have the correct methods', () => {
