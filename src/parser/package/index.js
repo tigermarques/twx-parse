@@ -23,6 +23,7 @@ const addPackage = async (databaseName, zipFile, fileName, startCallback, progre
     startCallback({
       id: parentSnapshotId,
       name: fileName,
+      skipped: false,
       total: (jsonData.package.dependencies[0].dependency ? jsonData.package.dependencies[0].dependency.length : 0) +
         (jsonData.package.objects[0].object ? jsonData.package.objects[0].object.length : 0)
     })
@@ -35,7 +36,6 @@ const addPackage = async (databaseName, zipFile, fileName, startCallback, progre
         id: parentSnapshotId,
         data: objectsToAdd
       })
-      // bar.increment(jsonData.package.dependencies[0].dependency.length)
     }
 
     if (jsonData.package.objects[0].object) {
@@ -51,7 +51,15 @@ const addPackage = async (databaseName, zipFile, fileName, startCallback, progre
       id: parentSnapshotId
     })
   } else {
-    console.log(`Skipping package ${parentSnapshotId}`)
+    startCallback({
+      id: parentSnapshotId,
+      name: fileName,
+      skipped: true,
+      total: 0
+    })
+    endCallback({
+      id: parentSnapshotId
+    })
   }
 }
 
@@ -104,12 +112,13 @@ class PackageParser extends EventEmitter {
       this.emit('start', {
         id: data.id,
         name: data.name,
+        skipped: data.skipped,
         total: data.total
       })
     }, data => {
       this.emit('progress', data)
-    }, () => {
-      this.emit('end')
+    }, data => {
+      this.emit('end', data)
     })
   }
 

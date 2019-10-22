@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<teamworks>
+    <bpd id="25.9358aeb8-22e5-49a5-91ec-e308642efab7" name="Processo1">
+        <bpdParameter name="Untitled1">
+            <lastModified isNull="true" />
+            <lastModifiedBy isNull="true" />
+            <bpdParameterId>2007.e7fc3c45-32d5-4b58-a891-958cab75babb</bpdParameterId>
+            <bpdId>25.9358aeb8-22e5-49a5-91ec-e308642efab7</bpdId>
+            <parameterType>1</parameterType>
+            <isArrayOf>false</isArrayOf>
+            <classId>2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022</classId>
+            <seq>0</seq>
+            <documentation isNull="true" />
+            <hasDefault>false</hasDefault>
+            <defaultValue isNull="true" />
+            <isReadOnly>false</isReadOnly>
+            <guid>8e9e7783-8d4f-4f0e-9907-0a45f612d655</guid>
+            <versionId>65331067-0843-4259-b911-84a708d8417d</versionId>
+        </bpdParameter>
+        <bpdParameter name="Untitled2">
+            <lastModified isNull="true" />
+            <lastModifiedBy isNull="true" />
+            <bpdParameterId>2007.ca32ee06-6536-4205-8562-9f0516404619</bpdParameterId>
+            <bpdId>25.9358aeb8-22e5-49a5-91ec-e308642efab7</bpdId>
+            <parameterType>2</parameterType>
+            <isArrayOf>false</isArrayOf>
+            <classId>/12.7425eece-319f-484b-a59f-8efeaaec2582</classId>
+            <seq>0</seq>
+            <documentation isNull="true" />
+            <hasDefault>false</hasDefault>
+            <defaultValue isNull="true" />
+            <isReadOnly>false</isReadOnly>
+            <guid>65812226-1810-4296-9234-15185e3918a1</guid>
+            <versionId>8fbe3e9b-f83a-49e0-9558-1c32935a6d75</versionId>
+        </bpdParameter>
+        <lastModified>1569969553740</lastModified>
+        <lastModifiedBy>t99kmg07</lastModifiedBy>
+        <bpdId>25.9358aeb8-22e5-49a5-91ec-e308642efab7</bpdId>
+        <isTrackingEnabled>true</isTrackingEnabled>
+        <isSpcEnabled>false</isSpcEnabled>
+        <restrictedName isNull="true" />
+        <isCriticalPathEnabled>false</isCriticalPathEnabled>
+        <participantRef isNull="true" />
+        <businessDataParticipantRef isNull="true" />
+        <perfMetricParticipantRef isNull="true" />
+        <ownerTeamParticipantRef isNull="true" />
+        <timeScheduleType isNull="true" />
+        <timeScheduleName isNull="true" />
+        <timeScheduleExpression isNull="true" />
+        <holidayScheduleType isNull="true" />
+        <holidayScheduleName isNull="true" />
+        <holidayScheduleExpression isNull="true" />
+        <timezoneType isNull="true" />
+        <timezone isNull="true" />
+        <timezoneExpression isNull="true" />
+        <internalName isNull="true" />
+        <description isNull="true" />
+        <type isNull="true" />
+        <rootBpdId isNull="true" />
+        <parentBpdId isNull="true" />
+        <parentFlowObjectId isNull="true" />
+        <xmlData isNull="true" />
+        <bpmn2Data isNull="true" />
+        <dependencySummary isNull="true" />
+        <jsonData isNull="true" />
+        <migrationData isNull="true" />
+        <templateId isNull="true" />
+        <externalId isNull="true" />
+        <guid>guid:7903df9268eede95:-3c68ec8a:16d897292b6:-7ffe</guid>
+        <versionId>1a3ee2d6-9181-40ed-9de8-a638da13c592</versionId>
+        <BusinessProcessDiagram id="bpdid:7903df9268eede95:-3c68ec8a:16d897292b6:-7fff">
+            <metadata>
+                <entry>
+                    <key>SAP_META.SHOULDRECOVER</key>
+                    <value>no</value>
+                </entry>
+            </metadata>
+            <name>Processo1</name>
+            <name>Processo1</name>
+            <dimension>
+                <size w="600" h="150" />
+            </dimension>
+            <author>t99kmg07</author>
+            <isTrackingEnabled>true</isTrackingEnabled>
+            <isCriticalPathEnabled>false</isCriticalPathEnabled>
+            <isSpcEnabled>false</isSpcEnabled>
+            <isDueDateEnabled>true</isDueDateEnabled>
+            <isAtRiskCalcEnabled>true</isAtRiskCalcEnabled>
+            <creationDate>1569969288577</creationDate>
+            <modificationDate>1569969553740</modificationDate>
+            <metricSettings itemType="2" />
+            <instanceNameExpression>"Processo1:" + tw.system.process.instanceId</instanceNameExpression>
+            <dueDateType>1</dueDateType>
+            <dueDateTime>8</dueDateTime>
+            <dueDateTimeResolution>1</dueDateTimeResolution>
+            <dueDateTimeTOD>00:00</dueDateTimeTOD>
+            <officeIntegration>
+                <sharePointUserName>username</sharePointUserName>
+                <sharePointPassword></sharePointPassword>
+                <sharePointURL>http://mysharepointserver</sharePointURL>
+                <sharePointParentSiteDisabled>true</sharePointParentSiteDisabled>
+                <sharePointParentSiteName>&lt;#= tw.system.process.name #&gt;</sharePointParentSiteName>
+                <sharePointParentSiteTemplate>ParentSiteTemplate.stp</sharePointParentSiteTemplate>
+                <sharePointWorkspaceSiteName>&lt;#= tw.system.process.name #&gt; &lt;#= tw.system.process.instanceId #&gt;</sharePointWorkspaceSiteName>
+                <sharePointWorkspaceSiteDescription>This site has been automatically generated for managing collaborations and documents 
+for the Lombardi TeamWorks process instance: &lt;#= tw.system.process.name #&gt; &lt;#= tw.system.process.instanceId #&gt;
+
+TeamWorks Link:  http://ACFINMDWBPMD01.ATLANTICO.int:9081/portal/jsp/getProcessDetails.do?bpdInstanceId=&lt;#= tw.system.process.instanceId #&gt;
+
+</sharePointWorkspaceSiteDescription>
+                <sharePointWorkspaceSiteTemplate>WorkspaceSiteTemplate.stp</sharePointWorkspaceSiteTemplate>
+                <sharePointLCID>1033</sharePointLCID>
+            </officeIntegration>
+            <timeScheduleType>0</timeScheduleType>
+            <holidayScheduleType>0</holidayScheduleType>
+            <timezoneType>0</timezoneType>
+            <executionProfile>default</executionProfile>
+            <isSBOSyncEnabled>true</isSBOSyncEnabled>
+            <allowContentOperations>false</allowContentOperations>
+            <isLegacyCaseMigrated>false</isLegacyCaseMigrated>
+            <defaultPool>
+                <BpmnObjectId id="bpdid:7903df9268eede95:-3c68ec8a:16d897292b6:-7ffd" />
+            </defaultPool>
+            <defaultInstanceUI id="bpdid:7b88404e5edd3729:-4942888d:16d37065276:-14cb" />
+            <ownerTeamInstanceUI id="bpdid:7b88404e5edd3729:-4942888d:16d37065276:-14cc" />
+            <simulationScenario id="bpdid:7b88404e5edd3729:-4942888d:16d37065276:-14cd">
+                <name>Predefinição</name>
+                <simNumInstances>100</simNumInstances>
+                <simMinutesBetween>30</simMinutesBetween>
+                <maxInstances>100</maxInstances>
+                <useMaxInstances>true</useMaxInstances>
+                <continueFromReal>false</continueFromReal>
+                <useParticipantCalendars>false</useParticipantCalendars>
+                <useDuration>false</useDuration>
+                <duration>86400</duration>
+                <startTime>1569969236357</startTime>
+            </simulationScenario>
+            <pool id="bpdid:7903df9268eede95:-3c68ec8a:16d897292b6:-7ffd">
+                <name>Conjunto</name>
+                <documentation>Este é o meu conjunto.</documentation>
+                <restrictedName>at1569969288595</restrictedName>
+                <dimension>
+                    <size w="3000" h="300" />
+                </dimension>
+                <autoTrackingEnabled>false</autoTrackingEnabled>
+                <lane id="bpdid:7903df9268eede95:-3c68ec8a:16d897292b6:-7ffc">
+                    <name>Equipa</name>
+                    <height>150</height>
+                    <laneColor>0</laneColor>
+                    <systemLane>false</systemLane>
+                    <attachedParticipant>2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03</attachedParticipant>
+                    <flowObject id="bpdid:7903df9268eede95:-3c68ec8a:16d897292b6:-7ffa" componentType="Event">
+                        <name>Iniciar</name>
+                        <position>
+                            <location x="50" y="50" />
+                        </position>
+                        <dropIconUrl>0</dropIconUrl>
+                        <colorInput>Color</colorInput>
+                        <component>
+                            <nameVisible>true</nameVisible>
+                            <eventType>1</eventType>
+                            <cancelActivity>true</cancelActivity>
+                            <repeatable>false</repeatable>
+                            <doCloseTask>true</doCloseTask>
+                        </component>
+                    </flowObject>
+                    <flowObject id="bpdid:7903df9268eede95:-3c68ec8a:16d897292b6:-7ff9" componentType="Event">
+                        <name>Terminar</name>
+                        <position>
+                            <location x="350" y="50" />
+                        </position>
+                        <dropIconUrl>0</dropIconUrl>
+                        <colorInput>Color</colorInput>
+                        <component>
+                            <nameVisible>true</nameVisible>
+                            <eventType>2</eventType>
+                            <cancelActivity>true</cancelActivity>
+                            <repeatable>false</repeatable>
+                            <doCloseTask>true</doCloseTask>
+                        </component>
+                    </flowObject>
+                </lane>
+                <lane id="bpdid:7903df9268eede95:-3c68ec8a:16d897292b6:-7ffb">
+                    <name>Sistema</name>
+                    <height>150</height>
+                    <laneColor>0</laneColor>
+                    <systemLane>true</systemLane>
+                    <attachedParticipant>2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.6fd38d02-81cf-48ab-bd42-8ff4c0a1628b</attachedParticipant>
+                </lane>
+                <inputParameter id="bpdid:7903df9268eede95:-3c68ec8a:16d897292b6:-7ff8">
+                    <bpdParameterId>2007.e7fc3c45-32d5-4b58-a891-958cab75babb</bpdParameterId>
+                    <isProcessInstanceCorrelator>false</isProcessInstanceCorrelator>
+                </inputParameter>
+                <outputParameter id="bpdid:7903df9268eede95:-3c68ec8a:16d897292b6:-7ff7">
+                    <bpdParameterId>2007.ca32ee06-6536-4205-8562-9f0516404619</bpdParameterId>
+                    <isProcessInstanceCorrelator>false</isProcessInstanceCorrelator>
+                </outputParameter>
+                <privateVariable id="bpdid:7903df9268eede95:-3c68ec8a:16d897292b6:-7ff6">
+                    <name>Untitled3</name>
+                    <classId>/12.60da4770-d3a3-4937-840f-8fd74f8c33ce</classId>
+                    <arrayOf>false</arrayOf>
+                    <hasDefault>false</hasDefault>
+                    <visibleInSearch>false</visibleInSearch>
+                    <isProcessInstanceCorrelator>false</isProcessInstanceCorrelator>
+                    <isSharedContext>false</isSharedContext>
+                </privateVariable>
+            </pool>
+        </BusinessProcessDiagram>
+    </bpd>
+</teamworks>
+
