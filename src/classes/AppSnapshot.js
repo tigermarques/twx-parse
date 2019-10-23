@@ -33,5 +33,7 @@ AppSnapshot.where = (workspaceName, obj) => DBAccess.where(workspaceName, obj).t
 AppSnapshot.find = (workspaceName, obj) => DBAccess.find(workspaceName, obj).then(result => getObjectFromResult(workspaceName)(result))
 AppSnapshot.remove = (workspaceName, obj) => DBAccess.remove(workspaceName, obj)
 AppSnapshot.removeOrphaned = (workspaceName) => DBAccess.removeOrphaned(workspaceName)
+AppSnapshot.getWithoutChildren = (workspaceName, snapshotIdToExclude) => DBAccess.getWithoutChildren(workspaceName, snapshotIdToExclude)
+AppSnapshot.getWithoutParents = (workspaceName, snapshotIdToExclude) => DBAccess.getWithoutParents(workspaceName, snapshotIdToExclude)
 
 module.exports = AppSnapshot

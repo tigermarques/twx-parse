@@ -12,7 +12,9 @@ const AppSnapshotObj = {
   where: (databaseName, obj) => AppSnapshot.where(databaseName, obj),
   find: (databaseName, obj) => AppSnapshot.find(databaseName, obj),
   remove: (databaseName, obj) => AppSnapshot.remove(databaseName, obj),
-  removeOrphaned: (databaseName) => AppSnapshot.removeOrphaned(databaseName)
+  removeOrphaned: (databaseName) => AppSnapshot.removeOrphaned(databaseName),
+  getWithoutChildren: (databaseName, snapshotIdToExclude) => AppSnapshot.getWithoutChildren(databaseName, snapshotIdToExclude),
+  getWithoutParents: (databaseName, snapshotIdToExclude) => AppSnapshot.getWithoutParents(databaseName, snapshotIdToExclude)
 }
 
 const ObjectVersionObj = {

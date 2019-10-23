@@ -160,5 +160,82 @@ module.exports = {
       })
       db.close()
     })
-  }, 'db.AppSnapshot.removeOrphaned')
+  }, 'db.AppSnapshot.removeOrphaned'),
+
+  getWithoutChildren: Performance.makeMeasurable((databaseName, snapshotIdToExclude) => {
+    return new Promise((resolve, reject) => {
+      const db = getDB(databaseName)
+      const whereClause1 = snapshotIdToExclude
+        ? 'where snapshotId ' + (Array.isArray(snapshotIdToExclude)
+          ? `not in (${snapshotIdToExclude.map((item) => `'${item}'`)})`
+          : `<> '${snapshotIdToExclude}'`)
+        : ''
+      const whereClause2 = snapshotIdToExclude
+        ? 'where childSnapshotId ' + (Array.isArray(snapshotIdToExclude)
+          ? `not in (${snapshotIdToExclude.map((item) => `'${item}'`)})`
+          : `<> '${snapshotIdToExclude}'`)
+        : ''
+
+      const sql = `select parent.*
+                  from (
+                    select *
+                    from AppSnapshot
+                    ${whereClause1}
+                  ) parent
+                  left join (
+                    select *
+                    from SnapshotDependency
+                    ${whereClause2}
+                  ) sd on sd.parentSnapshotId = parent.snapshotId
+                  left join AppSnapshot child on child.snapshotId = sd.childSnapshotId
+                  where sd.parentSnapshotId is null`
+
+      db.all(sql, (err, items) => {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve(items)
+      })
+      db.close()
+    })
+  }, 'getWithoutChildren'),
+
+  getWithoutParents: Performance.makeMeasurable((databaseName, snapshotIdToExclude) => {
+    return new Promise((resolve, reject) => {
+      const db = getDB(databaseName)
+      const whereClause1 = snapshotIdToExclude
+        ? 'where snapshotId ' + (Array.isArray(snapshotIdToExclude)
+          ? `not in (${snapshotIdToExclude.map((item) => `'${item}'`)})`
+          : `<> '${snapshotIdToExclude}'`)
+        : ''
+      const whereClause2 = snapshotIdToExclude
+        ? 'where parentSnapshotId ' + (Array.isArray(snapshotIdToExclude)
+          ? `not in (${snapshotIdToExclude.map((item) => `'${item}'`)})`
+          : `<> '${snapshotIdToExclude}'`)
+        : ''
+
+      const sql = `select child.*
+        from (
+          select *
+          from AppSnapshot
+          ${whereClause1}
+        ) child
+        left join (
+          select *
+          from SnapshotDependency
+          ${whereClause2}
+        ) sd on sd.childSnapshotId = child.snapshotId
+        left join AppSnapshot parent on parent.snapshotId = sd.parentSnapshotId
+        where sd.childSnapshotId is null`
+      db.all(sql, (err, items) => {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve(items)
+      })
+      db.close()
+    })
+  }, 'getWithoutParents')
 }

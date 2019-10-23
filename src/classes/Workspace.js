@@ -2,6 +2,48 @@ const EventEmitter = require('events')
 const Parser = require('../parser')
 const Registry = require('./Registry')
 
+const getWithoutChildren = async (name, level, exclusions) => {
+  const snapshots = await Registry.AppSnapshot.getWithoutChildren(name, exclusions)
+  const snapshotIds = snapshots.map(item => item.snapshotId)
+  const dependencies = await Registry.SnapshotDependency.getByChildId(name, snapshotIds)
+  const parentIds = dependencies.map(item => item.parentSnapshotId)
+  const parentSnapshots = await Registry.AppSnapshot.where(name, { snapshotId: parentIds })
+  const newExclusions = exclusions.concat(snapshotIds)
+  return {
+    items: snapshots.map(snapshot => {
+      return {
+        snapshot,
+        parents: parentSnapshots.filter(parent =>
+          dependencies.filter(dependency => dependency.childSnapshotId === snapshot.snapshotId && dependency.parentSnapshotId === parent.snapshotId).length > 0
+        )
+      }
+    }),
+    level: level,
+    getNextLevel: () => getWithoutChildren(name, level + 1, newExclusions)
+  }
+}
+
+const getWithoutParents = async (name, level, exclusions) => {
+  const snapshots = await Registry.AppSnapshot.getWithoutParents(name, exclusions)
+  const snapshotIds = snapshots.map(item => item.snapshotId)
+  const dependencies = await Registry.SnapshotDependency.getByParentId(name, snapshotIds)
+  const childIds = dependencies.map(item => item.childSnapshotId)
+  const childSnapshots = await Registry.AppSnapshot.where(name, { snapshotId: childIds })
+  const newExclusions = exclusions.concat(snapshotIds)
+  return {
+    items: snapshots.map(snapshot => {
+      return {
+        snapshot,
+        children: childSnapshots.filter(child =>
+          dependencies.filter(dependency => dependency.parentSnapshotId === snapshot.snapshotId && dependency.childSnapshotId === child.snapshotId).length > 0
+        )
+      }
+    }),
+    level: level,
+    getNextLevel: () => getWithoutParents(name, level + 1, newExclusions)
+  }
+}
+
 class Workspace extends EventEmitter {
   constructor (name) {
     super()
@@ -156,6 +198,14 @@ class Workspace extends EventEmitter {
         }
       })
     )
+  }
+
+  async getLeafNodes () {
+    return getWithoutChildren(this.name, 1, [])
+  }
+
+  async getTopLevelNodes () {
+    return getWithoutParents(this.name, 1, [])
   }
 }
 
