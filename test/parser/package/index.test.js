@@ -217,11 +217,20 @@ describe('Parser - Package', () => {
     const xmlData = fs.readFileSync(path.resolve(__dirname, '..', '..', 'files', 'package_app.xml'))
     zipFileMock.returns(xmlData)
     appSnapshotGetByIdStub.returns(defer(true, null))
+    const startStub = sinon.stub()
+    const progressStub = sinon.stub()
+    const endStub = sinon.stub()
     const parser = new PackageParser('name')
+    parser.on('start', startStub)
+    parser.on('progress', progressStub)
+    parser.on('end', endStub)
 
     expect(zipFileMock).not.to.have.been.called
     expect(appSnapshotGetByIdStub).not.to.have.been.called
     expect(appSnapshotRemoveStub).not.to.have.been.called
+    expect(startStub).not.to.have.been.called
+    expect(progressStub).not.to.have.been.called
+    expect(endStub).not.to.have.been.called
 
     const result = parser.remove(zipFile, 'fileName')
 
@@ -231,6 +240,18 @@ describe('Parser - Package', () => {
       expect(appSnapshotGetByIdStub).to.have.been.calledOnce
       expect(appSnapshotGetByIdStub).to.have.been.calledWith('name', '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa')
       expect(appSnapshotRemoveStub).not.to.have.been.called
+      expect(startStub).to.have.been.calledOnce
+      expect(startStub).to.have.been.calledWith({
+        id: '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa',
+        name: 'fileName',
+        skipped: true,
+        total: 0
+      })
+      expect(endStub).to.have.been.calledOnce
+      expect(endStub).to.have.been.calledWith({
+        id: '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa'
+      })
+      expect(progressStub).not.to.have.been.called
     })
   })
 
@@ -249,11 +270,20 @@ describe('Parser - Package', () => {
       isToolkit: true,
       isObjectsProcessed: true
     }))
+    const startStub = sinon.stub()
+    const progressStub = sinon.stub()
+    const endStub = sinon.stub()
     const parser = new PackageParser('name')
+    parser.on('start', startStub)
+    parser.on('progress', progressStub)
+    parser.on('end', endStub)
 
     expect(zipFileMock).not.to.have.been.called
     expect(appSnapshotGetByIdStub).not.to.have.been.called
     expect(appSnapshotRemoveStub).not.to.have.been.called
+    expect(startStub).not.to.have.been.called
+    expect(progressStub).not.to.have.been.called
+    expect(endStub).not.to.have.been.called
 
     const result = parser.remove(zipFile, 'fileName')
 
@@ -263,6 +293,17 @@ describe('Parser - Package', () => {
       expect(appSnapshotGetByIdStub).to.have.been.calledOnce
       expect(appSnapshotGetByIdStub).to.have.been.calledWith('name', '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa')
       expect(appSnapshotRemoveStub).not.to.have.been.called
+      expect(startStub).to.have.been.calledWith({
+        id: '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa',
+        name: 'fileName',
+        skipped: true,
+        total: 0
+      })
+      expect(endStub).to.have.been.calledOnce
+      expect(endStub).to.have.been.calledWith({
+        id: '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa'
+      })
+      expect(progressStub).not.to.have.been.called
     })
   })
 
@@ -301,7 +342,13 @@ describe('Parser - Package', () => {
       isToolkit: false,
       isObjectsProcessed: true
     }]))
+    const startStub = sinon.stub()
+    const progressStub = sinon.stub()
+    const endStub = sinon.stub()
     const parser = new PackageParser('name')
+    parser.on('start', startStub)
+    parser.on('progress', progressStub)
+    parser.on('end', endStub)
 
     expect(zipFileMock).not.to.have.been.called
     expect(appSnapshotGetByIdStub).not.to.have.been.called
@@ -314,6 +361,9 @@ describe('Parser - Package', () => {
     expect(snapshotObjectDependencyRemoveOrphanedStub).not.to.have.been.called
     expect(objectDependencyRemoveOrphanedStub).not.to.have.been.called
     expect(appSnapshotGetAllStub).not.to.have.been.called
+    expect(startStub).not.to.have.been.called
+    expect(progressStub).not.to.have.been.called
+    expect(endStub).not.to.have.been.called
 
     const result = parser.remove(zipFile, 'fileName')
 
@@ -341,6 +391,18 @@ describe('Parser - Package', () => {
       expect(snapshotObjectDependencyRemoveOrphanedStub).to.have.been.calledWith('name')
       expect(objectDependencyRemoveOrphanedStub).to.have.been.calledOnce
       expect(objectDependencyRemoveOrphanedStub).to.have.been.calledWith('name')
+
+      expect(startStub).to.have.been.calledWith({
+        id: '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa',
+        name: 'fileName',
+        skipped: false,
+        total: 0
+      })
+      expect(endStub).to.have.been.calledOnce
+      expect(endStub).to.have.been.calledWith({
+        id: '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa'
+      })
+      expect(progressStub).not.to.have.been.called
     })
   })
 

@@ -63,7 +63,7 @@ const addPackage = async (databaseName, zipFile, fileName, startCallback, progre
   }
 }
 
-const removePackage = async (databaseName, zipFile, fileName) => {
+const removePackage = async (databaseName, zipFile, fileName, startCallback, progressCallback, endCallback) => {
   const packageEntry = zipFile.getEntry('META-INF/package.xml')
 
   const jsonData = await ParseUtils.parseXML(packageEntry.getData().toString('utf-8'), fileName)
@@ -73,13 +73,19 @@ const removePackage = async (databaseName, zipFile, fileName) => {
   // only parse the package if it exists and is not a toolkit
   const existingAppSnapshot = await Registry.AppSnapshot.getById(databaseName, parentSnapshotId)
   if (existingAppSnapshot && !existingAppSnapshot.isToolkit) {
+    startCallback({
+      id: parentSnapshotId,
+      name: fileName,
+      skipped: false,
+      total: 0
+    })
     await Registry.SnapshotObjectDependency.remove(databaseName, { snapshotId: parentSnapshotId })
     await Registry.SnapshotDependency.remove(databaseName, { parentSnapshotId: parentSnapshotId })
     await Registry.AppSnapshot.remove(databaseName, { snapshotId: parentSnapshotId })
 
     let allSnapshots = await Registry.AppSnapshot.getAll(databaseName)
     let appSnapshotCount = allSnapshots.length
-    console.log(`I currently have ${appSnapshotCount} snapshots`)
+    // console.log(`I currently have ${appSnapshotCount} snapshots`)
     while (true) {
       await Registry.AppSnapshot.removeOrphaned(databaseName)
       await Registry.SnapshotDependency.removeOrphaned(databaseName)
@@ -89,15 +95,27 @@ const removePackage = async (databaseName, zipFile, fileName) => {
 
       allSnapshots = await Registry.AppSnapshot.getAll(databaseName)
       const newAppSnapshotCount = allSnapshots.length
-      console.log(`I currently have ${newAppSnapshotCount} snapshots`)
+      // console.log(`I currently have ${newAppSnapshotCount} snapshots`)
       if (appSnapshotCount === newAppSnapshotCount) {
         break
       } else {
         appSnapshotCount = newAppSnapshotCount
       }
     }
+
+    endCallback({
+      id: parentSnapshotId
+    })
   } else {
-    console.log(`Skipping package ${parentSnapshotId}`)
+    startCallback({
+      id: parentSnapshotId,
+      name: fileName,
+      skipped: true,
+      total: 0
+    })
+    endCallback({
+      id: parentSnapshotId
+    })
   }
 }
 
@@ -109,12 +127,7 @@ class PackageParser extends EventEmitter {
 
   add (zipFile, fileName) {
     return addPackage(this.databaseName, zipFile, fileName, data => {
-      this.emit('start', {
-        id: data.id,
-        name: data.name,
-        skipped: data.skipped,
-        total: data.total
-      })
+      this.emit('start', data)
     }, data => {
       this.emit('progress', data)
     }, data => {
@@ -123,7 +136,13 @@ class PackageParser extends EventEmitter {
   }
 
   remove (zipFile, fileName) {
-    return removePackage(this.databaseName, zipFile, fileName)
+    return removePackage(this.databaseName, zipFile, fileName, data => {
+      this.emit('start', data)
+    }, data => {
+      this.emit('progress', data)
+    }, data => {
+      this.emit('end', data)
+    })
   }
 }
 
