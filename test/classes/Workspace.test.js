@@ -1246,4 +1246,696 @@ describe('Classes - Workspace', () => {
       ])
     })
   })
+
+  it('should return leaf nodes when the "getLeafNodes" method is invoked', () => {
+    const stubSnapshots = sinon.stub(Registry.AppSnapshot, 'getWithoutChildren').returns(defer(true, [{
+      workspace: 'name1',
+      snapshotId: 'snapshot1',
+      appId: 'appId1',
+      branchId: 'branchId1',
+      appShortName: 'appShortName1',
+      snapshotName: 'snapshotName1',
+      appName: 'appName1',
+      branchName: 'branchName1',
+      isToolkit: false,
+      isObjectsProcessed: false
+    }]))
+    const stubDependencies = sinon.stub(Registry.SnapshotDependency, 'getByChildId').returns(defer(true, [{
+      parentSnapshotId: 'snapshot2',
+      childSnapshotId: 'snapshot1',
+      rank: 1,
+      dependencyId: 'dependency2'
+    }, {
+      parentSnapshotId: 'snapshot3',
+      childSnapshotId: 'snapshot1',
+      rank: 1,
+      dependencyId: 'dependency3'
+    }]))
+    const stubParents = sinon.stub(Registry.AppSnapshot, 'where').returns(defer(true, [{
+      workspace: 'name2',
+      snapshotId: 'snapshot2',
+      appId: 'appId2',
+      branchId: 'branchId2',
+      appShortName: 'appShortName2',
+      snapshotName: 'snapshotName2',
+      appName: 'appName2',
+      branchName: 'branchName2',
+      isToolkit: false,
+      isObjectsProcessed: false
+    }, {
+      workspace: 'name3',
+      snapshotId: 'snapshot3',
+      appId: 'appId3',
+      branchId: 'branchId3',
+      appShortName: 'appShortName3',
+      snapshotName: 'snapshotName3',
+      appName: 'appName3',
+      branchName: 'branchName3',
+      isToolkit: true,
+      isObjectsProcessed: false
+    }]))
+    expect(stubSnapshots).not.to.have.been.called
+    expect(stubDependencies).not.to.have.been.called
+    expect(stubParents).not.to.have.been.called
+
+    const result = workspace.getLeafNodes()
+    expect(result).to.be.an.instanceOf(Promise)
+
+    return expect(result).to.eventually.be.fulfilled.then(data => {
+      expect(stubSnapshots).to.have.been.calledOnce
+      expect(stubSnapshots).to.have.been.calledWith('name1', [])
+      expect(stubDependencies).to.have.been.calledOnce
+      expect(stubDependencies).to.have.been.calledWith('name1', ['snapshot1'])
+      expect(stubParents).to.have.been.calledOnce
+      expect(stubParents).to.have.been.calledWith('name1', {
+        snapshotId: ['snapshot2', 'snapshot3']
+      })
+      expect(data).to.containSubset({
+        level: 1,
+        items: [{
+          snapshot: {
+            workspace: 'name1',
+            snapshotId: 'snapshot1',
+            appId: 'appId1',
+            branchId: 'branchId1',
+            appShortName: 'appShortName1',
+            snapshotName: 'snapshotName1',
+            appName: 'appName1',
+            branchName: 'branchName1',
+            isToolkit: false,
+            isObjectsProcessed: false
+          },
+          parents: [{
+            workspace: 'name2',
+            snapshotId: 'snapshot2',
+            appId: 'appId2',
+            branchId: 'branchId2',
+            appShortName: 'appShortName2',
+            snapshotName: 'snapshotName2',
+            appName: 'appName2',
+            branchName: 'branchName2',
+            isToolkit: false,
+            isObjectsProcessed: false
+          }, {
+            workspace: 'name3',
+            snapshotId: 'snapshot3',
+            appId: 'appId3',
+            branchId: 'branchId3',
+            appShortName: 'appShortName3',
+            snapshotName: 'snapshotName3',
+            appName: 'appName3',
+            branchName: 'branchName3',
+            isToolkit: true,
+            isObjectsProcessed: false
+          }]
+        }]
+      })
+      expect(data).to.respondTo('getNextLevel')
+
+      stubSnapshots.restore()
+      stubDependencies.restore()
+      stubParents.restore()
+    })
+  })
+
+  it('should return leaf nodes next level when the "getLeafNodes" method is invoked and next level is requested', () => {
+    const stubSnapshots = sinon.stub(Registry.AppSnapshot, 'getWithoutChildren').onFirstCall().returns(defer(true, [{
+      workspace: 'name1',
+      snapshotId: 'snapshot1',
+      appId: 'appId1',
+      branchId: 'branchId1',
+      appShortName: 'appShortName1',
+      snapshotName: 'snapshotName1',
+      appName: 'appName1',
+      branchName: 'branchName1',
+      isToolkit: false,
+      isObjectsProcessed: false
+    }])).onSecondCall().returns(defer(true, [{
+      workspace: 'name2',
+      snapshotId: 'snapshot2',
+      appId: 'appId2',
+      branchId: 'branchId2',
+      appShortName: 'appShortName2',
+      snapshotName: 'snapshotName2',
+      appName: 'appName2',
+      branchName: 'branchName2',
+      isToolkit: false,
+      isObjectsProcessed: false
+    }, {
+      workspace: 'name3',
+      snapshotId: 'snapshot3',
+      appId: 'appId3',
+      branchId: 'branchId3',
+      appShortName: 'appShortName3',
+      snapshotName: 'snapshotName3',
+      appName: 'appName3',
+      branchName: 'branchName3',
+      isToolkit: true,
+      isObjectsProcessed: false
+    }]))
+    const stubDependencies = sinon.stub(Registry.SnapshotDependency, 'getByChildId').onFirstCall().returns(defer(true, [{
+      parentSnapshotId: 'snapshot2',
+      childSnapshotId: 'snapshot1',
+      rank: 1,
+      dependencyId: 'dependency2'
+    }, {
+      parentSnapshotId: 'snapshot3',
+      childSnapshotId: 'snapshot1',
+      rank: 1,
+      dependencyId: 'dependency3'
+    }])).onSecondCall().returns(defer(true, [{
+      parentSnapshotId: 'snapshot4',
+      childSnapshotId: 'snapshot2',
+      rank: 1,
+      dependencyId: 'dependency4'
+    }, {
+      parentSnapshotId: 'snapshot5',
+      childSnapshotId: 'snapshot3',
+      rank: 1,
+      dependencyId: 'dependency5'
+    }]))
+    const stubParents = sinon.stub(Registry.AppSnapshot, 'where').returns(defer(true, [{
+      workspace: 'name2',
+      snapshotId: 'snapshot2',
+      appId: 'appId2',
+      branchId: 'branchId2',
+      appShortName: 'appShortName2',
+      snapshotName: 'snapshotName2',
+      appName: 'appName2',
+      branchName: 'branchName2',
+      isToolkit: false,
+      isObjectsProcessed: false
+    }, {
+      workspace: 'name3',
+      snapshotId: 'snapshot3',
+      appId: 'appId3',
+      branchId: 'branchId3',
+      appShortName: 'appShortName3',
+      snapshotName: 'snapshotName3',
+      appName: 'appName3',
+      branchName: 'branchName3',
+      isToolkit: true,
+      isObjectsProcessed: false
+    }])).onSecondCall().returns(defer(true, [{
+      workspace: 'name4',
+      snapshotId: 'snapshot4',
+      appId: 'appId4',
+      branchId: 'branchId4',
+      appShortName: 'appShortName4',
+      snapshotName: 'snapshotName4',
+      appName: 'appName4',
+      branchName: 'branchName4',
+      isToolkit: false,
+      isObjectsProcessed: false
+    }, {
+      workspace: 'name5',
+      snapshotId: 'snapshot5',
+      appId: 'appId5',
+      branchId: 'branchId5',
+      appShortName: 'appShortName5',
+      snapshotName: 'snapshotName5',
+      appName: 'appName5',
+      branchName: 'branchName5',
+      isToolkit: true,
+      isObjectsProcessed: false
+    }]))
+    expect(stubSnapshots).not.to.have.been.called
+    expect(stubDependencies).not.to.have.been.called
+    expect(stubParents).not.to.have.been.called
+
+    const result1 = workspace.getLeafNodes()
+    expect(result1).to.be.an.instanceOf(Promise)
+
+    return expect(result1).to.eventually.be.fulfilled.then(data1 => {
+      expect(stubSnapshots).to.have.been.calledOnce
+      expect(stubSnapshots).to.have.been.calledWith('name1', [])
+      expect(stubDependencies).to.have.been.calledOnce
+      expect(stubDependencies).to.have.been.calledWith('name1', ['snapshot1'])
+      expect(stubParents).to.have.been.calledOnce
+      expect(stubParents).to.have.been.calledWith('name1', {
+        snapshotId: ['snapshot2', 'snapshot3']
+      })
+      expect(data1).to.containSubset({
+        level: 1,
+        items: [{
+          snapshot: {
+            workspace: 'name1',
+            snapshotId: 'snapshot1',
+            appId: 'appId1',
+            branchId: 'branchId1',
+            appShortName: 'appShortName1',
+            snapshotName: 'snapshotName1',
+            appName: 'appName1',
+            branchName: 'branchName1',
+            isToolkit: false,
+            isObjectsProcessed: false
+          },
+          parents: [{
+            workspace: 'name2',
+            snapshotId: 'snapshot2',
+            appId: 'appId2',
+            branchId: 'branchId2',
+            appShortName: 'appShortName2',
+            snapshotName: 'snapshotName2',
+            appName: 'appName2',
+            branchName: 'branchName2',
+            isToolkit: false,
+            isObjectsProcessed: false
+          }, {
+            workspace: 'name3',
+            snapshotId: 'snapshot3',
+            appId: 'appId3',
+            branchId: 'branchId3',
+            appShortName: 'appShortName3',
+            snapshotName: 'snapshotName3',
+            appName: 'appName3',
+            branchName: 'branchName3',
+            isToolkit: true,
+            isObjectsProcessed: false
+          }]
+        }]
+      })
+      expect(data1).to.respondTo('getNextLevel')
+
+      const result2 = data1.getNextLevel()
+      expect(result2).to.be.an.instanceOf(Promise)
+
+      return expect(result2).to.eventually.be.fulfilled.then(data2 => {
+        expect(stubSnapshots).to.have.been.calledTwice
+        expect(stubSnapshots).to.have.been.calledWith('name1', ['snapshot1'])
+        expect(stubDependencies).to.have.been.calledTwice
+        expect(stubDependencies).to.have.been.calledWith('name1', ['snapshot2', 'snapshot3'])
+        expect(stubParents).to.have.been.calledTwice
+        expect(stubParents).to.have.been.calledWith('name1', {
+          snapshotId: ['snapshot4', 'snapshot5']
+        })
+
+        expect(data2).to.containSubset({
+          level: 2,
+          items: [{
+            snapshot: {
+              workspace: 'name2',
+              snapshotId: 'snapshot2',
+              appId: 'appId2',
+              branchId: 'branchId2',
+              appShortName: 'appShortName2',
+              snapshotName: 'snapshotName2',
+              appName: 'appName2',
+              branchName: 'branchName2',
+              isToolkit: false,
+              isObjectsProcessed: false
+            },
+            parents: [{
+              workspace: 'name4',
+              snapshotId: 'snapshot4',
+              appId: 'appId4',
+              branchId: 'branchId4',
+              appShortName: 'appShortName4',
+              snapshotName: 'snapshotName4',
+              appName: 'appName4',
+              branchName: 'branchName4',
+              isToolkit: false,
+              isObjectsProcessed: false
+            }]
+          }, {
+            snapshot: {
+              workspace: 'name3',
+              snapshotId: 'snapshot3',
+              appId: 'appId3',
+              branchId: 'branchId3',
+              appShortName: 'appShortName3',
+              snapshotName: 'snapshotName3',
+              appName: 'appName3',
+              branchName: 'branchName3',
+              isToolkit: true,
+              isObjectsProcessed: false
+            },
+            parents: [{
+              workspace: 'name5',
+              snapshotId: 'snapshot5',
+              appId: 'appId5',
+              branchId: 'branchId5',
+              appShortName: 'appShortName5',
+              snapshotName: 'snapshotName5',
+              appName: 'appName5',
+              branchName: 'branchName5',
+              isToolkit: true,
+              isObjectsProcessed: false
+            }]
+          }]
+        })
+        expect(data2).to.respondTo('getNextLevel')
+
+        stubSnapshots.restore()
+        stubDependencies.restore()
+        stubParents.restore()
+      })
+    })
+  })
+
+  it('should return top level nodes when the "getTopLevelNodes" method is invoked', () => {
+    const stubSnapshots = sinon.stub(Registry.AppSnapshot, 'getWithoutParents').returns(defer(true, [{
+      workspace: 'name1',
+      snapshotId: 'snapshot1',
+      appId: 'appId1',
+      branchId: 'branchId1',
+      appShortName: 'appShortName1',
+      snapshotName: 'snapshotName1',
+      appName: 'appName1',
+      branchName: 'branchName1',
+      isToolkit: false,
+      isObjectsProcessed: false
+    }]))
+    const stubDependencies = sinon.stub(Registry.SnapshotDependency, 'getByParentId').returns(defer(true, [{
+      parentSnapshotId: 'snapshot1',
+      childSnapshotId: 'snapshot2',
+      rank: 1,
+      dependencyId: 'dependency2'
+    }, {
+      parentSnapshotId: 'snapshot1',
+      childSnapshotId: 'snapshot3',
+      rank: 1,
+      dependencyId: 'dependency3'
+    }]))
+    const stubChildren = sinon.stub(Registry.AppSnapshot, 'where').returns(defer(true, [{
+      workspace: 'name2',
+      snapshotId: 'snapshot2',
+      appId: 'appId2',
+      branchId: 'branchId2',
+      appShortName: 'appShortName2',
+      snapshotName: 'snapshotName2',
+      appName: 'appName2',
+      branchName: 'branchName2',
+      isToolkit: false,
+      isObjectsProcessed: false
+    }, {
+      workspace: 'name3',
+      snapshotId: 'snapshot3',
+      appId: 'appId3',
+      branchId: 'branchId3',
+      appShortName: 'appShortName3',
+      snapshotName: 'snapshotName3',
+      appName: 'appName3',
+      branchName: 'branchName3',
+      isToolkit: true,
+      isObjectsProcessed: false
+    }]))
+    expect(stubSnapshots).not.to.have.been.called
+    expect(stubDependencies).not.to.have.been.called
+    expect(stubChildren).not.to.have.been.called
+
+    const result = workspace.getTopLevelNodes()
+    expect(result).to.be.an.instanceOf(Promise)
+
+    return expect(result).to.eventually.be.fulfilled.then(data => {
+      expect(stubSnapshots).to.have.been.calledOnce
+      expect(stubSnapshots).to.have.been.calledWith('name1', [])
+      expect(stubDependencies).to.have.been.calledOnce
+      expect(stubDependencies).to.have.been.calledWith('name1', ['snapshot1'])
+      expect(stubChildren).to.have.been.calledOnce
+      expect(stubChildren).to.have.been.calledWith('name1', {
+        snapshotId: ['snapshot2', 'snapshot3']
+      })
+      expect(data).to.containSubset({
+        level: 1,
+        items: [{
+          snapshot: {
+            workspace: 'name1',
+            snapshotId: 'snapshot1',
+            appId: 'appId1',
+            branchId: 'branchId1',
+            appShortName: 'appShortName1',
+            snapshotName: 'snapshotName1',
+            appName: 'appName1',
+            branchName: 'branchName1',
+            isToolkit: false,
+            isObjectsProcessed: false
+          },
+          children: [{
+            workspace: 'name2',
+            snapshotId: 'snapshot2',
+            appId: 'appId2',
+            branchId: 'branchId2',
+            appShortName: 'appShortName2',
+            snapshotName: 'snapshotName2',
+            appName: 'appName2',
+            branchName: 'branchName2',
+            isToolkit: false,
+            isObjectsProcessed: false
+          }, {
+            workspace: 'name3',
+            snapshotId: 'snapshot3',
+            appId: 'appId3',
+            branchId: 'branchId3',
+            appShortName: 'appShortName3',
+            snapshotName: 'snapshotName3',
+            appName: 'appName3',
+            branchName: 'branchName3',
+            isToolkit: true,
+            isObjectsProcessed: false
+          }]
+        }]
+      })
+      expect(data).to.respondTo('getNextLevel')
+
+      stubSnapshots.restore()
+      stubDependencies.restore()
+      stubChildren.restore()
+    })
+  })
+
+  it('should return tep level nodes next level when the "getTopLevelNodes" method is invoked and next level is requested', () => {
+    const stubSnapshots = sinon.stub(Registry.AppSnapshot, 'getWithoutParents').onFirstCall().returns(defer(true, [{
+      workspace: 'name1',
+      snapshotId: 'snapshot1',
+      appId: 'appId1',
+      branchId: 'branchId1',
+      appShortName: 'appShortName1',
+      snapshotName: 'snapshotName1',
+      appName: 'appName1',
+      branchName: 'branchName1',
+      isToolkit: false,
+      isObjectsProcessed: false
+    }])).onSecondCall().returns(defer(true, [{
+      workspace: 'name2',
+      snapshotId: 'snapshot2',
+      appId: 'appId2',
+      branchId: 'branchId2',
+      appShortName: 'appShortName2',
+      snapshotName: 'snapshotName2',
+      appName: 'appName2',
+      branchName: 'branchName2',
+      isToolkit: false,
+      isObjectsProcessed: false
+    }, {
+      workspace: 'name3',
+      snapshotId: 'snapshot3',
+      appId: 'appId3',
+      branchId: 'branchId3',
+      appShortName: 'appShortName3',
+      snapshotName: 'snapshotName3',
+      appName: 'appName3',
+      branchName: 'branchName3',
+      isToolkit: true,
+      isObjectsProcessed: false
+    }]))
+    const stubDependencies = sinon.stub(Registry.SnapshotDependency, 'getByParentId').onFirstCall().returns(defer(true, [{
+      parentSnapshotId: 'snapshot1',
+      childSnapshotId: 'snapshot2',
+      rank: 1,
+      dependencyId: 'dependency2'
+    }, {
+      parentSnapshotId: 'snapshot1',
+      childSnapshotId: 'snapshot3',
+      rank: 1,
+      dependencyId: 'dependency3'
+    }])).onSecondCall().returns(defer(true, [{
+      parentSnapshotId: 'snapshot2',
+      childSnapshotId: 'snapshot4',
+      rank: 1,
+      dependencyId: 'dependency4'
+    }, {
+      parentSnapshotId: 'snapshot3',
+      childSnapshotId: 'snapshot5',
+      rank: 1,
+      dependencyId: 'dependency5'
+    }]))
+    const stubChildren = sinon.stub(Registry.AppSnapshot, 'where').returns(defer(true, [{
+      workspace: 'name2',
+      snapshotId: 'snapshot2',
+      appId: 'appId2',
+      branchId: 'branchId2',
+      appShortName: 'appShortName2',
+      snapshotName: 'snapshotName2',
+      appName: 'appName2',
+      branchName: 'branchName2',
+      isToolkit: false,
+      isObjectsProcessed: false
+    }, {
+      workspace: 'name3',
+      snapshotId: 'snapshot3',
+      appId: 'appId3',
+      branchId: 'branchId3',
+      appShortName: 'appShortName3',
+      snapshotName: 'snapshotName3',
+      appName: 'appName3',
+      branchName: 'branchName3',
+      isToolkit: true,
+      isObjectsProcessed: false
+    }])).onSecondCall().returns(defer(true, [{
+      workspace: 'name4',
+      snapshotId: 'snapshot4',
+      appId: 'appId4',
+      branchId: 'branchId4',
+      appShortName: 'appShortName4',
+      snapshotName: 'snapshotName4',
+      appName: 'appName4',
+      branchName: 'branchName4',
+      isToolkit: false,
+      isObjectsProcessed: false
+    }, {
+      workspace: 'name5',
+      snapshotId: 'snapshot5',
+      appId: 'appId5',
+      branchId: 'branchId5',
+      appShortName: 'appShortName5',
+      snapshotName: 'snapshotName5',
+      appName: 'appName5',
+      branchName: 'branchName5',
+      isToolkit: true,
+      isObjectsProcessed: false
+    }]))
+    expect(stubSnapshots).not.to.have.been.called
+    expect(stubDependencies).not.to.have.been.called
+    expect(stubChildren).not.to.have.been.called
+
+    const result1 = workspace.getTopLevelNodes()
+    expect(result1).to.be.an.instanceOf(Promise)
+
+    return expect(result1).to.eventually.be.fulfilled.then(data1 => {
+      expect(stubSnapshots).to.have.been.calledOnce
+      expect(stubSnapshots).to.have.been.calledWith('name1', [])
+      expect(stubDependencies).to.have.been.calledOnce
+      expect(stubDependencies).to.have.been.calledWith('name1', ['snapshot1'])
+      expect(stubChildren).to.have.been.calledOnce
+      expect(stubChildren).to.have.been.calledWith('name1', {
+        snapshotId: ['snapshot2', 'snapshot3']
+      })
+      expect(data1).to.containSubset({
+        level: 1,
+        items: [{
+          snapshot: {
+            workspace: 'name1',
+            snapshotId: 'snapshot1',
+            appId: 'appId1',
+            branchId: 'branchId1',
+            appShortName: 'appShortName1',
+            snapshotName: 'snapshotName1',
+            appName: 'appName1',
+            branchName: 'branchName1',
+            isToolkit: false,
+            isObjectsProcessed: false
+          },
+          children: [{
+            workspace: 'name2',
+            snapshotId: 'snapshot2',
+            appId: 'appId2',
+            branchId: 'branchId2',
+            appShortName: 'appShortName2',
+            snapshotName: 'snapshotName2',
+            appName: 'appName2',
+            branchName: 'branchName2',
+            isToolkit: false,
+            isObjectsProcessed: false
+          }, {
+            workspace: 'name3',
+            snapshotId: 'snapshot3',
+            appId: 'appId3',
+            branchId: 'branchId3',
+            appShortName: 'appShortName3',
+            snapshotName: 'snapshotName3',
+            appName: 'appName3',
+            branchName: 'branchName3',
+            isToolkit: true,
+            isObjectsProcessed: false
+          }]
+        }]
+      })
+      expect(data1).to.respondTo('getNextLevel')
+
+      const result2 = data1.getNextLevel()
+      expect(result2).to.be.an.instanceOf(Promise)
+
+      return expect(result2).to.eventually.be.fulfilled.then(data2 => {
+        expect(stubSnapshots).to.have.been.calledTwice
+        expect(stubSnapshots).to.have.been.calledWith('name1', ['snapshot1'])
+        expect(stubDependencies).to.have.been.calledTwice
+        expect(stubDependencies).to.have.been.calledWith('name1', ['snapshot2', 'snapshot3'])
+        expect(stubChildren).to.have.been.calledTwice
+        expect(stubChildren).to.have.been.calledWith('name1', {
+          snapshotId: ['snapshot4', 'snapshot5']
+        })
+
+        expect(data2).to.containSubset({
+          level: 2,
+          items: [{
+            snapshot: {
+              workspace: 'name2',
+              snapshotId: 'snapshot2',
+              appId: 'appId2',
+              branchId: 'branchId2',
+              appShortName: 'appShortName2',
+              snapshotName: 'snapshotName2',
+              appName: 'appName2',
+              branchName: 'branchName2',
+              isToolkit: false,
+              isObjectsProcessed: false
+            },
+            children: [{
+              workspace: 'name4',
+              snapshotId: 'snapshot4',
+              appId: 'appId4',
+              branchId: 'branchId4',
+              appShortName: 'appShortName4',
+              snapshotName: 'snapshotName4',
+              appName: 'appName4',
+              branchName: 'branchName4',
+              isToolkit: false,
+              isObjectsProcessed: false
+            }]
+          }, {
+            snapshot: {
+              workspace: 'name3',
+              snapshotId: 'snapshot3',
+              appId: 'appId3',
+              branchId: 'branchId3',
+              appShortName: 'appShortName3',
+              snapshotName: 'snapshotName3',
+              appName: 'appName3',
+              branchName: 'branchName3',
+              isToolkit: true,
+              isObjectsProcessed: false
+            },
+            children: [{
+              workspace: 'name5',
+              snapshotId: 'snapshot5',
+              appId: 'appId5',
+              branchId: 'branchId5',
+              appShortName: 'appShortName5',
+              snapshotName: 'snapshotName5',
+              appName: 'appName5',
+              branchName: 'branchName5',
+              isToolkit: true,
+              isObjectsProcessed: false
+            }]
+          }]
+        })
+        expect(data2).to.respondTo('getNextLevel')
+
+        stubSnapshots.restore()
+        stubDependencies.restore()
+        stubChildren.restore()
+      })
+    })
+  })
 })

@@ -153,6 +153,26 @@ describe('Classes - Registry', () => {
       stub.restore()
       return expect(result).to.eventually.be.fulfilled
     })
+
+    it('should proxy correctly the "getWithoutChildren" method', () => {
+      const stub = sinon.stub(AppSnapshot, 'getWithoutChildren').returns(defer())
+      expect(stub).not.to.have.been.called
+      const result = Registry.AppSnapshot.getWithoutChildren('name1', 'snapshotIdToExclude')
+      expect(stub).to.have.been.calledOnce
+      expect(stub).to.have.been.calledWith('name1', 'snapshotIdToExclude')
+      stub.restore()
+      return expect(result).to.eventually.be.fulfilled
+    })
+
+    it('should proxy correctly the "getWithoutParents" method', () => {
+      const stub = sinon.stub(AppSnapshot, 'getWithoutParents').returns(defer())
+      expect(stub).not.to.have.been.called
+      const result = Registry.AppSnapshot.getWithoutParents('name1', ['snapshotIdToExclude'])
+      expect(stub).to.have.been.calledOnce
+      expect(stub).to.have.been.calledWith('name1', ['snapshotIdToExclude'])
+      stub.restore()
+      return expect(result).to.eventually.be.fulfilled
+    })
   })
 
   describe('ObjectVersion', () => {

@@ -3,11 +3,13 @@ const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
 const chaiAsPromised = require('chai-as-promised')
+const chaiString = require('chai-string')
 let AppSnapshot = require('../../src/db/AppSnapshot')
 let commonDB = require('../../src/db/common')
 
 chai.use(sinonChai)
 chai.use(chaiAsPromised)
+chai.use(chaiString)
 const { expect } = chai
 
 describe('DB - AppSnapshot', () => {
@@ -63,6 +65,7 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(runStub).to.have.been.calledOnce
       const args = runStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('insert into AppSnapshot (snapshotId, appId, branchId, snapshotName, branchName, appShortName, appname, isToolkit, isObjectsProcessed) values (?, ?, ?, ?, ?, ?, ?, ?, ?)')
       expect(args[1]).to.eql(['snapshot1', 'appId1', 'branchId1', 'snapshotName1', 'branchName1', 'appShortName1', 'appName1', 1, 0])
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
@@ -107,8 +110,10 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledTwice
       expect(dbStub).to.have.been.calledWith('test.db')
       const args1 = runStub.getCall(0).args
+      expect(args1[0]).to.equalIgnoreSpaces('insert into AppSnapshot (snapshotId, appId, branchId, snapshotName, branchName, appShortName, appname, isToolkit, isObjectsProcessed) values (?, ?, ?, ?, ?, ?, ?, ?, ?)')
       expect(args1[1]).to.eql(['snapshot1', 'appId1', 'branchId1', 'snapshotName1', 'branchName1', 'appShortName1', 'appName1', 1, 1])
       const args2 = runStub.getCall(1).args
+      expect(args2[0]).to.equalIgnoreSpaces('insert into AppSnapshot (snapshotId, appId, branchId, snapshotName, branchName, appShortName, appname, isToolkit, isObjectsProcessed) values (?, ?, ?, ?, ?, ?, ?, ?, ?)')
       expect(args2[1]).to.eql(['snapshot2', 'appId2', 'branchId2', 'snapshotName2', 'branchName2', 'appShortName2', 'appName2', 0, 0])
       expect(closeStub).to.have.been.calledTwice
     })
@@ -129,6 +134,7 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(runStub).to.have.been.calledOnce
       const args = runStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('update AppSnapshot set where snapshotId = ?')
       expect(args[1]).to.eql(['snapshot1'])
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
@@ -152,6 +158,7 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(runStub).to.have.been.calledOnce
       const args = runStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('update AppSnapshot set snapshotName = ? where snapshotId = ?')
       expect(args[1]).to.eql(['snapshotName1', 'snapshot1'])
       expect(closeStub).to.have.been.calledOnce
     })
@@ -171,6 +178,8 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(allStub).to.have.been.calledOnce
+      const args = allStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('select * from AppSnapshot')
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
     })
@@ -200,6 +209,8 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(allStub).to.have.been.calledOnce
+      const args = allStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('select * from AppSnapshot')
       expect(closeStub).to.have.been.calledOnce
       expect(results).to.eql([{
         snapshotId: 'snapshot1',
@@ -230,6 +241,7 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(getStub).to.have.been.calledOnce
       const args = getStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('select * from AppSnapshot where snapshotId = ?')
       expect(args[1]).to.eql(['snapshot1'])
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
@@ -261,6 +273,7 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(getStub).to.have.been.calledOnce
       const args = getStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('select * from AppSnapshot where snapshotId = ?')
       expect(args[1]).to.eql(['snapshot1'])
       expect(closeStub).to.have.been.calledOnce
       expect(results).to.eql({
@@ -293,6 +306,8 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(allStub).to.have.been.calledOnce
+      const args = allStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('select * from AppSnapshot where 1 = 1 and branchName = \'branchName1\'')
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
     })
@@ -324,6 +339,8 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(allStub).to.have.been.calledOnce
+      const args = allStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('select * from AppSnapshot where 1 = 1 and branchName = \'branchName1\'')
       expect(closeStub).to.have.been.calledOnce
       expect(results).to.eql([{
         snapshotId: 'snapshot1',
@@ -355,6 +372,8 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(getStub).to.have.been.calledOnce
+      const args = getStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('select * from AppSnapshot where 1 = 1 and branchName = \'branchName1\'')
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
     })
@@ -386,6 +405,8 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(getStub).to.have.been.calledOnce
+      const args = getStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('select * from AppSnapshot where 1 = 1 and branchName in (\'branchName1\', \'branchName2\')')
       expect(closeStub).to.have.been.calledOnce
       expect(results).to.eql({
         snapshotId: 'snapshot1',
@@ -417,6 +438,8 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(runStub).to.have.been.calledOnce
+      const args = runStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('delete from AppSnapshot where 1 = 1 and snapshotName = \'snapshotName1\'')
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
     })
@@ -436,6 +459,8 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(runStub).to.have.been.calledOnce
+      const args = runStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('delete from AppSnapshot where 1 = 1')
       expect(closeStub).to.have.been.calledOnce
     })
   })
@@ -454,6 +479,13 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(runStub).to.have.been.calledOnce
+      const args = runStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces(`delete from AppSnapshot where snapshotId in (
+                                            select childApp.snapshotId
+                                            from AppSnapshot childApp
+                                            left join SnapshotDependency sd on sd.childSnapshotId = childApp.snapshotId
+                                            where childApp.isToolkit = 1 and sd.childSnapshotId is null
+                                          )`)
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
     })
@@ -473,7 +505,196 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(runStub).to.have.been.calledOnce
+      const args = runStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces(`delete from AppSnapshot where snapshotId in (
+                                            select childApp.snapshotId
+                                            from AppSnapshot childApp
+                                            left join SnapshotDependency sd on sd.childSnapshotId = childApp.snapshotId
+                                            where childApp.isToolkit = 1 and sd.childSnapshotId is null
+                                          )`)
       expect(closeStub).to.have.been.calledOnce
+    })
+  })
+
+  it('should reject the "getWithoutChildren" method when query execution returns an error', () => {
+    const allStub = sinon.stub().callsArgWithAsync(1, new Error('error'))
+    const closeStub = sinon.stub()
+    dbStub.returns({
+      all: allStub,
+      close: closeStub
+    })
+    expect(allStub).not.to.have.been.called
+    expect(closeStub).not.to.have.been.called
+    const result = AppSnapshot.getWithoutChildren('test.db')
+    return expect(result).to.eventually.be.rejected.then(error => {
+      expect(dbStub).to.have.been.calledOnce
+      expect(dbStub).to.have.been.calledWith('test.db')
+      expect(allStub).to.have.been.calledOnce
+      const args = allStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces(`select parent.*
+                                          from (select * from AppSnapshot) parent
+                                          left join (select * from SnapshotDependency) sd on sd.parentSnapshotId = parent.snapshotId
+                                          left join AppSnapshot child on child.snapshotId = sd.childSnapshotId
+                                          where sd.parentSnapshotId is null`)
+      expect(closeStub).to.have.been.calledOnce
+      expect(error.message).to.equal('error')
+    })
+  })
+
+  it('should resolve the "getWithoutChildren" method when query execution returns an error', () => {
+    const allStub = sinon.stub().callsArgWithAsync(1, null, [{
+      snapshotId: 'snapshot1',
+      appId: 'appId1',
+      branchId: 'branchId1',
+      snapshotName: 'snapshotName1',
+      branchName: 'branchName1',
+      appShortName: 'appShortName1',
+      appName: 'appName1',
+      isToolkit: true,
+      isObjectsProcessed: false
+    }])
+    const closeStub = sinon.stub()
+    dbStub.returns({
+      all: allStub,
+      close: closeStub
+    })
+    expect(allStub).not.to.have.been.called
+    expect(closeStub).not.to.have.been.called
+    const result1 = AppSnapshot.getWithoutChildren('test.db', 'snapshotToRemove')
+    const result2 = AppSnapshot.getWithoutChildren('test.db', ['snapshotToRemove1', 'snapshotToRemove2'])
+    return Promise.all([
+      expect(result1).to.eventually.be.fulfilled,
+      expect(result2).to.eventually.be.fulfilled
+    ]).then((results) => {
+      expect(dbStub).to.have.been.calledTwice
+      expect(dbStub).to.have.been.calledWith('test.db')
+      expect(allStub).to.have.been.calledTwice
+      const args1 = allStub.getCall(0).args
+      expect(args1[0]).to.equalIgnoreSpaces(`select parent.*
+                                          from (select * from AppSnapshot where snapshotId <> 'snapshotToRemove') parent
+                                          left join (select * from SnapshotDependency where childSnapshotId <> 'snapshotToRemove') sd on sd.parentSnapshotId = parent.snapshotId
+                                          left join AppSnapshot child on child.snapshotId = sd.childSnapshotId
+                                          where sd.parentSnapshotId is null`)
+      const args2 = allStub.getCall(1).args
+      expect(args2[0]).to.equalIgnoreSpaces(`select parent.*
+                                          from (select * from AppSnapshot where snapshotId not in ('snapshotToRemove1', 'snapshotToRemove2')) parent
+                                          left join (select * from SnapshotDependency where childSnapshotId not in ('snapshotToRemove1', 'snapshotToRemove2')) sd on sd.parentSnapshotId = parent.snapshotId
+                                          left join AppSnapshot child on child.snapshotId = sd.childSnapshotId
+                                          where sd.parentSnapshotId is null`)
+      expect(closeStub).to.have.been.calledTwice
+      expect(results[0]).to.eql([{
+        snapshotId: 'snapshot1',
+        appId: 'appId1',
+        branchId: 'branchId1',
+        snapshotName: 'snapshotName1',
+        branchName: 'branchName1',
+        appShortName: 'appShortName1',
+        appName: 'appName1',
+        isToolkit: true,
+        isObjectsProcessed: false
+      }])
+      expect(results[1]).to.eql([{
+        snapshotId: 'snapshot1',
+        appId: 'appId1',
+        branchId: 'branchId1',
+        snapshotName: 'snapshotName1',
+        branchName: 'branchName1',
+        appShortName: 'appShortName1',
+        appName: 'appName1',
+        isToolkit: true,
+        isObjectsProcessed: false
+      }])
+    })
+  })
+
+  it('should reject the "getWithoutParents" method when query execution returns an error', () => {
+    const allStub = sinon.stub().callsArgWithAsync(1, new Error('error'))
+    const closeStub = sinon.stub()
+    dbStub.returns({
+      all: allStub,
+      close: closeStub
+    })
+    expect(allStub).not.to.have.been.called
+    expect(closeStub).not.to.have.been.called
+    const result = AppSnapshot.getWithoutParents('test.db')
+    return expect(result).to.eventually.be.rejected.then(error => {
+      expect(dbStub).to.have.been.calledOnce
+      expect(dbStub).to.have.been.calledWith('test.db')
+      expect(allStub).to.have.been.calledOnce
+      const args = allStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces(`select child.*
+                                          from (select * from AppSnapshot) child
+                                          left join (select * from SnapshotDependency) sd on sd.childSnapshotId = child.snapshotId
+                                          left join AppSnapshot parent on parent.snapshotId = sd.parentSnapshotId
+                                          where sd.childSnapshotId is null`)
+      expect(closeStub).to.have.been.calledOnce
+      expect(error.message).to.equal('error')
+    })
+  })
+
+  it('should resolve the "getWithoutParents" method when query execution returns an error', () => {
+    const allStub = sinon.stub().callsArgWithAsync(1, null, [{
+      snapshotId: 'snapshot1',
+      appId: 'appId1',
+      branchId: 'branchId1',
+      snapshotName: 'snapshotName1',
+      branchName: 'branchName1',
+      appShortName: 'appShortName1',
+      appName: 'appName1',
+      isToolkit: true,
+      isObjectsProcessed: false
+    }])
+    const closeStub = sinon.stub()
+    dbStub.returns({
+      all: allStub,
+      close: closeStub
+    })
+    expect(allStub).not.to.have.been.called
+    expect(closeStub).not.to.have.been.called
+    const result1 = AppSnapshot.getWithoutParents('test.db', 'snapshotToRemove')
+    const result2 = AppSnapshot.getWithoutParents('test.db', ['snapshotToRemove1', 'snapshotToRemove2'])
+    return Promise.all([
+      expect(result1).to.eventually.be.fulfilled,
+      expect(result2).to.eventually.be.fulfilled
+    ]).then((results) => {
+      expect(dbStub).to.have.been.calledTwice
+      expect(dbStub).to.have.been.calledWith('test.db')
+      expect(allStub).to.have.been.calledTwice
+      const args1 = allStub.getCall(0).args
+      expect(args1[0]).to.equalIgnoreSpaces(`select child.*
+                                          from (select * from AppSnapshot where snapshotId <> 'snapshotToRemove') child
+                                          left join (select * from SnapshotDependency where parentSnapshotId <> 'snapshotToRemove') sd on sd.childSnapshotId = child.snapshotId
+                                          left join AppSnapshot parent on parent.snapshotId = sd.parentSnapshotId
+                                          where sd.childSnapshotId is null`)
+      const args2 = allStub.getCall(1).args
+      expect(args2[0]).to.equalIgnoreSpaces(`select child.*
+                                          from (select * from AppSnapshot where snapshotId not in ('snapshotToRemove1', 'snapshotToRemove2')) child
+                                          left join (select * from SnapshotDependency where parentSnapshotId not in ('snapshotToRemove1', 'snapshotToRemove2')) sd on sd.childSnapshotId = child.snapshotId
+                                          left join AppSnapshot parent on parent.snapshotId = sd.parentSnapshotId
+                                          where sd.childSnapshotId is null`)
+      expect(closeStub).to.have.been.calledTwice
+      expect(results[0]).to.eql([{
+        snapshotId: 'snapshot1',
+        appId: 'appId1',
+        branchId: 'branchId1',
+        snapshotName: 'snapshotName1',
+        branchName: 'branchName1',
+        appShortName: 'appShortName1',
+        appName: 'appName1',
+        isToolkit: true,
+        isObjectsProcessed: false
+      }])
+      expect(results[1]).to.eql([{
+        snapshotId: 'snapshot1',
+        appId: 'appId1',
+        branchId: 'branchId1',
+        snapshotName: 'snapshotName1',
+        branchName: 'branchName1',
+        appShortName: 'appShortName1',
+        appName: 'appName1',
+        isToolkit: true,
+        isObjectsProcessed: false
+      }])
     })
   })
 })

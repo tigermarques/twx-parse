@@ -400,4 +400,46 @@ describe('Classes - AppSnapshot', () => {
       expect(resultReject).to.eventually.be.rejected
     ])
   })
+
+  it('should invoke the correct DB handler for the "getWithoutChildren" method', () => {
+    const stubResolve = sinon.stub(DBAccess, 'getWithoutChildren').returns(defer())
+    expect(stubResolve).not.to.have.been.called
+    const resultResolve = AppSnapshot.getWithoutChildren('name1')
+    expect(stubResolve).to.have.been.calledOnce
+    expect(stubResolve).to.have.been.calledWith('name1')
+    stubResolve.restore()
+
+    const stubReject = sinon.stub(DBAccess, 'getWithoutChildren').returns(defer(false))
+    expect(stubReject).not.to.have.been.called
+    const resultReject = AppSnapshot.getWithoutChildren('name2', 'snapshot1')
+    expect(stubReject).to.have.been.calledOnce
+    expect(stubReject).to.have.been.calledWith('name2', 'snapshot1')
+    stubReject.restore()
+
+    return Promise.all([
+      expect(resultResolve).to.eventually.be.fulfilled,
+      expect(resultReject).to.eventually.be.rejected
+    ])
+  })
+
+  it('should invoke the correct DB handler for the "getWithoutParents" method', () => {
+    const stubResolve = sinon.stub(DBAccess, 'getWithoutParents').returns(defer())
+    expect(stubResolve).not.to.have.been.called
+    const resultResolve = AppSnapshot.getWithoutParents('name1')
+    expect(stubResolve).to.have.been.calledOnce
+    expect(stubResolve).to.have.been.calledWith('name1')
+    stubResolve.restore()
+
+    const stubReject = sinon.stub(DBAccess, 'getWithoutParents').returns(defer(false))
+    expect(stubReject).not.to.have.been.called
+    const resultReject = AppSnapshot.getWithoutParents('name2', 'snapshot1')
+    expect(stubReject).to.have.been.calledOnce
+    expect(stubReject).to.have.been.calledWith('name2', 'snapshot1')
+    stubReject.restore()
+
+    return Promise.all([
+      expect(resultResolve).to.eventually.be.fulfilled,
+      expect(resultReject).to.eventually.be.rejected
+    ])
+  })
 })
