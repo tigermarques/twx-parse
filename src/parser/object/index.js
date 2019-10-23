@@ -250,6 +250,7 @@ const addObjects = async (databaseName, zipFile, fileName, startCallback, progre
     startCallback({
       id: currentSnapshotId,
       name: fileName,
+      skipped: false,
       total: objectEntryNames.length
     })
     const dependencyCache = {}
@@ -270,7 +271,15 @@ const addObjects = async (databaseName, zipFile, fileName, startCallback, progre
     })
     await Registry.AppSnapshot.markObjectsProcessed(databaseName, currentSnapshotId)
   } else {
-    console.log(`Skipping objects ${currentSnapshotId}`)
+    startCallback({
+      id: currentSnapshotId,
+      name: fileName,
+      skipped: true,
+      total: 0
+    })
+    endCallback({
+      id: currentSnapshotId
+    })
   }
 }
 
@@ -285,12 +294,13 @@ class ObjectParser extends EventEmitter {
       this.emit('start', {
         id: data.id,
         name: data.name,
+        skipped: data.skipped,
         total: data.total
       })
     }, data => {
       this.emit('progress', data)
-    }, () => {
-      this.emit('end')
+    }, data => {
+      this.emit('end', data)
     })
   }
 }

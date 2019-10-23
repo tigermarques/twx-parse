@@ -67,7 +67,7 @@ const parseCoachView = Performance.makeMeasurable(async (databaseName, jsonData)
     // Localization Resources
     if (coachView.localization) {
       for (let i = 0; i < coachView.localization.length; i++) {
-        if (!ParseUtils.isNullXML(coachView.localization[i]) && coachView.localization[i].assetUuid && !ParseUtils.isNullXML(coachView.localization[i].resourceBundleGroupId[0])) {
+        if (!ParseUtils.isNullXML(coachView.localization[i]) && coachView.localization[i].resourceBundleGroupId && !ParseUtils.isNullXML(coachView.localization[i].resourceBundleGroupId[0])) {
           result.dependencies.push(coachView.localization[i].resourceBundleGroupId[0])
         }
       }
