@@ -5,7 +5,7 @@ const fileName = path.resolve(__dirname, 'files', 'TestSnapshot.twx')
 
 const { expect } = chai
 
-describe.only('Fully integrated test', () => {
+describe('Fully integrated test', () => {
   beforeEach(() => {
     delete require.cache[require.resolve('../src/db/common')]
     require('../src/db/common')
