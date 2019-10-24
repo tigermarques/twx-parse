@@ -72,7 +72,11 @@ const removePackage = async (databaseName, zipFile, fileName, startCallback, end
 
   // only parse the package if it exists and is not a toolkit
   const existingAppSnapshot = await Registry.AppSnapshot.getById(databaseName, parentSnapshotId)
-  if (existingAppSnapshot && !existingAppSnapshot.isToolkit) {
+  let snapshotParents = []
+  if (existingAppSnapshot) {
+    snapshotParents = await Registry.SnapshotDependency.getByChildId(databaseName, existingAppSnapshot.snapshotId)
+  }
+  if (existingAppSnapshot && snapshotParents.length === 0) {
     startCallback({
       id: parentSnapshotId,
       name: fileName,

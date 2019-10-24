@@ -93,4 +93,14 @@ describe('Fully integrated test', () => {
     expect(topLevelNodes6.items).to.have.length(0)
     expect(topLevelNodes6.level).to.equal(6)
   })
+
+  it('should empty the database after a file is added and then removed', async () => {
+    const workspace = await twxParser.getWorkspace('test', 'password')
+    await workspace.addFile(fileName)
+    await workspace.removeFile(fileName)
+    const snapshots = await workspace.getSnapshots()
+    const objects = await workspace.getObjects()
+    expect(snapshots).to.have.length(0)
+    expect(objects).to.have.length(0)
+  })
 })

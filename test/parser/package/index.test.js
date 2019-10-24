@@ -15,8 +15,8 @@ const { expect } = chai
 describe('Parser - Package', () => {
   let zipFile, zipFileMock, appSnapshotGetByIdStub, appSnapshotRemoveStub, appSnapshotRegisterStub, appSnapshotGetAllStub,
     appSnapshotRemoveOrphanedStub, objectVersionRemoveOrphanedStub, snapshotDependencyRegisterManyStub, snapshotDependencyRemoveStub,
-    snapshotDependencyRemoveOrphanedStub, objectDependencyRemoveOrphanedStub, snapshotObjectDependencyRegisterManyStub,
-    snapshotObjectDependencyRemoveStub, snapshotObjectDependencyRemoveOrphanedStub
+    snapshotDependencyGetByChildIdStub, snapshotDependencyRemoveOrphanedStub, objectDependencyRemoveOrphanedStub,
+    snapshotObjectDependencyRegisterManyStub, snapshotObjectDependencyRemoveStub, snapshotObjectDependencyRemoveOrphanedStub
 
   beforeEach(() => {
     appSnapshotGetByIdStub = sinon.stub(Registry.AppSnapshot, 'getById')
@@ -27,6 +27,7 @@ describe('Parser - Package', () => {
     objectVersionRemoveOrphanedStub = sinon.stub(Registry.ObjectVersion, 'removeOrphaned')
     snapshotDependencyRegisterManyStub = sinon.stub(Registry.SnapshotDependency, 'registerMany')
     snapshotDependencyRemoveStub = sinon.stub(Registry.SnapshotDependency, 'remove')
+    snapshotDependencyGetByChildIdStub = sinon.stub(Registry.SnapshotDependency, 'getByChildId')
     snapshotDependencyRemoveOrphanedStub = sinon.stub(Registry.SnapshotDependency, 'removeOrphaned')
     objectDependencyRemoveOrphanedStub = sinon.stub(Registry.ObjectDependency, 'removeOrphaned')
     snapshotObjectDependencyRegisterManyStub = sinon.stub(Registry.SnapshotObjectDependency, 'registerMany')
@@ -54,6 +55,7 @@ describe('Parser - Package', () => {
     objectVersionRemoveOrphanedStub.restore()
     snapshotDependencyRegisterManyStub.restore()
     snapshotDependencyRemoveStub.restore()
+    snapshotDependencyGetByChildIdStub.restore()
     snapshotDependencyRemoveOrphanedStub.restore()
     objectDependencyRemoveOrphanedStub.restore()
     snapshotObjectDependencyRegisterManyStub.restore()
@@ -217,6 +219,7 @@ describe('Parser - Package', () => {
     const xmlData = fs.readFileSync(path.resolve(__dirname, '..', '..', 'files', 'package_app.xml'))
     zipFileMock.returns(xmlData)
     appSnapshotGetByIdStub.returns(defer(true, null))
+    snapshotDependencyGetByChildIdStub.returns(defer(true, []))
     const startStub = sinon.stub()
     const progressStub = sinon.stub()
     const endStub = sinon.stub()
@@ -227,6 +230,7 @@ describe('Parser - Package', () => {
 
     expect(zipFileMock).not.to.have.been.called
     expect(appSnapshotGetByIdStub).not.to.have.been.called
+    expect(snapshotDependencyGetByChildIdStub).not.to.have.been.called
     expect(appSnapshotRemoveStub).not.to.have.been.called
     expect(startStub).not.to.have.been.called
     expect(progressStub).not.to.have.been.called
@@ -239,6 +243,7 @@ describe('Parser - Package', () => {
       expect(zipFileMock).to.have.been.calledOnce
       expect(appSnapshotGetByIdStub).to.have.been.calledOnce
       expect(appSnapshotGetByIdStub).to.have.been.calledWith('name', '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa')
+      expect(snapshotDependencyGetByChildIdStub).not.to.have.been.called
       expect(appSnapshotRemoveStub).not.to.have.been.called
       expect(startStub).to.have.been.calledOnce
       expect(startStub).to.have.been.calledWith({
@@ -255,7 +260,7 @@ describe('Parser - Package', () => {
     })
   })
 
-  it('should not remove a toolkit', () => {
+  it('should not remove an application that other applications depend on', () => {
     const xmlData = fs.readFileSync(path.resolve(__dirname, '..', '..', 'files', 'package_app.xml'))
     zipFileMock.returns(xmlData)
     appSnapshotGetByIdStub.returns(defer(true, {
@@ -270,6 +275,12 @@ describe('Parser - Package', () => {
       isToolkit: true,
       isObjectsProcessed: true
     }))
+    snapshotDependencyGetByChildIdStub.returns(defer(true, [{
+      parentSnapshotId: 'snapshot2',
+      childSnapshotId: 'id1',
+      rank: 1,
+      dependencyId: 'dependency1'
+    }]))
     const startStub = sinon.stub()
     const progressStub = sinon.stub()
     const endStub = sinon.stub()
@@ -281,6 +292,7 @@ describe('Parser - Package', () => {
     expect(zipFileMock).not.to.have.been.called
     expect(appSnapshotGetByIdStub).not.to.have.been.called
     expect(appSnapshotRemoveStub).not.to.have.been.called
+    expect(snapshotDependencyGetByChildIdStub).not.to.have.been.called
     expect(startStub).not.to.have.been.called
     expect(progressStub).not.to.have.been.called
     expect(endStub).not.to.have.been.called
@@ -292,6 +304,8 @@ describe('Parser - Package', () => {
       expect(zipFileMock).to.have.been.calledOnce
       expect(appSnapshotGetByIdStub).to.have.been.calledOnce
       expect(appSnapshotGetByIdStub).to.have.been.calledWith('name', '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa')
+      expect(snapshotDependencyGetByChildIdStub).to.have.been.calledOnce
+      expect(snapshotDependencyGetByChildIdStub).to.have.been.calledWith('name', 'id1')
       expect(appSnapshotRemoveStub).not.to.have.been.called
       expect(startStub).to.have.been.calledWith({
         id: '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa',
@@ -322,6 +336,7 @@ describe('Parser - Package', () => {
       isToolkit: false,
       isObjectsProcessed: true
     }))
+    snapshotDependencyGetByChildIdStub.returns(defer(true, []))
     appSnapshotRemoveStub.returns(defer())
     snapshotDependencyRemoveStub.returns(defer())
     snapshotObjectDependencyRemoveStub.returns(defer())
@@ -352,6 +367,7 @@ describe('Parser - Package', () => {
 
     expect(zipFileMock).not.to.have.been.called
     expect(appSnapshotGetByIdStub).not.to.have.been.called
+    expect(snapshotDependencyGetByChildIdStub).not.to.have.been.called
     expect(appSnapshotRemoveStub).not.to.have.been.called
     expect(snapshotDependencyRemoveStub).not.to.have.been.called
     expect(snapshotObjectDependencyRemoveStub).not.to.have.been.called
@@ -372,6 +388,8 @@ describe('Parser - Package', () => {
       expect(zipFileMock).to.have.been.calledOnce
       expect(appSnapshotGetByIdStub).to.have.been.calledOnce
       expect(appSnapshotGetByIdStub).to.have.been.calledWith('name', '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa')
+      expect(snapshotDependencyGetByChildIdStub).to.have.been.calledOnce
+      expect(snapshotDependencyGetByChildIdStub).to.have.been.calledWith('name', 'id1')
       expect(appSnapshotRemoveStub).to.have.been.calledOnce
       expect(appSnapshotRemoveStub).to.have.been.calledWith('name', { snapshotId: '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa' })
       expect(snapshotDependencyRemoveStub).to.have.been.calledOnce
@@ -421,6 +439,7 @@ describe('Parser - Package', () => {
       isToolkit: false,
       isObjectsProcessed: true
     }))
+    snapshotDependencyGetByChildIdStub.returns(defer(true, []))
     appSnapshotRemoveStub.returns(defer())
     snapshotDependencyRemoveStub.returns(defer())
     snapshotObjectDependencyRemoveStub.returns(defer())
@@ -470,6 +489,7 @@ describe('Parser - Package', () => {
 
     expect(zipFileMock).not.to.have.been.called
     expect(appSnapshotGetByIdStub).not.to.have.been.called
+    expect(snapshotDependencyGetByChildIdStub).not.to.have.been.called
     expect(appSnapshotRemoveStub).not.to.have.been.called
     expect(snapshotDependencyRemoveStub).not.to.have.been.called
     expect(snapshotObjectDependencyRemoveStub).not.to.have.been.called
@@ -487,6 +507,8 @@ describe('Parser - Package', () => {
       expect(zipFileMock).to.have.been.calledOnce
       expect(appSnapshotGetByIdStub).to.have.been.calledOnce
       expect(appSnapshotGetByIdStub).to.have.been.calledWith('name', '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa')
+      expect(snapshotDependencyGetByChildIdStub).to.have.been.calledOnce
+      expect(snapshotDependencyGetByChildIdStub).to.have.been.calledWith('name', 'id1')
       expect(appSnapshotRemoveStub).to.have.been.calledOnce
       expect(appSnapshotRemoveStub).to.have.been.calledWith('name', { snapshotId: '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa' })
       expect(snapshotDependencyRemoveStub).to.have.been.calledOnce
