@@ -63,7 +63,7 @@ const addPackage = async (databaseName, zipFile, fileName, startCallback, progre
   }
 }
 
-const removePackage = async (databaseName, zipFile, fileName, startCallback, progressCallback, endCallback) => {
+const removePackage = async (databaseName, zipFile, fileName, startCallback, endCallback) => {
   const packageEntry = zipFile.getEntry('META-INF/package.xml')
 
   const jsonData = await ParseUtils.parseXML(packageEntry.getData().toString('utf-8'), fileName)
@@ -138,8 +138,6 @@ class PackageParser extends EventEmitter {
   remove (zipFile, fileName) {
     return removePackage(this.databaseName, zipFile, fileName, data => {
       this.emit('start', data)
-    }, data => {
-      this.emit('progress', data)
     }, data => {
       this.emit('end', data)
     })
