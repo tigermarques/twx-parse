@@ -2,6 +2,27 @@ const EventEmitter = require('events')
 const Parser = require('../parser')
 const Registry = require('./Registry')
 
+/**
+ * @typedef {Object} AppSnapshot
+ * @property {string} snapshotId - Snapshot ID
+ * @property {string} appId - Application ID
+ * @property {string} branchId - Branch ID
+ * @property {string} snapshotName - Snapshot Name
+ * @property {string} branchName - Branch Name
+ * @property {string} appShortName - Application Acronym
+ * @property {string} appName - Application Name
+ * @property {boolean} isToolkit - True if the snapshot is from a toolkit, and false otherwise
+ */
+
+/**
+ * @typedef {Object} ObjectVersion
+ * @property {string} objectVersionId - Object Version ID
+ * @property {string} objectId - Object ID
+ * @property {string} name - Object Name
+ * @property {string} type - Object Type
+ * @property {string} subtype - Object Subtype
+ */
+
 const getWithoutChildren = async (name, level, exclusions) => {
   const snapshots = await Registry.AppSnapshot.getWithoutChildren(name, exclusions)
   const snapshotIds = snapshots.map(item => item.snapshotId)

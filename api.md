@@ -14,6 +14,15 @@
 </dd>
 </dl>
 
+## Typedefs
+
+<dl>
+<dt><a href="#AppSnapshot">AppSnapshot</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#ObjectVersion">ObjectVersion</a> : <code>Object</code></dt>
+<dd></dd>
+</dl>
+
 <a name="Workspace"></a>
 
 ## Workspace
@@ -100,7 +109,7 @@ Retrieve snapshots that are direct children of the snapshot(s) passed as input.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| inputData | <code>AppSnapshot</code> \| <code>Array.&lt;AppSnapshot&gt;</code> | snapshot(s) for which we want to retrieve children |
+| inputData | [<code>AppSnapshot</code>](#AppSnapshot) \| [<code>Array.&lt;AppSnapshot&gt;</code>](#AppSnapshot) | snapshot(s) for which we want to retrieve children |
 
 <a name="Workspace+getSnapshotWhereUsed"></a>
 
@@ -112,7 +121,7 @@ Retrieve snapshots that are direct parents of the snapshot(s) passed as input.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| inputData | <code>AppSnapshot</code> \| <code>Array.&lt;AppSnapshot&gt;</code> | snapshot(s) for which we want to retrieve parents |
+| inputData | [<code>AppSnapshot</code>](#AppSnapshot) \| [<code>Array.&lt;AppSnapshot&gt;</code>](#AppSnapshot) | snapshot(s) for which we want to retrieve parents |
 
 <a name="Workspace+getSnapshotObjects"></a>
 
@@ -124,7 +133,7 @@ Retrieve objects that belong to the snapshot(s) passed as input.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| inputData | <code>AppSnapshot</code> \| <code>Array.&lt;AppSnapshot&gt;</code> | snapshot(s) for which we want to retrieve objects |
+| inputData | [<code>AppSnapshot</code>](#AppSnapshot) \| [<code>Array.&lt;AppSnapshot&gt;</code>](#AppSnapshot) | snapshot(s) for which we want to retrieve objects |
 
 <a name="Workspace+getObjects"></a>
 
@@ -162,7 +171,7 @@ Retrieve objects that are direct children of the objects(s) passed as input. Opt
 
 | Param | Type | Description |
 | --- | --- | --- |
-| inputData | <code>ObjectVersion</code> \| <code>Array.&lt;ObjectVersion&gt;</code> | object(s) for which we want to retrieve direct children |
+| inputData | [<code>ObjectVersion</code>](#ObjectVersion) \| [<code>Array.&lt;ObjectVersion&gt;</code>](#ObjectVersion) | object(s) for which we want to retrieve direct children |
 | snapshotCriteria | <code>object</code> | snapshot search criteria to restrict results, that may include the following properties |
 | snapshotCriteria.snapshotId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more snapshot IDs |
 | snapshotCriteria.appId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application IDs |
@@ -183,7 +192,7 @@ Retrieve objects that are direct parents of the objects(s) passed as input. Opti
 
 | Param | Type | Description |
 | --- | --- | --- |
-| inputData | <code>ObjectVersion</code> \| <code>Array.&lt;ObjectVersion&gt;</code> | object(s) for which we want to retrieve direct parents |
+| inputData | [<code>ObjectVersion</code>](#ObjectVersion) \| [<code>Array.&lt;ObjectVersion&gt;</code>](#ObjectVersion) | object(s) for which we want to retrieve direct parents |
 | snapshotCriteria | <code>object</code> | snapshot search criteria to restrict results, that may include the following properties |
 | snapshotCriteria.snapshotId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more snapshot IDs |
 | snapshotCriteria.appId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application IDs |
@@ -204,7 +213,7 @@ Retrieve snapshots whose object(s) passed as input belong to.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| inputData | <code>ObjectVersion</code> \| <code>Array.&lt;ObjectVersion&gt;</code> | object(s) for which we want to retrieve snapshots |
+| inputData | [<code>ObjectVersion</code>](#ObjectVersion) \| [<code>Array.&lt;ObjectVersion&gt;</code>](#ObjectVersion) | object(s) for which we want to retrieve snapshots |
 
 <a name="Workspace+getLeafNodes"></a>
 
@@ -238,4 +247,35 @@ Method to get or create a workspace
 | --- | --- | --- |
 | name | <code>string</code> | Name of the workspace. If a workspace with this name already exists, it is retrieved. Otherwise, a new workspace is created. |
 | password | <code>string</code> | Password to open the workspace. If the workspace is new, the given password will be the workspace's password. If the workspace already exists, this password will be compared with the password used to create the workspace |
+
+<a name="AppSnapshot"></a>
+
+## AppSnapshot : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| snapshotId | <code>string</code> | Snapshot ID |
+| appId | <code>string</code> | Application ID |
+| branchId | <code>string</code> | Branch ID |
+| snapshotName | <code>string</code> | Snapshot Name |
+| branchName | <code>string</code> | Branch Name |
+| appShortName | <code>string</code> | Application Acronym |
+| appName | <code>string</code> | Application Name |
+| isToolkit | <code>boolean</code> | True if the snapshot is from a toolkit, and false otherwise |
+
+<a name="ObjectVersion"></a>
+
+## ObjectVersion : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| objectVersionId | <code>string</code> | Object Version ID |
+| objectId | <code>string</code> | Object ID |
+| name | <code>string</code> | Object Name |
+| type | <code>string</code> | Object Type |
+| subtype | <code>string</code> | Object Subtype |
 
