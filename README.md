@@ -95,36 +95,7 @@ console.log(objects)
 
 ## API
 
-#### twx-parser
-
-* `getWorkspace(workspaceName, password): Promise<workspace>`
-  * `workspaceName` - Name of the workspace. If a workspace with this name already exists, it is retrieved. Otherwise, a new workspace is created.
-  * `password` - Password to open the workspace. If the workspace is new, the given password will be the workspace's password. If the workspace already exists, this password will be compared with the password used to create the workspace
-  * returns a `Promise` that will resolve to a `Workspace` instance, or be rejected with an `Error` instance if any error occurs
-
-#### Workspace
-
-* `addFile(filePath)`
-  * `filePath` - path to the TWX file to be added
-  * returns a `Promise` that will resolve if the file is successfully parsed and added, or rejected with an `Error` instance if any error occurs
-
-* `removeFile(filePath)`
-  * `filePath` - path to the TWX file to be removed
-  * returns a `Promise` that will be resolved if the file is successfully parsed and removed, or rejected with an `Error` instance if any error occurs
-
-* `getSnapshots(criteria)`
-  * `criteria` - search criteria, that may include the following properties: `snapshotId`, `appId`, `branchId`, `snapshotName`, `branchName`, `appShortName`, `appName`, `isToolkit`
-  * returns a `Promise` that will be resolved with an array of `AppSnapshot` instances with the results that match the given criteria, or rejected with an `Error` instance if any error occurs
-
-* `getSnapshotDependencies(inputData)`
-* `getSnapshotWhereUsed(inputData)`
-* `getSnapshotObjects(inputData)`
-* `getObjects(objectCriteria, snapshotCriteria)`
-* `getObjectDependencies(inputData, snapshotCriteria)`
-* `getObjectWhereUsed(inputData, snapshotCriteria)`
-* `getObjectSnapshots(inputData)`
-* `getLeafNodes()`
-* `getTopLevelNodes()`
+For the full API, please visit [this page](api.md)
 
 ## Developing
 

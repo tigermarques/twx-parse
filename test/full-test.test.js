@@ -1,6 +1,6 @@
 const chai = require('chai')
 const path = require('path')
-const twxParser = require('..')
+const twxParser = require('../src')
 const fileName = path.resolve(__dirname, 'files', 'TestSnapshot.twx')
 
 const { expect } = chai

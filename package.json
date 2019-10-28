@@ -6,6 +6,7 @@
   "scripts": {
     "test": "nyc mocha --opts ./mocha.opts \"test/**/*.test.js\"",
     "lint": "eslint .",
+    "docs": "jsdoc2md src/**/*.js > api.md",
     "report-coverage": "codecov",
     "semantic-release": "semantic-release",
     "commit": "git-cz"
@@ -27,7 +28,8 @@
   "homepage": "https://github.com/tigermarques/twx-parse#readme",
   "files": [
     "src",
-    "index.js"
+    "index.js",
+    "api.md"
   ],
   "devDependencies": {
     "chai": "^4.2.0",
@@ -37,7 +39,7 @@
     "codecov": "^3.6.1",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.0.2",
-    "eslint": "^6.5.1",
+    "eslint": "^6.6.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-chai-friendly": "^0.4.1",
     "eslint-plugin-import": "^2.18.2",
@@ -46,10 +48,11 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "husky": "^2.7.0",
+    "jsdoc-to-markdown": "^5.0.2",
     "mocha": "^6.2.2",
     "nyc": "^14.1.1",
     "resnap": "^1.0.1",
-    "semantic-release": "^15.13.27",
+    "semantic-release": "^15.13.28",
     "sinon": "^7.5.0",
     "sinon-chai": "^3.3.0",
     "validate-commit-msg": "^2.14.0"
