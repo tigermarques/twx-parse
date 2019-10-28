@@ -21,6 +21,10 @@
 <dd></dd>
 <dt><a href="#ObjectVersion">ObjectVersion</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#SnapshotCriteria">SnapshotCriteria</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#ObjectCriteria">ObjectCriteria</a> : <code>Object</code></dt>
+<dd></dd>
 </dl>
 
 <a name="Workspace"></a>
@@ -89,15 +93,7 @@ Query snapshots from the workspace.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| criteria | <code>object</code> | search criteria, that may include the following properties |
-| criteria.snapshotId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more snapshot IDs |
-| criteria.appId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application IDs |
-| criteria.branchId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more branch IDs |
-| criteria.snapshotName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more snapshot names |
-| criteria.branchName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more branch names |
-| criteria.appShortName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application acronyms |
-| criteria.appName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application names |
-| criteria.isToolkit | <code>string</code> \| <code>Array.&lt;boolean&gt;</code> | use this property to query by toolkits or process applications |
+| criteria | [<code>SnapshotCriteria</code>](#SnapshotCriteria) | search criteria |
 
 <a name="Workspace+getSnapshotDependencies"></a>
 
@@ -145,21 +141,8 @@ Query objects from the workspace. Optionally, you can restrict results that belo
 
 | Param | Type | Description |
 | --- | --- | --- |
-| objectCriteria | <code>object</code> | search criteria, that may include the following properties |
-| objectCriteria.objectVersionId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more object version IDs |
-| objectCriteria.objectId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more object IDs |
-| objectCriteria.name | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more object names |
-| objectCriteria.type | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more object types |
-| objectCriteria.subtype | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more object sub types |
-| snapshotCriteria | <code>object</code> | snapshot search criteria to restrict results, that may include the following properties |
-| snapshotCriteria.snapshotId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more snapshot IDs |
-| snapshotCriteria.appId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application IDs |
-| snapshotCriteria.branchId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more branch IDs |
-| snapshotCriteria.snapshotName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more snapshot names |
-| snapshotCriteria.branchName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more branch names |
-| snapshotCriteria.appShortName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application acronyms |
-| snapshotCriteria.appName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application names |
-| snapshotCriteria.isToolkit | <code>string</code> \| <code>Array.&lt;boolean&gt;</code> | use this property to query by toolkits or process applications |
+| objectCriteria | [<code>ObjectCriteria</code>](#ObjectCriteria) | search criteria |
+| snapshotCriteria | [<code>SnapshotCriteria</code>](#SnapshotCriteria) | snapshot search criteria to restrict results |
 
 <a name="Workspace+getObjectDependencies"></a>
 
@@ -172,15 +155,7 @@ Retrieve objects that are direct children of the objects(s) passed as input. Opt
 | Param | Type | Description |
 | --- | --- | --- |
 | inputData | [<code>ObjectVersion</code>](#ObjectVersion) \| [<code>Array.&lt;ObjectVersion&gt;</code>](#ObjectVersion) | object(s) for which we want to retrieve direct children |
-| snapshotCriteria | <code>object</code> | snapshot search criteria to restrict results, that may include the following properties |
-| snapshotCriteria.snapshotId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more snapshot IDs |
-| snapshotCriteria.appId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application IDs |
-| snapshotCriteria.branchId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more branch IDs |
-| snapshotCriteria.snapshotName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more snapshot names |
-| snapshotCriteria.branchName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more branch names |
-| snapshotCriteria.appShortName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application acronyms |
-| snapshotCriteria.appName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application names |
-| snapshotCriteria.isToolkit | <code>string</code> \| <code>Array.&lt;boolean&gt;</code> | use this property to query by toolkits or process applications |
+| snapshotCriteria | [<code>SnapshotCriteria</code>](#SnapshotCriteria) | snapshot search criteria to restrict results |
 
 <a name="Workspace+getObjectWhereUsed"></a>
 
@@ -193,15 +168,7 @@ Retrieve objects that are direct parents of the objects(s) passed as input. Opti
 | Param | Type | Description |
 | --- | --- | --- |
 | inputData | [<code>ObjectVersion</code>](#ObjectVersion) \| [<code>Array.&lt;ObjectVersion&gt;</code>](#ObjectVersion) | object(s) for which we want to retrieve direct parents |
-| snapshotCriteria | <code>object</code> | snapshot search criteria to restrict results, that may include the following properties |
-| snapshotCriteria.snapshotId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more snapshot IDs |
-| snapshotCriteria.appId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application IDs |
-| snapshotCriteria.branchId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more branch IDs |
-| snapshotCriteria.snapshotName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more snapshot names |
-| snapshotCriteria.branchName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more branch names |
-| snapshotCriteria.appShortName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application acronyms |
-| snapshotCriteria.appName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application names |
-| snapshotCriteria.isToolkit | <code>string</code> \| <code>Array.&lt;boolean&gt;</code> | use this property to query by toolkits or process applications |
+| snapshotCriteria | [<code>SnapshotCriteria</code>](#SnapshotCriteria) | snapshot search criteria to restrict results |
 
 <a name="Workspace+getObjectSnapshots"></a>
 
@@ -278,4 +245,35 @@ Method to get or create a workspace
 | name | <code>string</code> | Object Name |
 | type | <code>string</code> | Object Type |
 | subtype | <code>string</code> | Object Subtype |
+
+<a name="SnapshotCriteria"></a>
+
+## SnapshotCriteria : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| snapshotId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more snapshot IDs |
+| appId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application IDs |
+| branchId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more branch IDs |
+| snapshotName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more snapshot names |
+| branchName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more branch names |
+| appShortName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application acronyms |
+| appName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application names |
+| isToolkit | <code>string</code> \| <code>Array.&lt;boolean&gt;</code> | use this property to query by toolkits or process applications |
+
+<a name="ObjectCriteria"></a>
+
+## ObjectCriteria : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| objectVersionId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more object version IDs |
+| objectId | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more object IDs |
+| name | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more object names |
+| type | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more object types |
+| subtype | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more object sub types |
 

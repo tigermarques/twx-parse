@@ -23,6 +23,27 @@ const Registry = require('./Registry')
  * @property {string} subtype - Object Subtype
  */
 
+/**
+ * @typedef {Object} SnapshotCriteria
+ * @property {string|Array<string>} snapshotId - use this property to query by one or more snapshot IDs
+ * @property {string|Array<string>} appId - use this property to query by one or more application IDs
+ * @property {string|Array<string>} branchId - use this property to query by one or more branch IDs
+ * @property {string|Array<string>} snapshotName - use this property to query by one or more snapshot names
+ * @property {string|Array<string>} branchName - use this property to query by one or more branch names
+ * @property {string|Array<string>} appShortName - use this property to query by one or more application acronyms
+ * @property {string|Array<string>} appName - use this property to query by one or more application names
+ * @property {string|Array<boolean>} isToolkit - use this property to query by toolkits or process applications
+ */
+
+/**
+ * @typedef {Object} ObjectCriteria
+ * @property {string|Array<string>} objectVersionId - use this property to query by one or more object version IDs
+ * @property {string|Array<string>} objectId - use this property to query by one or more object IDs
+ * @property {string|Array<string>} name - use this property to query by one or more object names
+ * @property {string|Array<string>} type - use this property to query by one or more object types
+ * @property {string|Array<string>} subtype - use this property to query by one or more object sub types
+ */
+
 const getWithoutChildren = async (name, level, exclusions) => {
   const snapshots = await Registry.AppSnapshot.getWithoutChildren(name, exclusions)
   const snapshotIds = snapshots.map(item => item.snapshotId)
@@ -107,15 +128,7 @@ class Workspace extends EventEmitter {
   /**
    * Query snapshots from the workspace.
    * @async
-   * @param {object} criteria - search criteria, that may include the following properties
-   * @param {string|Array<string>} criteria.snapshotId - use this property to query by one or more snapshot IDs
-   * @param {string|Array<string>} criteria.appId - use this property to query by one or more application IDs
-   * @param {string|Array<string>} criteria.branchId - use this property to query by one or more branch IDs
-   * @param {string|Array<string>} criteria.snapshotName - use this property to query by one or more snapshot names
-   * @param {string|Array<string>} criteria.branchName - use this property to query by one or more branch names
-   * @param {string|Array<string>} criteria.appShortName - use this property to query by one or more application acronyms
-   * @param {string|Array<string>} criteria.appName - use this property to query by one or more application names
-   * @param {string|Array<boolean>} criteria.isToolkit - use this property to query by toolkits or process applications
+   * @param {SnapshotCriteria} criteria - search criteria
    * @return {Promise<Array<AppSnapshot>|Error>} a `Promise` that will be resolved with an array of `AppSnapshot` instances with the results that match the given criteria, or rejected with an `Error` instance if any error occurs
    */
   async getSnapshots (criteria) {
@@ -194,21 +207,8 @@ class Workspace extends EventEmitter {
   /**
    * Query objects from the workspace. Optionally, you can restrict results that belong to snapshot(s) that match the given criteria.
    * @async
-   * @param {object} objectCriteria - search criteria, that may include the following properties
-   * @param {string|Array<string>} objectCriteria.objectVersionId - use this property to query by one or more object version IDs
-   * @param {string|Array<string>} objectCriteria.objectId - use this property to query by one or more object IDs
-   * @param {string|Array<string>} objectCriteria.name - use this property to query by one or more object names
-   * @param {string|Array<string>} objectCriteria.type - use this property to query by one or more object types
-   * @param {string|Array<string>} objectCriteria.subtype - use this property to query by one or more object sub types
-   * @param {object} snapshotCriteria - snapshot search criteria to restrict results, that may include the following properties
-   * @param {string|Array<string>} snapshotCriteria.snapshotId - use this property to query by one or more snapshot IDs
-   * @param {string|Array<string>} snapshotCriteria.appId - use this property to query by one or more application IDs
-   * @param {string|Array<string>} snapshotCriteria.branchId - use this property to query by one or more branch IDs
-   * @param {string|Array<string>} snapshotCriteria.snapshotName - use this property to query by one or more snapshot names
-   * @param {string|Array<string>} snapshotCriteria.branchName - use this property to query by one or more branch names
-   * @param {string|Array<string>} snapshotCriteria.appShortName - use this property to query by one or more application acronyms
-   * @param {string|Array<string>} snapshotCriteria.appName - use this property to query by one or more application names
-   * @param {string|Array<boolean>} snapshotCriteria.isToolkit - use this property to query by toolkits or process applications
+   * @param {ObjectCriteria} objectCriteria - search criteria
+   * @param {SnapshotCriteria} snapshotCriteria - snapshot search criteria to restrict results
    * @return {Promise<Array<ObjectVersion>|Error>} a `Promise` that will be resolved with an array of `ObjectVersion` instances with the results that match the given criteria, or rejected with an `Error` instance if any error occurs
    */
   async getObjects (objectCriteria, snapshotCriteria) {
@@ -219,15 +219,7 @@ class Workspace extends EventEmitter {
    * Retrieve objects that are direct children of the objects(s) passed as input. Optionally, you can restrict results that belong to snapshot(s) that match the given criteria.
    * @async
    * @param {ObjectVersion|Array<ObjectVersion>} inputData - object(s) for which we want to retrieve direct children
-   * @param {object} snapshotCriteria - snapshot search criteria to restrict results, that may include the following properties
-   * @param {string|Array<string>} snapshotCriteria.snapshotId - use this property to query by one or more snapshot IDs
-   * @param {string|Array<string>} snapshotCriteria.appId - use this property to query by one or more application IDs
-   * @param {string|Array<string>} snapshotCriteria.branchId - use this property to query by one or more branch IDs
-   * @param {string|Array<string>} snapshotCriteria.snapshotName - use this property to query by one or more snapshot names
-   * @param {string|Array<string>} snapshotCriteria.branchName - use this property to query by one or more branch names
-   * @param {string|Array<string>} snapshotCriteria.appShortName - use this property to query by one or more application acronyms
-   * @param {string|Array<string>} snapshotCriteria.appName - use this property to query by one or more application names
-   * @param {string|Array<boolean>} snapshotCriteria.isToolkit - use this property to query by toolkits or process applications
+   * @param {SnapshotCriteria} snapshotCriteria - snapshot search criteria to restrict results
    * @return {Promise<Array<ObjectVersion>|Error>} a `Promise` that will be resolved with an array of `ObjectVersion` instances with the results that match the given criteria, or rejected with an `Error` instance if any error occurs
    */
   async getObjectDependencies (inputData, snapshotCriteria) {
@@ -263,15 +255,7 @@ class Workspace extends EventEmitter {
    * Retrieve objects that are direct parents of the objects(s) passed as input. Optionally, you can restrict results that belong to snapshot(s) that match the given criteria.
    * @async
    * @param {ObjectVersion|Array<ObjectVersion>} inputData - object(s) for which we want to retrieve direct parents
-   * @param {object} snapshotCriteria - snapshot search criteria to restrict results, that may include the following properties
-   * @param {string|Array<string>} snapshotCriteria.snapshotId - use this property to query by one or more snapshot IDs
-   * @param {string|Array<string>} snapshotCriteria.appId - use this property to query by one or more application IDs
-   * @param {string|Array<string>} snapshotCriteria.branchId - use this property to query by one or more branch IDs
-   * @param {string|Array<string>} snapshotCriteria.snapshotName - use this property to query by one or more snapshot names
-   * @param {string|Array<string>} snapshotCriteria.branchName - use this property to query by one or more branch names
-   * @param {string|Array<string>} snapshotCriteria.appShortName - use this property to query by one or more application acronyms
-   * @param {string|Array<string>} snapshotCriteria.appName - use this property to query by one or more application names
-   * @param {string|Array<boolean>} snapshotCriteria.isToolkit - use this property to query by toolkits or process applications
+   * @param {SnapshotCriteria} snapshotCriteria - snapshot search criteria to restrict results
    * @return {Promise<Array<ObjectVersion>|Error>} a `Promise` that will be resolved with an array of `ObjectVersion` instances with the results that match the given criteria, or rejected with an `Error` instance if any error occurs
    */
   async getObjectWhereUsed (inputData, snapshotCriteria) {
