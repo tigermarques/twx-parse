@@ -66,3 +66,5 @@ typings/
 # CUSTOM
 # data folder
 data
+test.js
+test-remove.js
