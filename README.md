@@ -115,6 +115,14 @@ To check for code style, run
 npm run lint
 ```
 
+### Generating Documentation
+
+Documentation for the project is done with `jsdoc`. If you update any code that requires documentation update, please do so and update the `api.md` file using the command
+
+```
+npm run docs
+```
+
 ### Versioning
 
 This project follows the [Semantic Versioning 2.0.0](https://semver.org/) guide. Version numbering is handled by the package `semantic-release`. Therefore, never update the `version` field in the `package.json` file.
