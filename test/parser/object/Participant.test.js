@@ -37,8 +37,10 @@ describe('Parser - Object - Participant', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -69,7 +71,9 @@ describe('Parser - Object - Participant', () => {
         dependencies: [
           '/24.2a87eb22-940b-4664-be65-5806a5d01ac8'
         ],
-        versionId: 'd915fc56-f819-45ce-a879-9b798f563ae0'
+        versionId: 'd915fc56-f819-45ce-a879-9b798f563ae0',
+        description: '',
+        isExposed: true
       })
     })
   })

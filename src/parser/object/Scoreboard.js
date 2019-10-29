@@ -16,13 +16,16 @@ const parseScoreboard = Performance.makeMeasurable(async (databaseName, jsonData
     result.register = true
     result.id = scoreboard.$.id
     result.name = scoreboard.$.name
+    result.description = ParseUtils.isNullXML(scoreboard.description[0]) ? null : scoreboard.description[0]
     result.type = TYPES.Scoreboard
+    result.isExposed = false
     result.dependencies = []
 
     if (scoreboard.layoutRef && !ParseUtils.isNullXML(scoreboard.layoutRef[0])) {
       result.dependencies.push(scoreboard.layoutRef[0])
     }
     if (scoreboard.participantRef && !ParseUtils.isNullXML(scoreboard.participantRef[0])) {
+      result.isExposed = true
       result.dependencies.push(scoreboard.participantRef[0])
     }
 

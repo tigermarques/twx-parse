@@ -1,3 +1,4 @@
+const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
 const { TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
@@ -15,7 +16,9 @@ const parseFile = Performance.makeMeasurable(async (databaseName, jsonData) => {
     result.register = true
     result.id = file.$.id
     result.name = file.$.name
+    result.description = ParseUtils.isNullXML(file.description[0]) ? null : file.description[0]
     result.type = TYPES.File
+    result.isExposed = false
     result.dependencies = []
   }
 

@@ -16,7 +16,9 @@ const parseKPI = Performance.makeMeasurable(async (databaseName, jsonData) => {
     result.register = true
     result.id = kpi.$.id
     result.name = kpi.$.name
+    result.description = ParseUtils.isNullXML(kpi.description[0]) ? null : kpi.description[0]
     result.type = TYPES.KPI
+    result.isExposed = false
     result.dependencies = []
 
     if (kpi.rollupMetricRef && !ParseUtils.isNullXML(kpi.rollupMetricRef[0])) {

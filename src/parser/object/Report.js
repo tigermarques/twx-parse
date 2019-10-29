@@ -16,12 +16,14 @@ const parseReport = Performance.makeMeasurable(async (databaseName, jsonData) =>
     result.register = true
     result.id = report.$.id
     result.name = report.$.name
+    result.description = ParseUtils.isNullXML(report.description[0]) ? null : report.description[0]
     result.type = TYPES.Report
+    result.isExposed = false
     result.dependencies = []
 
     if (report.participantRef && !ParseUtils.isNullXML(report.participantRef[0])) {
       result.dependencies.push(report.participantRef[0])
-      result.dependencies.push(report.participantRef[0])
+      result.isExposed = true
     }
 
     if (report.ReportTGLink) {

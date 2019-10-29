@@ -16,7 +16,9 @@ const parseTWClass = Performance.makeMeasurable(async (databaseName, jsonData) =
     result.register = true
     result.id = twClass.$.id
     result.name = twClass.$.name
+    result.description = ParseUtils.isNullXML(twClass.description[0]) ? null : twClass.description[0]
     result.type = TYPES.TWClass
+    result.isExposed = false
     result.dependencies = []
 
     if (twClass.definition && !ParseUtils.isNullXML(twClass.definition[0]) && twClass.definition[0].property) {

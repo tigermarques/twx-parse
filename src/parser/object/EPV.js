@@ -16,11 +16,14 @@ const parseEPV = Performance.makeMeasurable(async (databaseName, jsonData) => {
     result.register = true
     result.id = epv.$.id
     result.name = epv.$.name
+    result.description = ParseUtils.isNullXML(epv.description[0]) ? null : epv.description[0]
     result.type = TYPES.EPV
+    result.isExposed = false
     result.dependencies = []
 
     if (epv.participantRef && !ParseUtils.isNullXML(epv.participantRef[0])) {
       result.dependencies.push(epv.participantRef[0])
+      result.isExposed = true
     }
   }
 

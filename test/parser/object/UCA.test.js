@@ -37,8 +37,10 @@ describe('Parser - Object - UCA', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -69,7 +71,9 @@ describe('Parser - Object - UCA', () => {
         dependencies: [
           '/1.350b261f-7e76-4fd5-abe4-25817b0090f3'
         ],
-        versionId: '489feab5-9618-4da1-b827-23d616dab054'
+        versionId: '489feab5-9618-4da1-b827-23d616dab054',
+        description: null,
+        isExposed: false
       })
     })
   })

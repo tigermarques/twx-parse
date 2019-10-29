@@ -37,8 +37,10 @@ describe('Parser - Object - External Activity', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -67,7 +69,9 @@ describe('Parser - Object - External Activity', () => {
         name: 'ace32f52-838c-4f58-9bdf-b0c4edc225b9 Serviço externo operation1',
         type: TYPES.ExternalActivity,
         dependencies: [],
-        versionId: 'f907965b-4d7f-4698-9213-c2c7ca1df315'
+        versionId: 'f907965b-4d7f-4698-9213-c2c7ca1df315',
+        description: null,
+        isExposed: false
       })
     })
   })

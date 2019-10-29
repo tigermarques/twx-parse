@@ -37,8 +37,10 @@ describe('Parser - Object - Historical Scenario', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -67,7 +69,9 @@ describe('Parser - Object - Historical Scenario', () => {
         name: 'Last Year',
         type: TYPES.HistoricalScenario,
         dependencies: [],
-        versionId: '4f49ee1f-f643-4d82-aafe-a3b20543975f'
+        versionId: '4f49ee1f-f643-4d82-aafe-a3b20543975f',
+        description: null,
+        isExposed: false
       })
     })
   })

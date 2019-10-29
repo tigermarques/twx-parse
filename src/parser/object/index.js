@@ -101,7 +101,7 @@ const saveObjectInformation = Performance.makeMeasurable(async (databaseName, ob
     for (let i = 0; i < objectInformationArray.length; i++) {
       const objectInfo = objectInformationArray[i]
       if (objectInfo && objectInfo.register) {
-        objectVersionArray.push(new ObjectVersion(databaseName, objectInfo.versionId, objectInfo.id, objectInfo.name, objectInfo.type, objectInfo.subType))
+        objectVersionArray.push(new ObjectVersion(databaseName, objectInfo.versionId, objectInfo.id, objectInfo.name, objectInfo.description, objectInfo.type, objectInfo.subType, objectInfo.isExposed))
 
         const dependencyArr = []
         if (objectInfo.dependencies) {

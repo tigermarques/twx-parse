@@ -37,8 +37,10 @@ describe('Parser - Object - Theme', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -67,7 +69,9 @@ describe('Parser - Object - Theme', () => {
         name: 'BPM Theme',
         type: TYPES.Theme,
         dependencies: [],
-        versionId: 'fefea6bb-a80f-47ff-ba26-04ce0c5d878c'
+        versionId: 'fefea6bb-a80f-47ff-ba26-04ce0c5d878c',
+        description: '<div><i>Replace this documentation text and describe your theme.</i></div><div><br/></div><div>In a theme, you define the variables that coach views use in their dynamic stylesheets. When a coach view is used in a coach of a human service, the runtime CSS file for the coach view is created from combining the variable values with the dynamic stylesheets.</div>',
+        isExposed: false
       })
     })
   })

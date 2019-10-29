@@ -37,8 +37,10 @@ describe('Parser - Object - Scoreboard', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -71,7 +73,9 @@ describe('Parser - Object - Scoreboard', () => {
           '/24.2a87eb22-940b-4664-be65-5806a5d01ac8',
           '/11.b744896e-f2fd-4d54-90d4-3bb6658f4690'
         ],
-        versionId: '383f46cc-46e2-42cf-95e4-07a7bb137595'
+        versionId: '383f46cc-46e2-42cf-95e4-07a7bb137595',
+        description: null,
+        isExposed: true
       })
     })
   })

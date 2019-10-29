@@ -178,7 +178,7 @@ describe('Classes - Registry', () => {
   describe('ObjectVersion', () => {
     it('should proxy correctly the "register" method', () => {
       const stub = sinon.stub(ObjectVersion, 'register').returns(defer())
-      const obj1 = new ObjectVersion('name1', 'versionId1', 'objectId1', 'versionName1', 'type1', 'subtype1')
+      const obj1 = new ObjectVersion('name1', 'versionId1', 'objectId1', 'versionName1', 'description1', 'type1', 'subtype1', true)
       expect(stub).not.to.have.been.called
       const result = Registry.ObjectVersion.register('name1', obj1)
       expect(stub).to.have.been.calledOnce
@@ -189,8 +189,8 @@ describe('Classes - Registry', () => {
 
     it('should proxy correctly the "registerMany" method', () => {
       const stub = sinon.stub(ObjectVersion, 'registerMany').returns(defer())
-      const obj1 = new ObjectVersion('name1', 'versionId1', 'objectId1', 'versionName1', 'type1', 'subtype1')
-      const obj2 = new ObjectVersion('name2', 'versionId2', 'objectId2', 'versionName2', 'type2', 'subtype2')
+      const obj1 = new ObjectVersion('name1', 'versionId1', 'objectId1', 'versionName1', 'description1', 'type1', 'subtype1', true)
+      const obj2 = new ObjectVersion('name1', 'versionId2', 'objectId2', 'versionName2', 'description2', 'type2', 'subtype2', false)
       expect(stub).not.to.have.been.called
       const result = Registry.ObjectVersion.registerMany('name1', [obj1, obj2])
       expect(stub).to.have.been.calledOnce

@@ -1,3 +1,4 @@
+const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
 const { TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
@@ -15,7 +16,9 @@ const parseTrackingGroup = Performance.makeMeasurable(async (databaseName, jsonD
     result.register = true
     result.id = trackingGroup.$.id
     result.name = trackingGroup.$.name
+    result.description = ParseUtils.isNullXML(trackingGroup.description[0]) ? null : trackingGroup.description[0]
     result.type = TYPES.TrackingGroup
+    result.isExposed = false
     result.dependencies = []
   }
 

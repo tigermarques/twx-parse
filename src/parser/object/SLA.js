@@ -16,11 +16,14 @@ const parseSLA = Performance.makeMeasurable(async (databaseName, jsonData) => {
     result.register = true
     result.id = sla.$.id
     result.name = sla.$.name
+    result.description = ParseUtils.isNullXML(sla.description[0]) ? null : sla.description[0]
     result.type = TYPES.SLA
+    result.isExposed = false
     result.dependencies = []
 
     if (sla.participantRef && !ParseUtils.isNullXML(sla.participantRef[0])) {
       result.dependencies.push(sla.participantRef[0])
+      result.isExposed = true
     }
     if (sla.xmlData && sla.xmlData[0] && sla.xmlData[0].condition && !ParseUtils.isNullXML(sla.xmlData[0].condition[0])) {
       result.dependencies.push(sla.xmlData[0].condition[0].$.metricId)

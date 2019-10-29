@@ -2,7 +2,7 @@ const { ObjectVersion: DBAccess } = require('../db')
 
 const getObjectFromResult = workspaceName => item =>
   item
-    ? new ObjectVersion(workspaceName, item.objectVersionId, item.objectId, item.name, item.type, item.subtype)
+    ? new ObjectVersion(workspaceName, item.objectVersionId, item.objectId, item.name, item.description, item.type, item.subtype, item.isExposed === 1)
     : null
 
 const getObjectFromItem = obj =>
@@ -11,13 +11,15 @@ const getObjectFromItem = obj =>
       objectVersionId: obj.objectVersionId,
       objectId: obj.objectId,
       name: obj.name,
+      description: obj.description,
       type: obj.type,
-      subtype: obj.subtype
+      subtype: obj.subtype,
+      isExposed: obj.isExposed ? 1 : 0
     }
     : null
 
 class ObjectVersion {
-  constructor (workspaceName, objectVersionId, objectId, name, type, subtype) {
+  constructor (workspaceName, objectVersionId, objectId, name, description, type, subtype, isExposed) {
     this.workspace = workspaceName
     // primary key
     this.objectVersionId = objectVersionId
@@ -25,8 +27,10 @@ class ObjectVersion {
     // basic info
     this.objectId = objectId
     this.name = name
+    this.description = description
     this.type = type
     this.subtype = subtype
+    this.isExposed = isExposed
   }
 }
 

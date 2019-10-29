@@ -37,8 +37,10 @@ describe('Parser - Object - Coach View', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -75,7 +77,9 @@ describe('Parser - Object - Coach View', () => {
           '2c7ae840-cf8c-4998-839b-2cf42b6b7656/61.61ce8eed-a609-4e20-b0d0-fecea416f1d6',
           '/50.2641e279-160b-4d0d-bc96-528b36793ecf'
         ],
-        versionId: 'cc785f21-0d04-42e2-8fd0-2a8a6d5356b9'
+        versionId: 'cc785f21-0d04-42e2-8fd0-2a8a6d5356b9',
+        description: null,
+        isExposed: false
       })
     })
   })

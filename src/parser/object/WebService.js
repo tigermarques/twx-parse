@@ -16,7 +16,9 @@ const parseWebService = Performance.makeMeasurable(async (databaseName, jsonData
     result.register = true
     result.id = webservice.$.id
     result.name = webservice.$.name
+    result.description = ParseUtils.isNullXML(webservice.description[0]) ? null : webservice.description[0]
     result.type = TYPES.WebService
+    result.isExposed = true
     result.dependencies = []
 
     if (webservice.webServiceOperation) {

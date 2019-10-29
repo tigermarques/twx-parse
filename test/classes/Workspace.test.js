@@ -107,8 +107,10 @@ const OBJECT1 = {
   objectVersionId: 'version1',
   objectId: 'objectId1',
   name: 'name1',
+  description: 'description1',
   type: 'type1',
-  subtype: 'subtype1'
+  subtype: 'subtype1',
+  isExposed: true
 }
 
 const OBJECT2 = {
@@ -116,8 +118,10 @@ const OBJECT2 = {
   objectVersionId: 'version2',
   objectId: 'objectId2',
   name: 'name2',
+  description: 'description2',
   type: 'type2',
-  subtype: 'subtype2'
+  subtype: 'subtype2',
+  isExposed: false
 }
 
 const OBJECT3 = {
@@ -125,8 +129,10 @@ const OBJECT3 = {
   objectVersionId: 'version3',
   objectId: 'objectId3',
   name: 'name3',
+  description: 'description3',
   type: 'type3',
-  subtype: 'subtype3'
+  subtype: 'subtype3',
+  isExposed: true
 }
 
 const OBJECT_DEPENDENCY = (i, j) => {

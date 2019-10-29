@@ -37,8 +37,10 @@ describe('Parser - Object - Timing Interval', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -67,7 +69,9 @@ describe('Parser - Object - Timing Interval', () => {
         name: 'Timing1',
         type: TYPES.TimingInterval,
         dependencies: [],
-        versionId: '960ac38b-e80b-407f-8855-9ab3f0728492'
+        versionId: '960ac38b-e80b-407f-8855-9ab3f0728492',
+        description: null,
+        isExposed: false
       })
     })
   })

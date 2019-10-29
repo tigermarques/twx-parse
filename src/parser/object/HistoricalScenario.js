@@ -1,3 +1,5 @@
+
+const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
 const { TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
@@ -15,7 +17,9 @@ const parseHistoricalScenario = Performance.makeMeasurable(async (databaseName, 
     result.register = true
     result.id = historicalScenario.$.id
     result.name = historicalScenario.$.name
+    result.description = ParseUtils.isNullXML(historicalScenario.description[0]) ? null : historicalScenario.description[0]
     result.type = TYPES.HistoricalScenario
+    result.isExposed = false
     result.dependencies = []
   }
 

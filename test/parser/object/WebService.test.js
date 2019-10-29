@@ -37,8 +37,10 @@ describe('Parser - Object - WebService', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -70,7 +72,9 @@ describe('Parser - Object - WebService', () => {
           '/1.143ff27f-5e08-478c-af65-06723fa26d26',
           '/1.0295217c-7383-4a27-b311-333ea889f2bb'
         ],
-        versionId: 'e96bfdc9-c491-4826-ab89-fd1b05425cad'
+        versionId: 'e96bfdc9-c491-4826-ab89-fd1b05425cad',
+        description: null,
+        isExposed: true
       })
     })
   })

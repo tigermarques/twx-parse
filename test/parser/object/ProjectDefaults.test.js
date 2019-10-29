@@ -37,8 +37,10 @@ describe('Parser - Object - Project Defaults', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -71,7 +73,9 @@ describe('Parser - Object - Project Defaults', () => {
           '2c7ae840-cf8c-4998-839b-2cf42b6b7656/61.aabe9f91-df4b-43db-857c-41dbed4820a3',
           '2c7ae840-cf8c-4998-839b-2cf42b6b7656/72.e77f2a7e-10b4-45ee-90eb-e5b1546cc743'
         ],
-        versionId: 'a7220b2e-08ab-47d7-90e8-5b71df1edba4'
+        versionId: 'a7220b2e-08ab-47d7-90e8-5b71df1edba4',
+        description: null,
+        isExposed: false
       })
     })
   })

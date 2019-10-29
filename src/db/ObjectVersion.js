@@ -2,7 +2,7 @@ const Performance = require('../utils/Performance')
 const { getDB } = require('./common')
 
 const getParamsFromItem = item =>
-  [item.objectVersionId, item.objectId, item.name, item.type, item.subtype]
+  [item.objectVersionId, item.objectId, item.name, item.description, item.type, item.subtype, item.isExposed]
 
 const buildWhereQuery = (obj, snapshotObj) => {
   let whereClause = '1 = 1'
@@ -36,8 +36,8 @@ module.exports = {
   register: Performance.makeMeasurable((databaseName, item) => {
     return new Promise((resolve, reject) => {
       const db = getDB(databaseName)
-      const sql = `insert into ObjectVersion (objectVersionId, objectId, name, type, subtype)
-                  values (?, ?, ?, ?, ?)`
+      const sql = `insert into ObjectVersion (objectVersionId, objectId, name, description, type, subtype, isExposed)
+                  values (?, ?, ?, ?, ?, ?, ?)`
       const params = getParamsFromItem(item)
       db.run(sql, params, err => {
         if (err) {
@@ -56,8 +56,8 @@ module.exports = {
       db.exec('begin')
       for (let i = 0; i < items.length; i++) {
         const item = items[i]
-        const sql = `insert into ObjectVersion (objectVersionId, objectId, name, type, subtype)
-                  values (?, ?, ?, ?, ?)`
+        const sql = `insert into ObjectVersion (objectVersionId, objectId, name, description, type, subtype, isExposed)
+                  values (?, ?, ?, ?, ?, ?, ?)`
         const params = getParamsFromItem(item)
 
         db.run(sql, params)
@@ -147,7 +147,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       const db = getDB(databaseName)
       const [whereClause, parameters] = buildWhereQuery(obj)
-      const sql = `delete from ObjectVersion where ${whereClause}`
+      const sql = `delete from ObjectVersion ov where ${whereClause}`
       db.run(sql, parameters, (err, item) => {
         if (err) {
           reject(err)

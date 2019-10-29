@@ -21,13 +21,20 @@ const parseProcess = Performance.makeMeasurable(async (databaseName, jsonData) =
     result.register = true
     result.id = process.$.id
     result.name = process.$.name
+    result.description = ParseUtils.isNullXML(process.description[0]) ? null : process.description[0]
     result.type = TYPES.Process
     result.subType = subType
+    result.isExposed = false
     result.dependencies = []
+
+    if (subType === PROCESS_TYPES.AjaxService || !ParseUtils.isNullXML(process.exposedType[0])) {
+      result.isExposed = true
+    }
 
     // Exposed to Start
     if (process.participantRef && !ParseUtils.isNullXML(process.participantRef[0])) {
       result.dependencies.push(process.participantRef[0])
+      result.isExposed = true
     }
 
     // Input and Output Parameters

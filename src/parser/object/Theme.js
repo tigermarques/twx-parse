@@ -1,3 +1,4 @@
+const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
 const { TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
@@ -15,7 +16,9 @@ const parseTheme = Performance.makeMeasurable(async (databaseName, jsonData) => 
     result.register = true
     result.id = theme.$.id
     result.name = theme.$.name
+    result.description = ParseUtils.isNullXML(theme.description[0]) ? null : theme.description[0]
     result.type = TYPES.Theme
+    result.isExposed = false
     result.dependencies = []
   }
 

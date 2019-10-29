@@ -55,8 +55,10 @@ describe('Parser - Object - Process', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonDataDecisionService)
@@ -86,7 +88,9 @@ describe('Parser - Object - Process', () => {
         type: TYPES.Process,
         subType: PROCESS_TYPES.DecisionService,
         dependencies: [],
-        versionId: '64a4e2ac-e566-4ae6-9cf4-751b218e0ca2'
+        versionId: '64a4e2ac-e566-4ae6-9cf4-751b218e0ca2',
+        description: null,
+        isExposed: false
       })
     })
   })
@@ -115,7 +119,9 @@ describe('Parser - Object - Process', () => {
           '/1.143ff27f-5e08-478c-af65-06723fa26d26',
           '/1.0295217c-7383-4a27-b311-333ea889f2bb'
         ],
-        versionId: '04e9ee0e-3851-43c1-86c9-9e128c3fc245'
+        versionId: '04e9ee0e-3851-43c1-86c9-9e128c3fc245',
+        description: null,
+        isExposed: true
       })
     })
   })
@@ -144,7 +150,9 @@ describe('Parser - Object - Process', () => {
           '64.af46ef40-d360-4e61-a58a-5dcd3b249894',
           '64.393eb28a-759f-4d92-9bee-56f7dab3765f'
         ],
-        versionId: '1611ccb5-4efd-4ae8-9c94-27ef99afbbda'
+        versionId: '1611ccb5-4efd-4ae8-9c94-27ef99afbbda',
+        description: null,
+        isExposed: true
       })
     })
   })
@@ -173,7 +181,9 @@ describe('Parser - Object - Process', () => {
           '/1.61a0bf71-b88b-4fc3-b79b-f023825ed63e',
           '/1.143ff27f-5e08-478c-af65-06723fa26d26'
         ],
-        versionId: 'b65eb81f-6a68-4d7c-b0e1-e0c5c3ee8fe1'
+        versionId: 'b65eb81f-6a68-4d7c-b0e1-e0c5c3ee8fe1',
+        description: null,
+        isExposed: false
       })
     })
   })
@@ -196,7 +206,9 @@ describe('Parser - Object - Process', () => {
           '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
           '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022'
         ],
-        versionId: '1c04d272-5a1d-4c65-8c34-f974aebaa8c9'
+        versionId: '1c04d272-5a1d-4c65-8c34-f974aebaa8c9',
+        description: null,
+        isExposed: false
       })
     })
   })
@@ -216,7 +228,9 @@ describe('Parser - Object - Process', () => {
         type: TYPES.Process,
         subType: PROCESS_TYPES.ImplementationService,
         dependencies: [],
-        versionId: '9cca5474-f48f-4f51-b62d-12fcaafc82b0'
+        versionId: '9cca5474-f48f-4f51-b62d-12fcaafc82b0',
+        description: null,
+        isExposed: false
       })
     })
   })
@@ -278,7 +292,9 @@ describe('Parser - Object - Process', () => {
           '64.fc2d6e5b-da91-4e0a-b874-3ec8ace34c82',
           '64.36f46ec6-616b-4e38-86aa-fba20ec6f9b4'
         ],
-        versionId: 'a9457050-5a86-413e-b5ea-76f6f198cb1c'
+        versionId: 'a9457050-5a86-413e-b5ea-76f6f198cb1c',
+        description: '<p>When you create a new details UI, the generated human service uses a copy of this template. You can further customize the human service to create your details user interface.</p><p>The service template includes:</p><ul><li>A <b>View instance details</b> coach, which has these coach controls:</li><ul><li><b>Default Instance Details Template</b> - displays the instance details in Process Portal</li><li><b>Data section view</b> - displays the values of the variables that are passed into the human service</li></ul><li>A <b>Show error</b> coach - returns an error if the instance is not found.</li></ul>',
+        isExposed: true
       })
     })
   })
@@ -298,7 +314,9 @@ describe('Parser - Object - Process', () => {
         type: TYPES.Process,
         subType: PROCESS_TYPES.ExternalService,
         dependencies: [],
-        versionId: '5df7e653-a455-4ded-9867-27b1b9b00eec'
+        versionId: '5df7e653-a455-4ded-9867-27b1b9b00eec',
+        description: null,
+        isExposed: false
       })
     })
   })
@@ -323,7 +341,9 @@ describe('Parser - Object - Process', () => {
           '2c7ae840-cf8c-4998-839b-2cf42b6b7656/1.5a9202c7-6f7b-440a-8d6c-f9fd24ed3b92',
           '/1.350b261f-7e76-4fd5-abe4-25817b0090f3'
         ],
-        versionId: '846cacfb-94b8-461e-a515-87d9ebacfb8d'
+        versionId: '846cacfb-94b8-461e-a515-87d9ebacfb8d',
+        description: null,
+        isExposed: true
       })
     })
   })

@@ -37,8 +37,10 @@ describe('Parser - Object - EPV', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -69,7 +71,9 @@ describe('Parser - Object - EPV', () => {
         dependencies: [
           '/24.2a87eb22-940b-4664-be65-5806a5d01ac8'
         ],
-        versionId: '2364dacf-6bce-4fdd-8d27-41b83f4a20e7'
+        versionId: '2364dacf-6bce-4fdd-8d27-41b83f4a20e7',
+        description: '',
+        isExposed: true
       })
     })
   })
