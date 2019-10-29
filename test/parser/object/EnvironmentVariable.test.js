@@ -37,8 +37,10 @@ describe('Parser - Object - Environment Variable', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -67,7 +69,9 @@ describe('Parser - Object - Environment Variable', () => {
         name: 'Environment Variables',
         type: TYPES.EnvironmentVariable,
         dependencies: [],
-        versionId: 'fb479b21-911b-4d36-9d19-942bfd213f21'
+        versionId: 'fb479b21-911b-4d36-9d19-942bfd213f21',
+        description: null,
+        isExposed: true
       })
     })
   })

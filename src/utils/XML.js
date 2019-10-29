@@ -8,7 +8,7 @@ const xml2jsParser = new xml2js.Parser({
 })
 
 const isNullXML = Performance.makeMeasurable(xmlNode => {
-  return !!(!xmlNode || (xmlNode.$ && xmlNode.$.isNull === 'true'))
+  return !!(xmlNode === undefined || xmlNode === null || (xmlNode.$ && xmlNode.$.isNull === 'true'))
 }, 'isNullXML')
 
 const parseXML = Performance.makeMeasurable((data) => {

@@ -16,7 +16,9 @@ const parseCoachView = Performance.makeMeasurable(async (databaseName, jsonData)
     result.register = true
     result.id = coachView.$.id
     result.name = coachView.$.name
+    result.description = ParseUtils.isNullXML(coachView.description[0]) ? null : coachView.description[0]
     result.type = TYPES.CoachView
+    result.isExposed = false
     result.dependencies = []
 
     // Layout

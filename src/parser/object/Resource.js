@@ -1,3 +1,4 @@
+const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
 const { TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
@@ -15,7 +16,9 @@ const parseResource = Performance.makeMeasurable(async (databaseName, jsonData) 
     result.register = true
     result.id = resource.$.id
     result.name = resource.$.name
+    result.description = ParseUtils.isNullXML(resource.description[0]) ? null : resource.description[0]
     result.type = TYPES.Resource
+    result.isExposed = false
     result.dependencies = []
   }
 

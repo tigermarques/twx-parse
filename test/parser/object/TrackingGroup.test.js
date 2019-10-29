@@ -37,8 +37,10 @@ describe('Parser - Object - Tracking Group', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -67,7 +69,9 @@ describe('Parser - Object - Tracking Group', () => {
         name: 'Track1',
         type: TYPES.TrackingGroup,
         dependencies: [],
-        versionId: '988bad62-c19c-4e6c-a30c-dae4ad8f26cb'
+        versionId: '988bad62-c19c-4e6c-a30c-dae4ad8f26cb',
+        description: '',
+        isExposed: false
       })
     })
   })

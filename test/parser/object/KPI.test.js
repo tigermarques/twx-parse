@@ -37,8 +37,10 @@ describe('Parser - Object - KPI', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -69,7 +71,9 @@ describe('Parser - Object - KPI', () => {
         dependencies: [
           '2c7ae840-cf8c-4998-839b-2cf42b6b7656/49.d5da2c80-b2af-40a6-981d-9de4df12ed12'
         ],
-        versionId: '00358551-6701-4f1f-bdcf-afde9191a189'
+        versionId: '00358551-6701-4f1f-bdcf-afde9191a189',
+        description: null,
+        isExposed: false
       })
     })
   })

@@ -37,8 +37,10 @@ describe('Parser - Object - File', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -67,7 +69,9 @@ describe('Parser - Object - File', () => {
         name: 'apgexport.png',
         type: TYPES.File,
         dependencies: [],
-        versionId: '9a9ed192-3468-4527-942e-c22b237cccd4'
+        versionId: '9a9ed192-3468-4527-942e-c22b237cccd4',
+        description: null,
+        isExposed: false
       })
     })
   })

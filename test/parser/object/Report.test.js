@@ -37,8 +37,10 @@ describe('Parser - Object - Report', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -68,12 +70,13 @@ describe('Parser - Object - Report', () => {
         type: TYPES.Report,
         dependencies: [
           '/24.a776709d-cf51-4353-9ca5-42a15c712b02',
-          '/24.a776709d-cf51-4353-9ca5-42a15c712b02',
           '/14.8ce729e5-ab2b-42ce-b6f5-6f3c94798330',
           '/21.ed99f470-25b4-4a03-b89d-888bc265e2aa',
           '/50.2641e279-160b-4d0d-bc96-528b36793ecf'
         ],
-        versionId: 'a7b0891f-97ef-4d9d-9f1b-25b5fbf61493'
+        versionId: 'a7b0891f-97ef-4d9d-9f1b-25b5fbf61493',
+        description: null,
+        isExposed: true
       })
     })
   })

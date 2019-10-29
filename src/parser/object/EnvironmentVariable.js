@@ -1,3 +1,4 @@
+const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
 const { TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
@@ -15,7 +16,9 @@ const parseEnvironmentVariables = Performance.makeMeasurable(async (databaseName
     result.register = true
     result.id = environmentVariableSet.$.id
     result.name = environmentVariableSet.$.name
+    result.description = ParseUtils.isNullXML(environmentVariableSet.description[0]) ? null : environmentVariableSet.description[0]
     result.type = TYPES.EnvironmentVariable
+    result.isExposed = true
     result.dependencies = []
   }
 

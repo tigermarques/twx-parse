@@ -16,7 +16,9 @@ const parseParticipant = Performance.makeMeasurable(async (databaseName, jsonDat
     result.register = true
     result.id = participant.$.id
     result.name = participant.$.name
+    result.description = ParseUtils.isNullXML(participant.description[0]) ? null : participant.description[0]
     result.type = TYPES.Participant
+    result.isExposed = true
     result.dependencies = []
 
     if (participant.managersRef && !ParseUtils.isNullXML(participant.managersRef[0])) {

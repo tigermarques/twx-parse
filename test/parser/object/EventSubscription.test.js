@@ -37,8 +37,10 @@ describe('Parser - Object - Event Subscription', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -70,7 +72,9 @@ describe('Parser - Object - Event Subscription', () => {
           '/1.0295217c-7383-4a27-b311-333ea889f2bb',
           '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03'
         ],
-        versionId: 'de7fddea-d1af-4efa-8a96-a7118032d440'
+        versionId: 'de7fddea-d1af-4efa-8a96-a7118032d440',
+        description: null,
+        isExposed: true
       })
     })
   })

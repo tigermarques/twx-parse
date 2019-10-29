@@ -11,25 +11,29 @@ chai.use(chaiAsPromised)
 const { expect } = chai
 
 const OBJECT1 = () =>
-  new ObjectVersion('name1', 'versionId1', 'objectId1', 'versionName1', 'type1', 'subtype1')
+  new ObjectVersion('name1', 'versionId1', 'objectId1', 'versionName1', 'description1', 'type1', 'subtype1', true)
 
 const OBJECT2 = () =>
-  new ObjectVersion('name1', 'versionId2', 'objectId2', 'versionName2', 'type2', 'subtype2')
+  new ObjectVersion('name1', 'versionId2', 'objectId2', 'versionName2', 'description2', 'type2', 'subtype2', false)
 
 const OBJECT_STUB1 = {
   objectVersionId: 'versionId1',
   objectId: 'objectId1',
   name: 'versionName1',
+  description: 'description1',
   type: 'type1',
-  subtype: 'subtype1'
+  subtype: 'subtype1',
+  isExposed: 1
 }
 
 const OBJECT_STUB2 = {
   objectVersionId: 'versionId2',
   objectId: 'objectId2',
   name: 'versionName2',
+  description: 'description2',
   type: 'type2',
-  subtype: 'subtype2'
+  subtype: 'subtype2',
+  isExposed: 0
 }
 
 const OBJECT_RESULT1 = {
@@ -37,8 +41,10 @@ const OBJECT_RESULT1 = {
   objectVersionId: 'versionId1',
   objectId: 'objectId1',
   name: 'versionName1',
+  description: 'description1',
   type: 'type1',
-  subtype: 'subtype1'
+  subtype: 'subtype1',
+  isExposed: true
 }
 
 const OBJECT_RESULT2 = {
@@ -46,8 +52,10 @@ const OBJECT_RESULT2 = {
   objectVersionId: 'versionId2',
   objectId: 'objectId2',
   name: 'versionName2',
+  description: 'description2',
   type: 'type2',
-  subtype: 'subtype2'
+  subtype: 'subtype2',
+  isExposed: false
 }
 
 describe('Classes - ObjectVersion', () => {

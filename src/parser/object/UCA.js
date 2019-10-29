@@ -16,7 +16,9 @@ const parseUCA = Performance.makeMeasurable(async (databaseName, jsonData) => {
     result.register = true
     result.id = uca.$.id
     result.name = uca.$.name
+    result.description = ParseUtils.isNullXML(uca.description[0]) ? null : uca.description[0]
     result.type = TYPES.UCA
+    result.isExposed = false
     result.dependencies = []
 
     if (uca.processRef && !ParseUtils.isNullXML(uca.processRef[0])) {

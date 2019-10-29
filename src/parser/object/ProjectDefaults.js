@@ -16,7 +16,9 @@ const parseProjectDefaults = Performance.makeMeasurable(async (databaseName, jso
     result.register = true
     result.id = projectDefaults.$.id
     result.name = projectDefaults.$.name
+    result.description = ParseUtils.isNullXML(projectDefaults.description[0]) ? null : projectDefaults.description[0]
     result.type = TYPES.ProjectDefaults
+    result.isExposed = false
     result.dependencies = []
 
     if (projectDefaults.defaultXslRef && !ParseUtils.isNullXML(projectDefaults.defaultXslRef[0])) {

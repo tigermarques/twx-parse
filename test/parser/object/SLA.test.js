@@ -37,8 +37,10 @@ describe('Parser - Object - SLA', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -70,7 +72,9 @@ describe('Parser - Object - SLA', () => {
           '/24.a776709d-cf51-4353-9ca5-42a15c712b02',
           '2c7ae840-cf8c-4998-839b-2cf42b6b7656/49.67cbb213-0032-4f14-be44-7e9c7a1a146f'
         ],
-        versionId: 'fecdb217-32a8-4edb-afc6-453181302064'
+        versionId: 'fecdb217-32a8-4edb-afc6-453181302064',
+        description: null,
+        isExposed: true
       })
     })
   })

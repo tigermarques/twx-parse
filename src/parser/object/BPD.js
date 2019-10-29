@@ -20,13 +20,16 @@ const parseBPD = Performance.makeMeasurable(async (databaseName, jsonData) => {
     result.register = true
     result.id = bpd.$.id
     result.name = bpd.$.name
+    result.description = ParseUtils.isNullXML(bpd.description[0]) ? null : bpd.description[0]
     result.type = TYPES.BPD
     result.subType = subType
     result.dependencies = []
+    result.isExposed = false
 
     // Exposed to Start
     if (bpd.participantRef && !ParseUtils.isNullXML(bpd.participantRef[0])) {
       result.dependencies.push(bpd.participantRef[0])
+      result.isExposed = true
     }
 
     // Exposed Data

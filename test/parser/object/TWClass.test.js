@@ -37,8 +37,10 @@ describe('Parser - Object - TWClass', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData)
@@ -70,7 +72,9 @@ describe('Parser - Object - TWClass', () => {
           '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
           '/12.7425eece-319f-484b-a59f-8efeaaec2582'
         ],
-        versionId: 'e4f50724-0f37-4374-830b-3225e60f6667'
+        versionId: 'e4f50724-0f37-4374-830b-3225e60f6667',
+        description: null,
+        isExposed: false
       })
     })
   })

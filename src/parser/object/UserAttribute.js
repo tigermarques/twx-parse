@@ -16,7 +16,9 @@ const parseUserAttribute = Performance.makeMeasurable(async (databaseName, jsonD
     result.register = true
     result.id = userAttribute.$.id
     result.name = userAttribute.$.name
+    result.description = ParseUtils.isNullXML(userAttribute.description[0]) ? null : userAttribute.description[0]
     result.type = TYPES.UserAttribute
+    result.isExposed = false
     result.dependencies = []
 
     if (userAttribute.classRef && !ParseUtils.isNullXML(userAttribute.classRef[0])) {

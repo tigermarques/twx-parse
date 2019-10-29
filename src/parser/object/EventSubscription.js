@@ -16,7 +16,9 @@ const parseEventSubscription = Performance.makeMeasurable(async (databaseName, j
     result.register = true
     result.id = eventSubscription.$.id
     result.name = eventSubscription.$.name
+    result.description = ParseUtils.isNullXML(eventSubscription.description[0]) ? null : eventSubscription.description[0]
     result.type = TYPES.EventSubscription
+    result.isExposed = true
     result.dependencies = []
 
     if (eventSubscription.processRef && !ParseUtils.isNullXML(eventSubscription.processRef[0])) {

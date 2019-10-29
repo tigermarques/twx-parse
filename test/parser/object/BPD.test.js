@@ -39,8 +39,10 @@ describe('Parser - Object - BPD', () => {
       objectVersionId: 'versionId1',
       objectId: 'objectId1',
       name: 'versionName1',
+      description: 'description1',
       type: 'type1',
-      subtype: 'subtype1'
+      subtype: 'subtype1',
+      isExposed: true
     }))
     expect(getByIdStub).not.to.have.been.called
     const result = parseObject('name', jsonData1)
@@ -73,6 +75,7 @@ describe('Parser - Object - BPD', () => {
         register: true,
         id: '25.0dcc9130-7c0a-4fe9-9055-9e6688d6be01',
         name: 'Process2',
+        description: null,
         type: TYPES.BPD,
         dependencies: [
           '/24.a776709d-cf51-4353-9ca5-42a15c712b02',
@@ -104,12 +107,14 @@ describe('Parser - Object - BPD', () => {
           '/25.9358aeb8-22e5-49a5-91ec-e308642efab7'
         ],
         versionId: 'a8be0ae5-1b04-4588-9019-2ed2411737b5',
-        subType: BPD_TYPES.BPD
+        subType: BPD_TYPES.BPD,
+        isExposed: true
       })
       expect(data2).to.eql({
         register: true,
         id: '25.05eef081-e788-4d4c-8465-1fcea678278c',
         name: 'Sem título',
+        description: '',
         type: TYPES.BPD,
         dependencies: [
           '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
@@ -128,7 +133,8 @@ describe('Parser - Object - BPD', () => {
           '/1.7f6199ee-84e0-4fd4-aed2-6df579139f8f'
         ],
         versionId: 'f50ca6d3-ee1f-4ada-8ca1-b3e19aadb2fb',
-        subType: BPD_TYPES.Process
+        subType: BPD_TYPES.Process,
+        isExposed: false
       })
     })
   })
