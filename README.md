@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/tigermarques/twx-parse.svg?branch=master)](https://travis-ci.org/tigermarques/twx-parse)
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)<!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![codecov](https://codecov.io/gh/tigermarques/twx-parse/branch/master/graph/badge.svg)](https://codecov.io/gh/tigermarques/twx-parse)
 ![npm](https://img.shields.io/npm/v/twx-parser?color=green&label=npm%20package)
 
