@@ -2,15 +2,53 @@ const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
 const chaiAsPromised = require('chai-as-promised')
-const chaiSubset = require('chai-subset')
 const ObjectVersion = require('../../src/classes/ObjectVersion')
 const { ObjectVersion: DBAccess } = require('../../src/db')
 const { defer } = require('../test-utilities')
 
 chai.use(sinonChai)
 chai.use(chaiAsPromised)
-chai.use(chaiSubset)
 const { expect } = chai
+
+const OBJECT1 = () =>
+  new ObjectVersion('name1', 'versionId1', 'objectId1', 'versionName1', 'type1', 'subtype1')
+
+const OBJECT2 = () =>
+  new ObjectVersion('name1', 'versionId2', 'objectId2', 'versionName2', 'type2', 'subtype2')
+
+const OBJECT_STUB1 = {
+  objectVersionId: 'versionId1',
+  objectId: 'objectId1',
+  name: 'versionName1',
+  type: 'type1',
+  subtype: 'subtype1'
+}
+
+const OBJECT_STUB2 = {
+  objectVersionId: 'versionId2',
+  objectId: 'objectId2',
+  name: 'versionName2',
+  type: 'type2',
+  subtype: 'subtype2'
+}
+
+const OBJECT_RESULT1 = {
+  workspace: 'name1',
+  objectVersionId: 'versionId1',
+  objectId: 'objectId1',
+  name: 'versionName1',
+  type: 'type1',
+  subtype: 'subtype1'
+}
+
+const OBJECT_RESULT2 = {
+  workspace: 'name1',
+  objectVersionId: 'versionId2',
+  objectId: 'objectId2',
+  name: 'versionName2',
+  type: 'type2',
+  subtype: 'subtype2'
+}
 
 describe('Classes - ObjectVersion', () => {
   it('should be a class and have all the static methods', () => {
@@ -26,42 +64,28 @@ describe('Classes - ObjectVersion', () => {
   })
 
   it('should create objects correctly', () => {
-    const obj1 = new ObjectVersion('name1', 'versionId1', 'objectId1', 'versionName1', 'type1', 'subtype1')
-    expect(obj1).to.eql({
-      workspace: 'name1',
-      objectVersionId: 'versionId1',
-      objectId: 'objectId1',
-      name: 'versionName1',
-      type: 'type1',
-      subtype: 'subtype1'
-    })
+    const obj1 = OBJECT1()
+    expect(obj1).to.eql(OBJECT_RESULT1)
 
-    const obj2 = new ObjectVersion('name2', 'versionId2', 'objectId2', 'versionName2', 'type2', 'subtype2')
-    expect(obj2).to.eql({
-      workspace: 'name2',
-      objectVersionId: 'versionId2',
-      objectId: 'objectId2',
-      name: 'versionName2',
-      type: 'type2',
-      subtype: 'subtype2'
-    })
+    const obj2 = OBJECT2()
+    expect(obj2).to.eql(OBJECT_RESULT2)
   })
 
   it('should invoke the correct DB handler for the "register" method', () => {
     const stubResolve = sinon.stub(DBAccess, 'register').returns(defer())
-    const obj1 = new ObjectVersion('name1', 'versionId1', 'objectId1', 'versionName1', 'type1', 'subtype1')
+    const obj1 = OBJECT1()
     expect(stubResolve).not.to.have.been.called
     const resultResolve = ObjectVersion.register('name1', obj1)
     expect(stubResolve).to.have.been.calledOnce
-    expect(stubResolve).to.have.been.calledWith('name1', obj1)
+    expect(stubResolve).to.have.been.calledWith('name1', OBJECT_STUB1)
     stubResolve.restore()
 
     const stubReject = sinon.stub(DBAccess, 'register').returns(defer(false))
-    const obj2 = new ObjectVersion('name2', 'versionId2', 'objectId2', 'versionName2', 'type2', 'subtype2')
+    const obj2 = OBJECT2()
     expect(stubReject).not.to.have.been.called
     const resultReject = ObjectVersion.register('name2', obj2)
     expect(stubReject).to.have.been.calledOnce
-    expect(stubReject).to.have.been.calledWith('name2', obj2)
+    expect(stubReject).to.have.been.calledWith('name2', OBJECT_STUB2)
     stubReject.restore()
 
     return Promise.all([
@@ -72,19 +96,19 @@ describe('Classes - ObjectVersion', () => {
 
   it('should invoke the correct DB handler for the "registerMany" method', () => {
     const stubResolve = sinon.stub(DBAccess, 'registerMany').returns(defer())
-    const obj1 = new ObjectVersion('name1', 'versionId1', 'objectId1', 'versionName1', 'type1', 'subtype1')
-    const obj2 = new ObjectVersion('name2', 'versionId2', 'objectId2', 'versionName2', 'type2', 'subtype2')
+    const obj1 = OBJECT1()
+    const obj2 = OBJECT2()
     expect(stubResolve).not.to.have.been.called
     const resultResolve = ObjectVersion.registerMany('name1', [obj1, obj2])
     expect(stubResolve).to.have.been.calledOnce
-    expect(stubResolve).to.have.been.calledWith('name1', [obj1, obj2])
+    expect(stubResolve).to.have.been.calledWith('name1', [OBJECT_STUB1, OBJECT_STUB2])
     stubResolve.restore()
 
     const stubReject = sinon.stub(DBAccess, 'registerMany').returns(defer(false))
     expect(stubReject).not.to.have.been.called
     const resultReject = ObjectVersion.registerMany('name1', [obj1, obj2])
     expect(stubReject).to.have.been.calledOnce
-    expect(stubReject).to.have.been.calledWith('name1', [obj1, obj2])
+    expect(stubReject).to.have.been.calledWith('name1', [OBJECT_STUB1, OBJECT_STUB2])
     stubReject.restore()
 
     return Promise.all([
@@ -101,19 +125,7 @@ describe('Classes - ObjectVersion', () => {
     expect(stubEmpty).to.have.been.calledWith('name1')
     stubEmpty.restore()
 
-    const stubResults = sinon.stub(DBAccess, 'getAll').returns(defer(true, [{
-      objectVersionId: 'versionId1',
-      objectId: 'objectId1',
-      name: 'versionName1',
-      type: 'type1',
-      subtype: 'subtype1'
-    }, {
-      objectVersionId: 'versionId2',
-      objectId: 'objectId2',
-      name: 'versionName2',
-      type: 'type2',
-      subtype: 'subtype2'
-    }]))
+    const stubResults = sinon.stub(DBAccess, 'getAll').returns(defer(true, [OBJECT_STUB1, OBJECT_STUB2]))
     expect(stubResults).not.to.have.been.called
     const resultResults = ObjectVersion.getAll('name1')
     expect(stubResults).to.have.been.calledOnce
@@ -134,21 +146,7 @@ describe('Classes - ObjectVersion', () => {
         data.map(item => {
           expect(item).to.be.an.instanceOf(ObjectVersion)
         })
-        expect(data).to.containSubset([{
-          workspace: 'name1',
-          objectVersionId: 'versionId1',
-          objectId: 'objectId1',
-          name: 'versionName1',
-          type: 'type1',
-          subtype: 'subtype1'
-        }, {
-          workspace: 'name1',
-          objectVersionId: 'versionId2',
-          objectId: 'objectId2',
-          name: 'versionName2',
-          type: 'type2',
-          subtype: 'subtype2'
-        }])
+        expect(data).to.eql([OBJECT_RESULT1, OBJECT_RESULT2])
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
@@ -162,13 +160,7 @@ describe('Classes - ObjectVersion', () => {
     expect(stubEmpty).to.have.been.calledWith('name1', 'id1')
     stubEmpty.restore()
 
-    const stubResults = sinon.stub(DBAccess, 'getById').returns(defer(true, {
-      objectVersionId: 'versionId1',
-      objectId: 'objectId1',
-      name: 'versionName1',
-      type: 'type1',
-      subtype: 'subtype1'
-    }))
+    const stubResults = sinon.stub(DBAccess, 'getById').returns(defer(true, OBJECT_STUB1))
     expect(stubResults).not.to.have.been.called
     const resultResults = ObjectVersion.getById('name1', 'id1')
     expect(stubResults).to.have.been.calledOnce
@@ -186,14 +178,7 @@ describe('Classes - ObjectVersion', () => {
       expect(resultEmpty).to.eventually.become(null),
       expect(resultResults).to.eventually.be.fulfilled.then(data => {
         expect(data).to.be.an.instanceOf(ObjectVersion)
-        expect(data).to.containSubset({
-          workspace: 'name1',
-          objectVersionId: 'versionId1',
-          objectId: 'objectId1',
-          name: 'versionName1',
-          type: 'type1',
-          subtype: 'subtype1'
-        })
+        expect(data).to.eql(OBJECT_RESULT1)
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
@@ -207,19 +192,7 @@ describe('Classes - ObjectVersion', () => {
     expect(stubEmpty).to.have.been.calledWith('name1', { name: 'versionName1' })
     stubEmpty.restore()
 
-    const stubResults = sinon.stub(DBAccess, 'where').returns(defer(true, [{
-      objectVersionId: 'versionId1',
-      objectId: 'objectId1',
-      name: 'versionName1',
-      type: 'type1',
-      subtype: 'subtype1'
-    }, {
-      objectVersionId: 'versionId2',
-      objectId: 'objectId2',
-      name: 'versionName2',
-      type: 'type2',
-      subtype: 'subtype2'
-    }]))
+    const stubResults = sinon.stub(DBAccess, 'where').returns(defer(true, [OBJECT_STUB1, OBJECT_STUB2]))
     expect(stubResults).not.to.have.been.called
     const resultResults = ObjectVersion.where('name1', { name: 'versionName1' })
     expect(stubResults).to.have.been.calledOnce
@@ -240,21 +213,7 @@ describe('Classes - ObjectVersion', () => {
         data.map(item => {
           expect(item).to.be.an.instanceOf(ObjectVersion)
         })
-        expect(data).to.containSubset([{
-          workspace: 'name1',
-          objectVersionId: 'versionId1',
-          objectId: 'objectId1',
-          name: 'versionName1',
-          type: 'type1',
-          subtype: 'subtype1'
-        }, {
-          workspace: 'name1',
-          objectVersionId: 'versionId2',
-          objectId: 'objectId2',
-          name: 'versionName2',
-          type: 'type2',
-          subtype: 'subtype2'
-        }])
+        expect(data).to.eql([OBJECT_RESULT1, OBJECT_RESULT2])
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
@@ -268,13 +227,7 @@ describe('Classes - ObjectVersion', () => {
     expect(stubEmpty).to.have.been.calledWith('name1', { name: 'versionName1' })
     stubEmpty.restore()
 
-    const stubResults = sinon.stub(DBAccess, 'find').returns(defer(true, {
-      objectVersionId: 'versionId1',
-      objectId: 'objectId1',
-      name: 'versionName1',
-      type: 'type1',
-      subtype: 'subtype1'
-    }))
+    const stubResults = sinon.stub(DBAccess, 'find').returns(defer(true, OBJECT_STUB1))
     expect(stubResults).not.to.have.been.called
     const resultResults = ObjectVersion.find('name1', { name: 'versionName1' })
     expect(stubResults).to.have.been.calledOnce
@@ -292,14 +245,7 @@ describe('Classes - ObjectVersion', () => {
       expect(resultEmpty).to.eventually.become(null),
       expect(resultResults).to.eventually.be.fulfilled.then(data => {
         expect(data).to.be.an.instanceOf(ObjectVersion)
-        expect(data).to.containSubset({
-          workspace: 'name1',
-          objectVersionId: 'versionId1',
-          objectId: 'objectId1',
-          name: 'versionName1',
-          type: 'type1',
-          subtype: 'subtype1'
-        })
+        expect(data).to.eql(OBJECT_RESULT1)
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
