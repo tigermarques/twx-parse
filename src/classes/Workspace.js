@@ -11,7 +11,10 @@ const Registry = require('./Registry')
  * @property {string} branchName - Branch Name
  * @property {string} appShortName - Application Acronym
  * @property {string} appName - Application Name
+ * @property {string} description - Application Description
+ * @property {string} buildVersion - Application Build Version
  * @property {boolean} isToolkit - True if the snapshot is from a toolkit, and false otherwise
+ * @property {boolean} isSystem - True if the snapshot is made by IBM, and false otherwise
  */
 
 /**
@@ -32,7 +35,10 @@ const Registry = require('./Registry')
  * @property {string|Array<string>} branchName - use this property to query by one or more branch names
  * @property {string|Array<string>} appShortName - use this property to query by one or more application acronyms
  * @property {string|Array<string>} appName - use this property to query by one or more application names
+ * @property {string|Array<string>} description - use this property to query by one or more application descriptions
+ * @property {string|Array<string>} buildVersion - use this property to query by one or more application build versions
  * @property {string|Array<boolean>} isToolkit - use this property to query by toolkits or process applications
+ * @property {string|Array<boolean>} isSystem - use this property to query by system toolkits or applications
  */
 
 /**

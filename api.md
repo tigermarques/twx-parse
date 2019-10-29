@@ -230,7 +230,10 @@ Method to get or create a workspace
 | branchName | <code>string</code> | Branch Name |
 | appShortName | <code>string</code> | Application Acronym |
 | appName | <code>string</code> | Application Name |
+| description | <code>string</code> | Application Description |
+| buildVersion | <code>string</code> | Application Build Version |
 | isToolkit | <code>boolean</code> | True if the snapshot is from a toolkit, and false otherwise |
+| isSystem | <code>boolean</code> | True if the snapshot is made by IBM, and false otherwise |
 
 <a name="ObjectVersion"></a>
 
@@ -261,7 +264,10 @@ Method to get or create a workspace
 | branchName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more branch names |
 | appShortName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application acronyms |
 | appName | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application names |
+| description | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application descriptions |
+| buildVersion | <code>string</code> \| <code>Array.&lt;string&gt;</code> | use this property to query by one or more application build versions |
 | isToolkit | <code>string</code> \| <code>Array.&lt;boolean&gt;</code> | use this property to query by toolkits or process applications |
+| isSystem | <code>string</code> \| <code>Array.&lt;boolean&gt;</code> | use this property to query by system toolkits or applications |
 
 <a name="ObjectCriteria"></a>
 
