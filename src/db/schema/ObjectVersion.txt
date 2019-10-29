@@ -4,7 +4,7 @@ create table if not exists ObjectVersion (
   name text not null,
   description text,
   type text not null,
-  isExposed integer not null,
-  subtype text
+  subtype text,
+  isExposed integer not null
 );
 
