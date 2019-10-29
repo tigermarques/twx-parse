@@ -2,7 +2,9 @@ create table if not exists ObjectVersion (
   objectVersionId text not null primary key,
   objectId text not null,
   name text not null,
+  -- description text,
   type text not null,
+  -- isExposed integer not null,
   subtype text
 );
 

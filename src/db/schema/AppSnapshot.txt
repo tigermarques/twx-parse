@@ -6,7 +6,10 @@ create table if not exists AppSnapshot (
   branchName text not null,
   appShortName text not null,
   appName text not null,
+  description text,
+  buildVersion text not null,
   isToolkit integer not null,
+  isSystem integer not null,
   isObjectsProcessed integer not null
 );
 

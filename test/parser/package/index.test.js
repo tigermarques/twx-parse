@@ -12,6 +12,54 @@ chai.use(sinonChai)
 chai.use(chaiAsPromised)
 const { expect } = chai
 
+const SNAPSHOT1 = {
+  workspace: 'name1',
+  snapshotId: 'snapshot1',
+  appId: 'appId1',
+  branchId: 'branchId1',
+  appShortName: 'appShortName1',
+  snapshotName: 'snapshotName1',
+  appName: 'appName1',
+  branchName: 'branchName1',
+  description: 'description1',
+  buildVersion: 'buildVersion1',
+  isToolkit: true,
+  isSystem: true,
+  isObjectsProcessed: false
+}
+
+const SNAPSHOT2 = {
+  workspace: 'name1',
+  snapshotId: 'snapshot2',
+  appId: 'appId2',
+  branchId: 'branchId2',
+  appShortName: 'appShortName2',
+  snapshotName: 'snapshotName2',
+  appName: 'appName2',
+  branchName: 'branchName2',
+  description: 'description2',
+  buildVersion: 'buildVersion2',
+  isToolkit: false,
+  isSystem: false,
+  isObjectsProcessed: true
+}
+
+const SNAPSHOT3 = {
+  workspace: 'name1',
+  snapshotId: 'snapshot3',
+  appId: 'appId3',
+  branchId: 'branchId3',
+  appShortName: 'appShortName3',
+  snapshotName: 'snapshotName3',
+  appName: 'appName3',
+  branchName: 'branchName3',
+  description: 'description3',
+  buildVersion: 'buildVersion3',
+  isToolkit: true,
+  isSystem: false,
+  isObjectsProcessed: false
+}
+
 describe('Parser - Package', () => {
   let zipFile, zipFileMock, appSnapshotGetByIdStub, appSnapshotRemoveStub, appSnapshotRegisterStub, appSnapshotGetAllStub,
     appSnapshotRemoveOrphanedStub, objectVersionRemoveOrphanedStub, snapshotDependencyRegisterManyStub, snapshotDependencyRemoveStub,
@@ -75,18 +123,7 @@ describe('Parser - Package', () => {
   it('should not add a file if is has been processed before', () => {
     const xmlData = fs.readFileSync(path.resolve(__dirname, '..', '..', 'files', 'package_app.xml'))
     zipFileMock.returns(xmlData)
-    appSnapshotGetByIdStub.returns(defer(true, {
-      workspace: 'name1',
-      snapshotId: 'id1',
-      appId: 'appId1',
-      branchId: 'branchId1',
-      appShortName: 'appShortName1',
-      snapshotName: 'snapshotName1',
-      appName: 'appName1',
-      branchName: 'branchName1',
-      isToolkit: true,
-      isObjectsProcessed: true
-    }))
+    appSnapshotGetByIdStub.returns(defer(true, SNAPSHOT1))
     const startStub = sinon.stub()
     const progressStub = sinon.stub()
     const endStub = sinon.stub()
@@ -263,21 +300,10 @@ describe('Parser - Package', () => {
   it('should not remove an application that other applications depend on', () => {
     const xmlData = fs.readFileSync(path.resolve(__dirname, '..', '..', 'files', 'package_app.xml'))
     zipFileMock.returns(xmlData)
-    appSnapshotGetByIdStub.returns(defer(true, {
-      workspace: 'name1',
-      snapshotId: 'id1',
-      appId: 'appId1',
-      branchId: 'branchId1',
-      appShortName: 'appShortName1',
-      snapshotName: 'snapshotName1',
-      appName: 'appName1',
-      branchName: 'branchName1',
-      isToolkit: true,
-      isObjectsProcessed: true
-    }))
+    appSnapshotGetByIdStub.returns(defer(true, SNAPSHOT1))
     snapshotDependencyGetByChildIdStub.returns(defer(true, [{
       parentSnapshotId: 'snapshot2',
-      childSnapshotId: 'id1',
+      childSnapshotId: 'snapshot1',
       rank: 1,
       dependencyId: 'dependency1'
     }]))
@@ -305,7 +331,7 @@ describe('Parser - Package', () => {
       expect(appSnapshotGetByIdStub).to.have.been.calledOnce
       expect(appSnapshotGetByIdStub).to.have.been.calledWith('name', '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa')
       expect(snapshotDependencyGetByChildIdStub).to.have.been.calledOnce
-      expect(snapshotDependencyGetByChildIdStub).to.have.been.calledWith('name', 'id1')
+      expect(snapshotDependencyGetByChildIdStub).to.have.been.calledWith('name', 'snapshot1')
       expect(appSnapshotRemoveStub).not.to.have.been.called
       expect(startStub).to.have.been.calledWith({
         id: '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa',
@@ -324,18 +350,7 @@ describe('Parser - Package', () => {
   it('should remove an application that exists', () => {
     const xmlData = fs.readFileSync(path.resolve(__dirname, '..', '..', 'files', 'package_app.xml'))
     zipFileMock.returns(xmlData)
-    appSnapshotGetByIdStub.returns(defer(true, {
-      workspace: 'name1',
-      snapshotId: 'id1',
-      appId: 'appId1',
-      branchId: 'branchId1',
-      appShortName: 'appShortName1',
-      snapshotName: 'snapshotName1',
-      appName: 'appName1',
-      branchName: 'branchName1',
-      isToolkit: false,
-      isObjectsProcessed: true
-    }))
+    appSnapshotGetByIdStub.returns(defer(true, SNAPSHOT1))
     snapshotDependencyGetByChildIdStub.returns(defer(true, []))
     appSnapshotRemoveStub.returns(defer())
     snapshotDependencyRemoveStub.returns(defer())
@@ -345,18 +360,7 @@ describe('Parser - Package', () => {
     snapshotDependencyRemoveOrphanedStub.returns(defer())
     snapshotObjectDependencyRemoveOrphanedStub.returns(defer())
     objectDependencyRemoveOrphanedStub.returns(defer())
-    appSnapshotGetAllStub.returns(defer(true, [{
-      workspace: 'name2',
-      snapshotId: 'id2',
-      appId: 'appId2',
-      branchId: 'branchId2',
-      appShortName: 'appShortName2',
-      snapshotName: 'snapshotName2',
-      appName: 'appName2',
-      branchName: 'branchName2',
-      isToolkit: false,
-      isObjectsProcessed: true
-    }]))
+    appSnapshotGetAllStub.returns(defer(true, [SNAPSHOT2]))
     const startStub = sinon.stub()
     const progressStub = sinon.stub()
     const endStub = sinon.stub()
@@ -389,7 +393,7 @@ describe('Parser - Package', () => {
       expect(appSnapshotGetByIdStub).to.have.been.calledOnce
       expect(appSnapshotGetByIdStub).to.have.been.calledWith('name', '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa')
       expect(snapshotDependencyGetByChildIdStub).to.have.been.calledOnce
-      expect(snapshotDependencyGetByChildIdStub).to.have.been.calledWith('name', 'id1')
+      expect(snapshotDependencyGetByChildIdStub).to.have.been.calledWith('name', 'snapshot1')
       expect(appSnapshotRemoveStub).to.have.been.calledOnce
       expect(appSnapshotRemoveStub).to.have.been.calledWith('name', { snapshotId: '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa' })
       expect(snapshotDependencyRemoveStub).to.have.been.calledOnce
@@ -427,18 +431,7 @@ describe('Parser - Package', () => {
   it('should remove orphaned items recursively until no more changes happen', () => {
     const xmlData = fs.readFileSync(path.resolve(__dirname, '..', '..', 'files', 'package_app.xml'))
     zipFileMock.returns(xmlData)
-    appSnapshotGetByIdStub.returns(defer(true, {
-      workspace: 'name1',
-      snapshotId: 'id1',
-      appId: 'appId1',
-      branchId: 'branchId1',
-      appShortName: 'appShortName1',
-      snapshotName: 'snapshotName1',
-      appName: 'appName1',
-      branchName: 'branchName1',
-      isToolkit: false,
-      isObjectsProcessed: true
-    }))
+    appSnapshotGetByIdStub.returns(defer(true, SNAPSHOT1))
     snapshotDependencyGetByChildIdStub.returns(defer(true, []))
     appSnapshotRemoveStub.returns(defer())
     snapshotDependencyRemoveStub.returns(defer())
@@ -448,41 +441,8 @@ describe('Parser - Package', () => {
     snapshotDependencyRemoveOrphanedStub.returns(defer())
     snapshotObjectDependencyRemoveOrphanedStub.returns(defer())
     objectDependencyRemoveOrphanedStub.returns(defer())
-    appSnapshotGetAllStub.onFirstCall().returns(defer(true, [{
-      workspace: 'name2',
-      snapshotId: 'id2',
-      appId: 'appId2',
-      branchId: 'branchId2',
-      appShortName: 'appShortName2',
-      snapshotName: 'snapshotName2',
-      appName: 'appName2',
-      branchName: 'branchName2',
-      isToolkit: false,
-      isObjectsProcessed: true
-    }, {
-      workspace: 'name3',
-      snapshotId: 'id3',
-      appId: 'appId3',
-      branchId: 'branchId3',
-      appShortName: 'appShortName3',
-      snapshotName: 'snapshotName3',
-      appName: 'appName3',
-      branchName: 'branchName3',
-      isToolkit: false,
-      isObjectsProcessed: true
-    }]))
-    appSnapshotGetAllStub.onSecondCall().returns(defer(true, [{
-      workspace: 'name2',
-      snapshotId: 'id2',
-      appId: 'appId2',
-      branchId: 'branchId2',
-      appShortName: 'appShortName2',
-      snapshotName: 'snapshotName2',
-      appName: 'appName2',
-      branchName: 'branchName2',
-      isToolkit: false,
-      isObjectsProcessed: true
-    }]))
+    appSnapshotGetAllStub.onFirstCall().returns(defer(true, [SNAPSHOT2, SNAPSHOT3]))
+    appSnapshotGetAllStub.onSecondCall().returns(defer(true, [SNAPSHOT2]))
     appSnapshotGetAllStub.onThirdCall().returns(defer(true, []))
     appSnapshotGetAllStub.onCall(3).returns(defer(true, []))
     const parser = new PackageParser('name')
@@ -508,7 +468,7 @@ describe('Parser - Package', () => {
       expect(appSnapshotGetByIdStub).to.have.been.calledOnce
       expect(appSnapshotGetByIdStub).to.have.been.calledWith('name', '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa')
       expect(snapshotDependencyGetByChildIdStub).to.have.been.calledOnce
-      expect(snapshotDependencyGetByChildIdStub).to.have.been.calledWith('name', 'id1')
+      expect(snapshotDependencyGetByChildIdStub).to.have.been.calledWith('name', 'snapshot1')
       expect(appSnapshotRemoveStub).to.have.been.calledOnce
       expect(appSnapshotRemoveStub).to.have.been.calledWith('name', { snapshotId: '2064.e4c9852c-1a27-4ca1-ac33-01f4f5b5f9fa' })
       expect(snapshotDependencyRemoveStub).to.have.been.calledOnce

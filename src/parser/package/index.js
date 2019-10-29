@@ -17,7 +17,8 @@ const addPackage = async (databaseName, zipFile, fileName, startCallback, progre
   // only parse the package if it hasn't been added yet
   const existingAppSnapshot = await Registry.AppSnapshot.getById(databaseName, parentSnapshotId)
   if (!existingAppSnapshot) {
-    const appSnapshot = new AppSnapshot(databaseName, parentSnapshotId, project.$.id, branch.$.id, project.$.shortName, snapshot.$.name, project.$.name, branch.$.name, project.$.isToolkit === 'true', false)
+    const appSnapshot = new AppSnapshot(databaseName, parentSnapshotId, project.$.id, branch.$.id, project.$.shortName, snapshot.$.name, project.$.name, branch.$.name,
+      project.$.description, jsonData.package.$.buildVersion, project.$.isToolkit === 'true', project.$.isSystem === 'true', false)
     await Registry.AppSnapshot.register(databaseName, appSnapshot)
 
     startCallback({

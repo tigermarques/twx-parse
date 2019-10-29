@@ -12,6 +12,38 @@ chai.use(chaiAsPromised)
 chai.use(chaiString)
 const { expect } = chai
 
+const SNAPSHOT1 = {
+  workspace: 'name1',
+  snapshotId: 'snapshot1',
+  appId: 'appId1',
+  branchId: 'branchId1',
+  appShortName: 'appShortName1',
+  snapshotName: 'snapshotName1',
+  appName: 'appName1',
+  branchName: 'branchName1',
+  description: 'description1',
+  buildVersion: 'buildVersion1',
+  isToolkit: 1,
+  isSystem: 1,
+  isObjectsProcessed: 0
+}
+
+const SNAPSHOT2 = {
+  workspace: 'name1',
+  snapshotId: 'snapshot2',
+  appId: 'appId2',
+  branchId: 'branchId2',
+  appShortName: 'appShortName2',
+  snapshotName: 'snapshotName2',
+  appName: 'appName2',
+  branchName: 'branchName2',
+  description: 'description2',
+  buildVersion: 'buildVersion2',
+  isToolkit: 0,
+  isSystem: 0,
+  isObjectsProcessed: 1
+}
+
 describe('DB - AppSnapshot', () => {
   let dbStub
 
@@ -49,24 +81,15 @@ describe('DB - AppSnapshot', () => {
     })
     expect(runStub).not.to.have.been.called
     expect(closeStub).not.to.have.been.called
-    const result = AppSnapshot.register('test.db', {
-      snapshotId: 'snapshot1',
-      appId: 'appId1',
-      branchId: 'branchId1',
-      snapshotName: 'snapshotName1',
-      branchName: 'branchName1',
-      appShortName: 'appShortName1',
-      appName: 'appName1',
-      isToolkit: true,
-      isObjectsProcessed: false
-    })
+    const result = AppSnapshot.register('test.db', SNAPSHOT1)
     return expect(result).to.eventually.be.rejected.then(error => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(runStub).to.have.been.calledOnce
       const args = runStub.getCall(0).args
-      expect(args[0]).to.equalIgnoreSpaces('insert into AppSnapshot (snapshotId, appId, branchId, snapshotName, branchName, appShortName, appname, isToolkit, isObjectsProcessed) values (?, ?, ?, ?, ?, ?, ?, ?, ?)')
-      expect(args[1]).to.eql(['snapshot1', 'appId1', 'branchId1', 'snapshotName1', 'branchName1', 'appShortName1', 'appName1', 1, 0])
+      expect(args[0]).to.equalIgnoreSpaces(`insert into AppSnapshot (snapshotId, appId, branchId, snapshotName, branchName, appShortName, appName, description, buildVersion, 
+                                          isToolkit, isSystem, isObjectsProcessed) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+      expect(args[1]).to.eql(['snapshot1', 'appId1', 'branchId1', 'snapshotName1', 'branchName1', 'appShortName1', 'appName1', 'description1', 'buildVersion1', 1, 1, 0])
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
     })
@@ -81,28 +104,8 @@ describe('DB - AppSnapshot', () => {
     })
     expect(runStub).not.to.have.been.called
     expect(closeStub).not.to.have.been.called
-    const result1 = AppSnapshot.register('test.db', {
-      snapshotId: 'snapshot1',
-      appId: 'appId1',
-      branchId: 'branchId1',
-      snapshotName: 'snapshotName1',
-      branchName: 'branchName1',
-      appShortName: 'appShortName1',
-      appName: 'appName1',
-      isToolkit: true,
-      isObjectsProcessed: true
-    })
-    const result2 = AppSnapshot.register('test.db', {
-      snapshotId: 'snapshot2',
-      appId: 'appId2',
-      branchId: 'branchId2',
-      snapshotName: 'snapshotName2',
-      branchName: 'branchName2',
-      appShortName: 'appShortName2',
-      appName: 'appName2',
-      isToolkit: false,
-      isObjectsProcessed: false
-    })
+    const result1 = AppSnapshot.register('test.db', SNAPSHOT1)
+    const result2 = AppSnapshot.register('test.db', SNAPSHOT2)
     return Promise.all([
       expect(result1).to.eventually.be.fulfilled,
       expect(result2).to.eventually.be.fulfilled
@@ -110,11 +113,13 @@ describe('DB - AppSnapshot', () => {
       expect(dbStub).to.have.been.calledTwice
       expect(dbStub).to.have.been.calledWith('test.db')
       const args1 = runStub.getCall(0).args
-      expect(args1[0]).to.equalIgnoreSpaces('insert into AppSnapshot (snapshotId, appId, branchId, snapshotName, branchName, appShortName, appname, isToolkit, isObjectsProcessed) values (?, ?, ?, ?, ?, ?, ?, ?, ?)')
-      expect(args1[1]).to.eql(['snapshot1', 'appId1', 'branchId1', 'snapshotName1', 'branchName1', 'appShortName1', 'appName1', 1, 1])
+      expect(args1[0]).to.equalIgnoreSpaces(`insert into AppSnapshot (snapshotId, appId, branchId, snapshotName, branchName, appShortName, appName, description, buildVersion, 
+        isToolkit, isSystem, isObjectsProcessed) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+      expect(args1[1]).to.eql(['snapshot1', 'appId1', 'branchId1', 'snapshotName1', 'branchName1', 'appShortName1', 'appName1', 'description1', 'buildVersion1', 1, 1, 0])
       const args2 = runStub.getCall(1).args
-      expect(args2[0]).to.equalIgnoreSpaces('insert into AppSnapshot (snapshotId, appId, branchId, snapshotName, branchName, appShortName, appname, isToolkit, isObjectsProcessed) values (?, ?, ?, ?, ?, ?, ?, ?, ?)')
-      expect(args2[1]).to.eql(['snapshot2', 'appId2', 'branchId2', 'snapshotName2', 'branchName2', 'appShortName2', 'appName2', 0, 0])
+      expect(args2[0]).to.equalIgnoreSpaces(`insert into AppSnapshot (snapshotId, appId, branchId, snapshotName, branchName, appShortName, appName, description, buildVersion, 
+        isToolkit, isSystem, isObjectsProcessed) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+      expect(args2[1]).to.eql(['snapshot2', 'appId2', 'branchId2', 'snapshotName2', 'branchName2', 'appShortName2', 'appName2', 'description2', 'buildVersion2', 0, 0, 1])
       expect(closeStub).to.have.been.calledTwice
     })
   })
@@ -186,17 +191,7 @@ describe('DB - AppSnapshot', () => {
   })
 
   it('should resolve the "getAll" method when query execution succeeds', () => {
-    const allStub = sinon.stub().callsArgWithAsync(1, null, [{
-      snapshotId: 'snapshot1',
-      appId: 'appId1',
-      branchId: 'branchId1',
-      snapshotName: 'snapshotName1',
-      branchName: 'branchName1',
-      appShortName: 'appShortName1',
-      appName: 'appName1',
-      isToolkit: true,
-      isObjectsProcessed: false
-    }])
+    const allStub = sinon.stub().callsArgWithAsync(1, null, [SNAPSHOT1])
     const closeStub = sinon.stub()
     dbStub.returns({
       all: allStub,
@@ -212,17 +207,7 @@ describe('DB - AppSnapshot', () => {
       const args = allStub.getCall(0).args
       expect(args[0]).to.equalIgnoreSpaces('select * from AppSnapshot')
       expect(closeStub).to.have.been.calledOnce
-      expect(results).to.eql([{
-        snapshotId: 'snapshot1',
-        appId: 'appId1',
-        branchId: 'branchId1',
-        snapshotName: 'snapshotName1',
-        branchName: 'branchName1',
-        appShortName: 'appShortName1',
-        appName: 'appName1',
-        isToolkit: true,
-        isObjectsProcessed: false
-      }])
+      expect(results).to.eql([SNAPSHOT1])
     })
   })
 
@@ -249,17 +234,7 @@ describe('DB - AppSnapshot', () => {
   })
 
   it('should resolve the "getById" method when query execution succeeds', () => {
-    const getStub = sinon.stub().callsArgWithAsync(2, null, {
-      snapshotId: 'snapshot1',
-      appId: 'appId1',
-      branchId: 'branchId1',
-      snapshotName: 'snapshotName1',
-      branchName: 'branchName1',
-      appShortName: 'appShortName1',
-      appName: 'appName1',
-      isToolkit: true,
-      isObjectsProcessed: false
-    })
+    const getStub = sinon.stub().callsArgWithAsync(2, null, SNAPSHOT1)
     const closeStub = sinon.stub()
     dbStub.returns({
       get: getStub,
@@ -276,17 +251,7 @@ describe('DB - AppSnapshot', () => {
       expect(args[0]).to.equalIgnoreSpaces('select * from AppSnapshot where snapshotId = ?')
       expect(args[1]).to.eql(['snapshot1'])
       expect(closeStub).to.have.been.calledOnce
-      expect(results).to.eql({
-        snapshotId: 'snapshot1',
-        appId: 'appId1',
-        branchId: 'branchId1',
-        snapshotName: 'snapshotName1',
-        branchName: 'branchName1',
-        appShortName: 'appShortName1',
-        appName: 'appName1',
-        isToolkit: true,
-        isObjectsProcessed: false
-      })
+      expect(results).to.eql(SNAPSHOT1)
     })
   })
 
@@ -314,17 +279,7 @@ describe('DB - AppSnapshot', () => {
   })
 
   it('should resolve the "where" method when query execution succeeds', () => {
-    const allStub = sinon.stub().callsArgWithAsync(2, null, [{
-      snapshotId: 'snapshot1',
-      appId: 'appId1',
-      branchId: 'branchId1',
-      snapshotName: 'snapshotName1',
-      branchName: 'branchName1',
-      appShortName: 'appShortName1',
-      appName: 'appName1',
-      isToolkit: true,
-      isObjectsProcessed: false
-    }])
+    const allStub = sinon.stub().callsArgWithAsync(2, null, [SNAPSHOT2])
     const closeStub = sinon.stub()
     dbStub.returns({
       all: allStub,
@@ -333,26 +288,16 @@ describe('DB - AppSnapshot', () => {
     expect(allStub).not.to.have.been.called
     expect(closeStub).not.to.have.been.called
     const result = AppSnapshot.where('test.db', {
-      branchName: 'branchName1'
+      branchName: 'branchName2'
     })
     return expect(result).to.eventually.be.fulfilled.then((results) => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(allStub).to.have.been.calledOnce
       const args = allStub.getCall(0).args
-      expect(args[0]).to.equalIgnoreSpaces('select * from AppSnapshot where 1 = 1 and branchName = \'branchName1\'')
+      expect(args[0]).to.equalIgnoreSpaces('select * from AppSnapshot where 1 = 1 and branchName = \'branchName2\'')
       expect(closeStub).to.have.been.calledOnce
-      expect(results).to.eql([{
-        snapshotId: 'snapshot1',
-        appId: 'appId1',
-        branchId: 'branchId1',
-        snapshotName: 'snapshotName1',
-        branchName: 'branchName1',
-        appShortName: 'appShortName1',
-        appName: 'appName1',
-        isToolkit: true,
-        isObjectsProcessed: false
-      }])
+      expect(results).to.eql([SNAPSHOT2])
     })
   })
 
@@ -380,17 +325,7 @@ describe('DB - AppSnapshot', () => {
   })
 
   it('should resolve the "find" method when query execution succeeds', () => {
-    const getStub = sinon.stub().callsArgWithAsync(2, null, {
-      snapshotId: 'snapshot1',
-      appId: 'appId1',
-      branchId: 'branchId1',
-      snapshotName: 'snapshotName1',
-      branchName: 'branchName1',
-      appShortName: 'appShortName1',
-      appName: 'appName1',
-      isToolkit: true,
-      isObjectsProcessed: false
-    })
+    const getStub = sinon.stub().callsArgWithAsync(2, null, SNAPSHOT1)
     const closeStub = sinon.stub()
     dbStub.returns({
       get: getStub,
@@ -408,17 +343,7 @@ describe('DB - AppSnapshot', () => {
       const args = getStub.getCall(0).args
       expect(args[0]).to.equalIgnoreSpaces('select * from AppSnapshot where 1 = 1 and branchName in (\'branchName1\', \'branchName2\')')
       expect(closeStub).to.have.been.calledOnce
-      expect(results).to.eql({
-        snapshotId: 'snapshot1',
-        appId: 'appId1',
-        branchId: 'branchId1',
-        snapshotName: 'snapshotName1',
-        branchName: 'branchName1',
-        appShortName: 'appShortName1',
-        appName: 'appName1',
-        isToolkit: true,
-        isObjectsProcessed: false
-      })
+      expect(results).to.eql(SNAPSHOT1)
     })
   })
 
@@ -542,17 +467,7 @@ describe('DB - AppSnapshot', () => {
   })
 
   it('should resolve the "getWithoutChildren" method when query execution returns an error', () => {
-    const allStub = sinon.stub().callsArgWithAsync(1, null, [{
-      snapshotId: 'snapshot1',
-      appId: 'appId1',
-      branchId: 'branchId1',
-      snapshotName: 'snapshotName1',
-      branchName: 'branchName1',
-      appShortName: 'appShortName1',
-      appName: 'appName1',
-      isToolkit: true,
-      isObjectsProcessed: false
-    }])
+    const allStub = sinon.stub().callsArgWithAsync(1, null, [SNAPSHOT1])
     const closeStub = sinon.stub()
     dbStub.returns({
       all: allStub,
@@ -582,28 +497,8 @@ describe('DB - AppSnapshot', () => {
                                           left join AppSnapshot child on child.snapshotId = sd.childSnapshotId
                                           where sd.parentSnapshotId is null`)
       expect(closeStub).to.have.been.calledTwice
-      expect(results[0]).to.eql([{
-        snapshotId: 'snapshot1',
-        appId: 'appId1',
-        branchId: 'branchId1',
-        snapshotName: 'snapshotName1',
-        branchName: 'branchName1',
-        appShortName: 'appShortName1',
-        appName: 'appName1',
-        isToolkit: true,
-        isObjectsProcessed: false
-      }])
-      expect(results[1]).to.eql([{
-        snapshotId: 'snapshot1',
-        appId: 'appId1',
-        branchId: 'branchId1',
-        snapshotName: 'snapshotName1',
-        branchName: 'branchName1',
-        appShortName: 'appShortName1',
-        appName: 'appName1',
-        isToolkit: true,
-        isObjectsProcessed: false
-      }])
+      expect(results[0]).to.eql([SNAPSHOT1])
+      expect(results[1]).to.eql([SNAPSHOT1])
     })
   })
 
@@ -633,17 +528,7 @@ describe('DB - AppSnapshot', () => {
   })
 
   it('should resolve the "getWithoutParents" method when query execution returns an error', () => {
-    const allStub = sinon.stub().callsArgWithAsync(1, null, [{
-      snapshotId: 'snapshot1',
-      appId: 'appId1',
-      branchId: 'branchId1',
-      snapshotName: 'snapshotName1',
-      branchName: 'branchName1',
-      appShortName: 'appShortName1',
-      appName: 'appName1',
-      isToolkit: true,
-      isObjectsProcessed: false
-    }])
+    const allStub = sinon.stub().callsArgWithAsync(1, null, [SNAPSHOT1])
     const closeStub = sinon.stub()
     dbStub.returns({
       all: allStub,
@@ -673,28 +558,8 @@ describe('DB - AppSnapshot', () => {
                                           left join AppSnapshot parent on parent.snapshotId = sd.parentSnapshotId
                                           where sd.childSnapshotId is null`)
       expect(closeStub).to.have.been.calledTwice
-      expect(results[0]).to.eql([{
-        snapshotId: 'snapshot1',
-        appId: 'appId1',
-        branchId: 'branchId1',
-        snapshotName: 'snapshotName1',
-        branchName: 'branchName1',
-        appShortName: 'appShortName1',
-        appName: 'appName1',
-        isToolkit: true,
-        isObjectsProcessed: false
-      }])
-      expect(results[1]).to.eql([{
-        snapshotId: 'snapshot1',
-        appId: 'appId1',
-        branchId: 'branchId1',
-        snapshotName: 'snapshotName1',
-        branchName: 'branchName1',
-        appShortName: 'appShortName1',
-        appName: 'appName1',
-        isToolkit: true,
-        isObjectsProcessed: false
-      }])
+      expect(results[0]).to.eql([SNAPSHOT1])
+      expect(results[1]).to.eql([SNAPSHOT1])
     })
   })
 })

@@ -2,7 +2,7 @@ const Performance = require('../utils/Performance')
 const { getDB } = require('./common')
 
 const getParamsFromItem = item =>
-  [item.snapshotId, item.appId, item.branchId, item.snapshotName, item.branchName, item.appShortName, item.appName, item.isToolkit ? 1 : 0, item.isObjectsProcessed ? 1 : 0]
+  [item.snapshotId, item.appId, item.branchId, item.snapshotName, item.branchName, item.appShortName, item.appName, item.description, item.buildVersion, item.isToolkit, item.isSystem, item.isObjectsProcessed]
 
 const buildWhereQuery = obj => {
   let whereClause = '1 = 1'
@@ -25,8 +25,8 @@ module.exports = {
   register: Performance.makeMeasurable((databaseName, item) => {
     return new Promise((resolve, reject) => {
       const db = getDB(databaseName)
-      const sql = `insert into AppSnapshot (snapshotId, appId, branchId, snapshotName, branchName, appShortName, appname, isToolkit, isObjectsProcessed)
-                  values (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      const sql = `insert into AppSnapshot (snapshotId, appId, branchId, snapshotName, branchName, appShortName, appName, description, buildVersion, isToolkit, isSystem, isObjectsProcessed)
+                  values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
       const params = getParamsFromItem(item)
       db.run(sql, params, err => {
         if (err) {

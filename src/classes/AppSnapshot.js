@@ -1,14 +1,31 @@
 const { AppSnapshot: DBAccess } = require('../db')
-// const SnapshotDependency = require('./SnapshotDependency')
 
 const getObjectFromResult = workspaceName => item =>
   item
-    ? new AppSnapshot(workspaceName, item.snapshotId, item.appId, item.branchId, item.appShortName, item.snapshotName, item.appName, item.branchName, item.isToolkit === 1,
-      item.isObjectsProcessed === 1)
+    ? new AppSnapshot(workspaceName, item.snapshotId, item.appId, item.branchId, item.appShortName, item.snapshotName, item.appName, item.branchName, item.description,
+      item.buildVersion, item.isToolkit === 1, item.isSystem === 1, item.isObjectsProcessed === 1)
+    : null
+
+const getObjectFromItem = obj =>
+  obj
+    ? {
+      snapshotId: obj.snapshotId,
+      appId: obj.appId,
+      branchId: obj.branchId,
+      appShortName: obj.appShortName,
+      snapshotName: obj.snapshotName,
+      appName: obj.appName,
+      branchName: obj.branchName,
+      description: obj.description,
+      buildVersion: obj.buildVersion,
+      isToolkit: obj.isToolkit ? 1 : 0,
+      isSystem: obj.isSystem ? 1 : 0,
+      isObjectsProcessed: obj.isObjectsProcessed ? 1 : 0
+    }
     : null
 
 class AppSnapshot {
-  constructor (workspaceName, id, appId, branchId, appShortName, snapshotName, appName, branchName, isToolkit, isObjectsProcessed) {
+  constructor (workspaceName, id, appId, branchId, appShortName, snapshotName, appName, branchName, description, buildVersion, isToolkit, isSystem, isObjectsProcessed) {
     this.workspace = workspaceName
     // primary key
     this.snapshotId = id
@@ -20,12 +37,15 @@ class AppSnapshot {
     this.branchName = branchName
     this.appShortName = appShortName
     this.appName = appName
+    this.description = description
+    this.buildVersion = buildVersion
     this.isToolkit = isToolkit
+    this.isSystem = isSystem
     this.isObjectsProcessed = isObjectsProcessed
   }
 }
 
-AppSnapshot.register = (workspaceName, item) => DBAccess.register(workspaceName, item)
+AppSnapshot.register = (workspaceName, item) => DBAccess.register(workspaceName, getObjectFromItem(item))
 AppSnapshot.markObjectsProcessed = (workspaceName, snapshotId) => DBAccess.update(workspaceName, snapshotId, { isObjectsProcessed: 1 })
 AppSnapshot.getAll = (workspaceName) => DBAccess.getAll(workspaceName).then(results => results.map(getObjectFromResult(workspaceName)))
 AppSnapshot.getById = (workspaceName, snapshotId) => DBAccess.getById(workspaceName, snapshotId).then(result => getObjectFromResult(workspaceName)(result))

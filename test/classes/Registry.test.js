@@ -75,7 +75,7 @@ describe('Classes - Registry', () => {
   describe('AppSnapshot', () => {
     it('should proxy correctly the "register" method', () => {
       const stub = sinon.stub(AppSnapshot, 'register').returns(defer())
-      const obj1 = new AppSnapshot('name1', 'id1', 'appId1', 'branchId1', 'appShortName1', 'snapshotName1', 'appName1', 'branchName1', true, true)
+      const obj1 = new AppSnapshot('name1', 'id1', 'appId1', 'branchId1', 'appShortName1', 'snapshotName1', 'appName1', 'branchName1', 'description1', 'buildVersion1', true, true, true)
       expect(stub).not.to.have.been.called
       const result = Registry.AppSnapshot.register('name1', obj1)
       expect(stub).to.have.been.calledOnce
