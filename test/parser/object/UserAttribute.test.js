@@ -68,9 +68,10 @@ describe('Parser - Object - User Attribute', () => {
         id: '51.beda80b4-2aab-4083-9c9e-b4f651def006',
         name: 'Atributo1',
         type: TYPES.UserAttribute,
-        dependencies: [
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022'
-        ],
+        dependencies: [{
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'dataType'
+        }],
         versionId: '8c83b5e9-4b59-4fa6-b725-abbc6193f6af',
         description: '',
         isExposed: false

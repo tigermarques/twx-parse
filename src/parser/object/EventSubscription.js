@@ -1,6 +1,6 @@
 const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
-const { TYPES } = require('../../utils/Constants')
+const { TYPES, OBJECT_DEPENDENCY_TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
 
 const parseEventSubscription = Performance.makeMeasurable(async (databaseName, jsonData) => {
@@ -22,10 +22,16 @@ const parseEventSubscription = Performance.makeMeasurable(async (databaseName, j
     result.dependencies = []
 
     if (eventSubscription.processRef && !ParseUtils.isNullXML(eventSubscription.processRef[0])) {
-      result.dependencies.push(eventSubscription.processRef[0])
+      result.dependencies.push({
+        childReference: eventSubscription.processRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.EventSubscription.AttachedService
+      })
     }
     if (eventSubscription.participantRef && !ParseUtils.isNullXML(eventSubscription.participantRef[0])) {
-      result.dependencies.push(eventSubscription.participantRef[0])
+      result.dependencies.push({
+        childReference: eventSubscription.participantRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.EventSubscription.ExposedTo
+      })
     }
   }
 

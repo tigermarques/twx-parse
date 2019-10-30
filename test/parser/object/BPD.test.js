@@ -77,35 +77,91 @@ describe('Parser - Object - BPD', () => {
         name: 'Process2',
         description: null,
         type: TYPES.BPD,
-        dependencies: [
-          '/24.a776709d-cf51-4353-9ca5-42a15c712b02',
-          '/24.2a87eb22-940b-4664-be65-5806a5d01ac8',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
-          '/24.a776709d-cf51-4353-9ca5-42a15c712b02',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '/12.7425eece-319f-484b-a59f-8efeaaec2582',
-          '/49.84290403-04af-4258-a028-700286b03e06',
-          '/12.60da4770-d3a3-4937-840f-8fd74f8c33ce',
-          '/21.ed99f470-25b4-4a03-b89d-888bc265e2aa',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.6fd38d02-81cf-48ab-bd42-8ff4c0a1628b',
-          '/24.a776709d-cf51-4353-9ca5-42a15c712b02',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.581a472b-5016-479a-b5b5-0a9701c2c42c',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.6fd38d02-81cf-48ab-bd42-8ff4c0a1628b',
-          '/24.2a87eb22-940b-4664-be65-5806a5d01ac8',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.6fd38d02-81cf-48ab-bd42-8ff4c0a1628b',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.6fd38d02-81cf-48ab-bd42-8ff4c0a1628b',
-          '/4.f32f2065-49b8-4e77-8c58-90d96ffce088',
-          '/4.f32f2065-49b8-4e77-8c58-90d96ffce088',
-          '/1.143ff27f-5e08-478c-af65-06723fa26d26',
-          '/1.0295217c-7383-4a27-b311-333ea889f2bb',
-          '/1.22a9a945-649d-4bc1-9ac0-75f837f4d494',
-          '/1.0295217c-7383-4a27-b311-333ea889f2bb',
-          '/1.22a9a945-649d-4bc1-9ac0-75f837f4d494',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/1.93e1b747-f286-401a-8a24-be2eaf96c231',
-          '/25.9358aeb8-22e5-49a5-91ec-e308642efab7'
-        ],
+        dependencies: [{
+          childReference: '/24.a776709d-cf51-4353-9ca5-42a15c712b02',
+          dependencyType: 'exposedTo'
+        }, {
+          childReference: '/24.2a87eb22-940b-4664-be65-5806a5d01ac8',
+          dependencyType: 'dataExposedTo'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
+          dependencyType: 'performanceExposedTo'
+        }, {
+          childReference: '/24.a776709d-cf51-4353-9ca5-42a15c712b02',
+          dependencyType: 'owner'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'binding',
+          dependencyName: 'Untitled1'
+        }, {
+          childReference: '/12.7425eece-319f-484b-a59f-8efeaaec2582',
+          dependencyType: 'binding',
+          dependencyName: 'Untitled2'
+        }, {
+          childReference: '/49.84290403-04af-4258-a028-700286b03e06',
+          dependencyType: 'metric'
+        }, {
+          childReference: '/12.60da4770-d3a3-4937-840f-8fd74f8c33ce',
+          dependencyType: 'variable',
+          dependencyName: 'Untitled3'
+        }, {
+          childReference: '/21.ed99f470-25b4-4a03-b89d-888bc265e2aa',
+          dependencyType: 'epv'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
+          dependencyType: 'participant'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.6fd38d02-81cf-48ab-bd42-8ff4c0a1628b',
+          dependencyType: 'participant'
+        }, {
+          childReference: '/24.a776709d-cf51-4353-9ca5-42a15c712b02',
+          dependencyType: 'participant'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.581a472b-5016-479a-b5b5-0a9701c2c42c',
+          dependencyType: 'participant'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
+          dependencyType: 'participant'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.6fd38d02-81cf-48ab-bd42-8ff4c0a1628b',
+          dependencyType: 'participant'
+        }, {
+          childReference: '/24.2a87eb22-940b-4664-be65-5806a5d01ac8',
+          dependencyType: 'participant'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.6fd38d02-81cf-48ab-bd42-8ff4c0a1628b',
+          dependencyType: 'participant'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.6fd38d02-81cf-48ab-bd42-8ff4c0a1628b',
+          dependencyType: 'participant'
+        }, {
+          childReference: '/4.f32f2065-49b8-4e77-8c58-90d96ffce088',
+          dependencyType: 'uca'
+        }, {
+          childReference: '/4.f32f2065-49b8-4e77-8c58-90d96ffce088',
+          dependencyType: 'uca'
+        }, {
+          childReference: '/1.143ff27f-5e08-478c-af65-06723fa26d26',
+          dependencyType: 'attachedActivity'
+        }, {
+          childReference: '/1.0295217c-7383-4a27-b311-333ea889f2bb',
+          dependencyType: 'attachedActivity'
+        }, {
+          childReference: '/1.22a9a945-649d-4bc1-9ac0-75f837f4d494',
+          dependencyType: 'attachedActivity'
+        }, {
+          childReference: '/1.0295217c-7383-4a27-b311-333ea889f2bb',
+          dependencyType: 'attachedActivity'
+        }, {
+          childReference: '/1.22a9a945-649d-4bc1-9ac0-75f837f4d494',
+          dependencyType: 'attachedActivity'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/1.93e1b747-f286-401a-8a24-be2eaf96c231',
+          dependencyType: 'attachedActivity'
+        }, {
+          childReference: '/25.9358aeb8-22e5-49a5-91ec-e308642efab7',
+          dependencyType: 'attachedProcess'
+        }],
         versionId: 'a8be0ae5-1b04-4588-9019-2ed2411737b5',
         subType: BPD_TYPES.BPD,
         isExposed: true
@@ -116,22 +172,49 @@ describe('Parser - Object - BPD', () => {
         name: 'Sem título',
         description: '',
         type: TYPES.BPD,
-        dependencies: [
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.6fd38d02-81cf-48ab-bd42-8ff4c0a1628b',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.6fd38d02-81cf-48ab-bd42-8ff4c0a1628b',
-          '/1.58e2b9fc-0846-494a-b2c4-8c0421da19b8',
-          '/1.82b84887-27a8-4ed1-a944-29be95a9b7e5',
-          '/1.f24c65ec-bf84-4145-86bf-c3d6aac64167',
-          '/1.61a0bf71-b88b-4fc3-b79b-f023825ed63e',
-          '/1.bdd3fc6b-5583-46c6-9ddf-91408b409b0f',
-          '/1.7f6199ee-84e0-4fd4-aed2-6df579139f8f'
-        ],
+        dependencies: [{
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
+          dependencyType: 'participant'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.6fd38d02-81cf-48ab-bd42-8ff4c0a1628b',
+          dependencyType: 'participant'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
+          dependencyType: 'participant'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
+          dependencyType: 'participant'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
+          dependencyType: 'participant'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
+          dependencyType: 'participant'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
+          dependencyType: 'participant'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.6fd38d02-81cf-48ab-bd42-8ff4c0a1628b',
+          dependencyType: 'participant'
+        }, {
+          childReference: '/1.58e2b9fc-0846-494a-b2c4-8c0421da19b8',
+          dependencyType: 'attachedActivity'
+        }, {
+          childReference: '/1.82b84887-27a8-4ed1-a944-29be95a9b7e5',
+          dependencyType: 'attachedActivity'
+        }, {
+          childReference: '/1.f24c65ec-bf84-4145-86bf-c3d6aac64167',
+          dependencyType: 'attachedActivity'
+        }, {
+          childReference: '/1.61a0bf71-b88b-4fc3-b79b-f023825ed63e',
+          dependencyType: 'attachedActivity'
+        }, {
+          childReference: '/1.bdd3fc6b-5583-46c6-9ddf-91408b409b0f',
+          dependencyType: 'attachedActivity'
+        }, {
+          childReference: '/1.7f6199ee-84e0-4fd4-aed2-6df579139f8f',
+          dependencyType: 'attachedActivity'
+        }],
         versionId: 'f50ca6d3-ee1f-4ada-8ca1-b3e19aadb2fb',
         subType: BPD_TYPES.Process,
         isExposed: false

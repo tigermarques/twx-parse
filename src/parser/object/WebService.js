@@ -1,6 +1,6 @@
 const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
-const { TYPES } = require('../../utils/Constants')
+const { TYPES, OBJECT_DEPENDENCY_TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
 
 const parseWebService = Performance.makeMeasurable(async (databaseName, jsonData) => {
@@ -25,7 +25,11 @@ const parseWebService = Performance.makeMeasurable(async (databaseName, jsonData
       for (let i = 0; i < webservice.webServiceOperation.length; i++) {
         if (!ParseUtils.isNullXML(webservice.webServiceOperation[i]) && webservice.webServiceOperation[i].processRef &&
             !ParseUtils.isNullXML(webservice.webServiceOperation[i].processRef[0])) {
-          result.dependencies.push(webservice.webServiceOperation[i].processRef[0])
+          result.dependencies.push({
+            childReference: webservice.webServiceOperation[i].processRef[0],
+            dependencyType: OBJECT_DEPENDENCY_TYPES.WebService.AttachedService,
+            dependencyName: webservice.webServiceOperation[i].$.name
+          })
         }
       }
     }

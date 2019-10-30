@@ -109,16 +109,34 @@ describe('Parser - Object - Process', () => {
         name: 'AJAX1',
         type: TYPES.Process,
         subType: PROCESS_TYPES.AjaxService,
-        dependencies: [
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '/21.ed99f470-25b4-4a03-b89d-888bc265e2aa',
-          '/50.2641e279-160b-4d0d-bc96-528b36793ecf',
-          '/4.f32f2065-49b8-4e77-8c58-90d96ffce088',
-          '/1.143ff27f-5e08-478c-af65-06723fa26d26',
-          '/1.0295217c-7383-4a27-b311-333ea889f2bb'
-        ],
+        dependencies: [{
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'binding',
+          dependencyName: 'Untitled1'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'binding',
+          dependencyName: 'Untitled2'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'variable',
+          dependencyName: 'Untitled3'
+        }, {
+          childReference: '/21.ed99f470-25b4-4a03-b89d-888bc265e2aa',
+          dependencyType: 'epv'
+        }, {
+          childReference: '/50.2641e279-160b-4d0d-bc96-528b36793ecf',
+          dependencyType: 'resource'
+        }, {
+          childReference: '/4.f32f2065-49b8-4e77-8c58-90d96ffce088',
+          dependencyType: 'uca'
+        }, {
+          childReference: '/1.143ff27f-5e08-478c-af65-06723fa26d26',
+          dependencyType: 'attachedService'
+        }, {
+          childReference: '/1.0295217c-7383-4a27-b311-333ea889f2bb',
+          dependencyType: 'attachedService'
+        }],
         versionId: '04e9ee0e-3851-43c1-86c9-9e128c3fc245',
         description: null,
         isExposed: true
@@ -140,16 +158,34 @@ describe('Parser - Object - Process', () => {
         name: 'Sem título',
         type: TYPES.Process,
         subType: PROCESS_TYPES.HumanService,
-        dependencies: [
-          '/24.2a87eb22-940b-4664-be65-5806a5d01ac8',
-          '/12.7425eece-319f-484b-a59f-8efeaaec2582',
-          '/12.60da4770-d3a3-4937-840f-8fd74f8c33ce',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.a88ad0a1-b385-42d6-b2a8-55c9234f231e',
-          '/21.ed99f470-25b4-4a03-b89d-888bc265e2aa',
-          '/50.2641e279-160b-4d0d-bc96-528b36793ecf',
-          '64.af46ef40-d360-4e61-a58a-5dcd3b249894',
-          '64.393eb28a-759f-4d92-9bee-56f7dab3765f'
-        ],
+        dependencies: [{
+          childReference: '/24.2a87eb22-940b-4664-be65-5806a5d01ac8',
+          dependencyType: 'exposedTo'
+        }, {
+          childReference: '/12.7425eece-319f-484b-a59f-8efeaaec2582',
+          dependencyType: 'binding',
+          dependencyName: 'Untitled1'
+        }, {
+          childReference: '/12.60da4770-d3a3-4937-840f-8fd74f8c33ce',
+          dependencyType: 'binding',
+          dependencyName: 'Untitled2'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.a88ad0a1-b385-42d6-b2a8-55c9234f231e',
+          dependencyType: 'variable',
+          dependencyName: 'Untitled3'
+        }, {
+          childReference: '/21.ed99f470-25b4-4a03-b89d-888bc265e2aa',
+          dependencyType: 'epv'
+        }, {
+          childReference: '/50.2641e279-160b-4d0d-bc96-528b36793ecf',
+          dependencyType: 'resource'
+        }, {
+          childReference: '64.af46ef40-d360-4e61-a58a-5dcd3b249894',
+          dependencyType: 'coachView'
+        }, {
+          childReference: '64.393eb28a-759f-4d92-9bee-56f7dab3765f',
+          dependencyType: 'coachView'
+        }],
         versionId: '1611ccb5-4efd-4ae8-9c94-27ef99afbbda',
         description: null,
         isExposed: true
@@ -171,16 +207,35 @@ describe('Parser - Object - Process', () => {
         name: 'Integration2',
         type: TYPES.Process,
         subType: PROCESS_TYPES.IntegrationService,
-        dependencies: [
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.4f114e73-2520-40d7-b2ea-db9dcc4aa1f0',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.4f114e73-2520-40d7-b2ea-db9dcc4aa1f0',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '/12.60da4770-d3a3-4937-840f-8fd74f8c33ce',
-          '/21.ed99f470-25b4-4a03-b89d-888bc265e2aa',
-          '/50.2641e279-160b-4d0d-bc96-528b36793ecf',
-          '/1.61a0bf71-b88b-4fc3-b79b-f023825ed63e',
-          '/1.143ff27f-5e08-478c-af65-06723fa26d26'
-        ],
+        dependencies: [{
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.4f114e73-2520-40d7-b2ea-db9dcc4aa1f0',
+          dependencyType: 'binding',
+          dependencyName: 'originalTeam'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.4f114e73-2520-40d7-b2ea-db9dcc4aa1f0',
+          dependencyType: 'binding',
+          dependencyName: 'filteredTeam'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'binding',
+          dependencyName: 'Untitled2'
+        }, {
+          childReference: '/12.60da4770-d3a3-4937-840f-8fd74f8c33ce',
+          dependencyType: 'variable',
+          dependencyName: 'Untitled1'
+        }, {
+          childReference: '/21.ed99f470-25b4-4a03-b89d-888bc265e2aa',
+          dependencyType: 'epv'
+        }, {
+          childReference: '/50.2641e279-160b-4d0d-bc96-528b36793ecf',
+          dependencyType: 'resource'
+        }, {
+          childReference: '/1.61a0bf71-b88b-4fc3-b79b-f023825ed63e',
+          dependencyType: 'attachedService'
+        }, {
+          childReference: '/1.143ff27f-5e08-478c-af65-06723fa26d26',
+          dependencyType: 'attachedService'
+        }],
         versionId: 'b65eb81f-6a68-4d7c-b0e1-e0c5c3ee8fe1',
         description: null,
         isExposed: false
@@ -202,10 +257,15 @@ describe('Parser - Object - Process', () => {
         name: 'UCA Service',
         type: TYPES.Process,
         subType: PROCESS_TYPES.GeneralSystemService,
-        dependencies: [
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022'
-        ],
+        dependencies: [{
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'binding',
+          dependencyName: 'Untitled1'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'binding',
+          dependencyName: 'Untitled1'
+        }],
         versionId: '1c04d272-5a1d-4c65-8c34-f974aebaa8c9',
         description: null,
         isExposed: false
@@ -249,49 +309,159 @@ describe('Parser - Object - Process', () => {
         name: 'Serviço manual de lado-cliente',
         type: TYPES.Process,
         subType: PROCESS_TYPES.ClientSideHumanService,
-        dependencies: [
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '/12.60da4770-d3a3-4937-840f-8fd74f8c33ce',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.d2e5a15a-ea53-4793-9e93-29af5bd80b13',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.68474ab0-d56f-47ee-b7e9-510b45a2a8be',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
-          'af325104-4d5d-4315-88c6-6c1de40811b9/12.9a9d479f-686b-484b-80a6-30b52aa4e935',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.d2e5a15a-ea53-4793-9e93-29af5bd80b13',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.d2e5a15a-ea53-4793-9e93-29af5bd80b13',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.d8fa7561-8636-40a9-bd70-f45128bb7e54',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.c09c9b6e-aabd-4897-bef2-ed61db106297',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.c09c9b6e-aabd-4897-bef2-ed61db106297',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.c09c9b6e-aabd-4897-bef2-ed61db106297',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
-          'af325104-4d5d-4315-88c6-6c1de40811b9/50.4b698a84-427b-4801-9c1d-18ddcc561bc6',
-          'af325104-4d5d-4315-88c6-6c1de40811b9/1.554dd7d5-ceb8-4548-91e5-788940b70e0d',
-          '64.5f0e6839-f7f9-41a3-b633-541ba91f9b31',
-          '64.0678c7bb-7028-4bca-8111-e0e9977f294d',
-          '64.d109fc11-3729-396e-bf94-d748d1967596',
-          '64.d109fc11-3729-396e-bf94-d748d1967596',
-          '64.e44c5617-c1ca-31f8-a810-ce1138fb1c99',
-          '64.d109fc11-3729-396e-bf94-d748d1967596',
-          '64.327b1224-e7d9-3d9c-ad44-392f5702827c',
-          '64.d109fc11-3729-396e-bf94-d748d1967596',
-          '64.fc2d6e5b-da91-4e0a-b874-3ec8ace34c82',
-          '64.36f46ec6-616b-4e38-86aa-fba20ec6f9b4'
-        ],
+        dependencies: [{
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'binding',
+          dependencyName: 'input1'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'binding',
+          dependencyName: 'output1'
+        }, {
+          childReference: '/12.60da4770-d3a3-4937-840f-8fd74f8c33ce',
+          dependencyType: 'binding',
+          dependencyName: 'variable1'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'variable',
+          dependencyName: 'activitiesTextFilter'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.d2e5a15a-ea53-4793-9e93-29af5bd80b13',
+          dependencyType: 'variable',
+          dependencyName: 'breadcrumbs'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
+          dependencyType: 'variable',
+          dependencyName: 'buttonClicked_GanttView'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.68474ab0-d56f-47ee-b7e9-510b45a2a8be',
+          dependencyType: 'variable',
+          dependencyName: 'currentDate'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
+          dependencyType: 'variable',
+          dependencyName: 'follow'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'variable',
+          dependencyName: 'instanceName'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
+          dependencyType: 'variable',
+          dependencyName: 'hideDocumentSection'
+        }, {
+          childReference: 'af325104-4d5d-4315-88c6-6c1de40811b9/12.9a9d479f-686b-484b-80a6-30b52aa4e935',
+          dependencyType: 'variable',
+          dependencyName: 'instanceSummary'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'variable',
+          dependencyName: 'selectedActivitiesCategory'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.d2e5a15a-ea53-4793-9e93-29af5bd80b13',
+          dependencyType: 'variable',
+          dependencyName: 'activitiesCategoriesSelectionList'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'variable',
+          dependencyName: 'selectedTasksCategory'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.d2e5a15a-ea53-4793-9e93-29af5bd80b13',
+          dependencyType: 'variable',
+          dependencyName: 'tasksCategoriesSelectionList'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'variable',
+          dependencyName: 'selectedInstanceId'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
+          dependencyType: 'variable',
+          dependencyName: 'automaticRefreshTrigger'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
+          dependencyType: 'variable',
+          dependencyName: 'manualRefreshTrigger'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'variable',
+          dependencyName: 'failedSaveMessage'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.d8fa7561-8636-40a9-bd70-f45128bb7e54',
+          dependencyType: 'variable',
+          dependencyName: 'boSaveFailedError'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
+          dependencyType: 'variable',
+          dependencyName: 'canViewDiagram'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'variable',
+          dependencyName: 'navigationURL'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
+          dependencyType: 'variable',
+          dependencyName: 'unsavedLocalChanges'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.c09c9b6e-aabd-4897-bef2-ed61db106297',
+          dependencyType: 'variable',
+          dependencyName: 'originalInput'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.c09c9b6e-aabd-4897-bef2-ed61db106297',
+          dependencyType: 'variable',
+          dependencyName: 'incomingChanges'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.c09c9b6e-aabd-4897-bef2-ed61db106297',
+          dependencyType: 'variable',
+          dependencyName: 'localChanges'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'variable',
+          dependencyName: 'dataSectionBoundaryEventType'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'variable',
+          dependencyName: 'helperScriptURL'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.83ff975e-8dbc-42e5-b738-fa8bc08274a2',
+          dependencyType: 'variable',
+          dependencyName: 'incomingChangesMerged'
+        }, {
+          childReference: 'af325104-4d5d-4315-88c6-6c1de40811b9/50.4b698a84-427b-4801-9c1d-18ddcc561bc6',
+          dependencyType: 'resource'
+        }, {
+          childReference: 'af325104-4d5d-4315-88c6-6c1de40811b9/1.554dd7d5-ceb8-4548-91e5-788940b70e0d',
+          dependencyType: 'attachedService'
+        }, {
+          childReference: '64.5f0e6839-f7f9-41a3-b633-541ba91f9b31',
+          dependencyType: 'coachView'
+        }, {
+          childReference: '64.0678c7bb-7028-4bca-8111-e0e9977f294d',
+          dependencyType: 'coachView'
+        }, {
+          childReference: '64.d109fc11-3729-396e-bf94-d748d1967596',
+          dependencyType: 'coachView'
+        }, {
+          childReference: '64.d109fc11-3729-396e-bf94-d748d1967596',
+          dependencyType: 'coachView'
+        }, {
+          childReference: '64.e44c5617-c1ca-31f8-a810-ce1138fb1c99',
+          dependencyType: 'coachView'
+        }, {
+          childReference: '64.d109fc11-3729-396e-bf94-d748d1967596',
+          dependencyType: 'coachView'
+        }, {
+          childReference: '64.327b1224-e7d9-3d9c-ad44-392f5702827c',
+          dependencyType: 'coachView'
+        }, {
+          childReference: '64.d109fc11-3729-396e-bf94-d748d1967596',
+          dependencyType: 'coachView'
+        }, {
+          childReference: '64.fc2d6e5b-da91-4e0a-b874-3ec8ace34c82',
+          dependencyType: 'coachView'
+        }, {
+          childReference: '64.36f46ec6-616b-4e38-86aa-fba20ec6f9b4',
+          dependencyType: 'coachView'
+        }],
         versionId: 'a9457050-5a86-413e-b5ea-76f6f198cb1c',
         description: '<p>When you create a new details UI, the generated human service uses a copy of this template. You can further customize the human service to create your details user interface.</p><p>The service template includes:</p><ul><li>A <b>View instance details</b> coach, which has these coach controls:</li><ul><li><b>Default Instance Details Template</b> - displays the instance details in Process Portal</li><li><b>Data section view</b> - displays the values of the variables that are passed into the human service</li></ul><li>A <b>Show error</b> coach - returns an error if the instance is not found.</li></ul>',
         isExposed: true
@@ -335,12 +505,19 @@ describe('Parser - Object - Process', () => {
         name: 'Fluxo de Serviço',
         type: TYPES.Process,
         subType: PROCESS_TYPES.ServiceFlow,
-        dependencies: [
-          '/1.bdd3fc6b-5583-46c6-9ddf-91408b409b0f',
-          '/1.61a0bf71-b88b-4fc3-b79b-f023825ed63e',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/1.5a9202c7-6f7b-440a-8d6c-f9fd24ed3b92',
-          '/1.350b261f-7e76-4fd5-abe4-25817b0090f3'
-        ],
+        dependencies: [{
+          childReference: '/1.bdd3fc6b-5583-46c6-9ddf-91408b409b0f',
+          dependencyType: 'attachedService'
+        }, {
+          childReference: '/1.61a0bf71-b88b-4fc3-b79b-f023825ed63e',
+          dependencyType: 'attachedService'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/1.5a9202c7-6f7b-440a-8d6c-f9fd24ed3b92',
+          dependencyType: 'attachedService'
+        }, {
+          childReference: '/1.350b261f-7e76-4fd5-abe4-25817b0090f3',
+          dependencyType: 'attachedService'
+        }],
         versionId: '846cacfb-94b8-461e-a515-87d9ebacfb8d',
         description: null,
         isExposed: true

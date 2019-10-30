@@ -1,6 +1,6 @@
 const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
-const { TYPES } = require('../../utils/Constants')
+const { TYPES, OBJECT_DEPENDENCY_TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
 
 const parseScoreboard = Performance.makeMeasurable(async (databaseName, jsonData) => {
@@ -22,18 +22,27 @@ const parseScoreboard = Performance.makeMeasurable(async (databaseName, jsonData
     result.dependencies = []
 
     if (scoreboard.layoutRef && !ParseUtils.isNullXML(scoreboard.layoutRef[0])) {
-      result.dependencies.push(scoreboard.layoutRef[0])
+      result.dependencies.push({
+        childReference: scoreboard.layoutRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.Scoreboard.Layout
+      })
     }
     if (scoreboard.participantRef && !ParseUtils.isNullXML(scoreboard.participantRef[0])) {
       result.isExposed = true
-      result.dependencies.push(scoreboard.participantRef[0])
+      result.dependencies.push({
+        childReference: scoreboard.participantRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.Scoreboard.ExposedTo
+      })
     }
 
     if (scoreboard.scoreBoardReportLink) {
       for (let i = 0; i < scoreboard.scoreBoardReportLink.length; i++) {
         const item = scoreboard.scoreBoardReportLink[i]
         if (!ParseUtils.isNullXML(item) && item.reportRef && !ParseUtils.isNullXML(item.reportRef[0])) {
-          result.dependencies.push(item.reportRef[0])
+          result.dependencies.push({
+            childReference: item.reportRef[0],
+            dependencyType: OBJECT_DEPENDENCY_TYPES.Scoreboard.Report
+          })
         }
       }
     }

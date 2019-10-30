@@ -106,9 +106,16 @@ const saveObjectInformation = Performance.makeMeasurable(async (databaseName, ob
         const dependencyArr = []
         if (objectInfo.dependencies) {
           // remove duplicates
-          objectInfo.dependencies = objectInfo.dependencies.filter((item, pos) => objectInfo.dependencies.indexOf(item) === pos)
+          objectInfo.dependencies = objectInfo.dependencies.filter((item, pos, self) =>
+            pos === self.findIndex((i) =>
+              i.childReference === item.childReference && i.dependencyType === item.dependencyType && i.dependencyName === item.dependencyName
+            )
+          )
+
           for (let i = 0; i < objectInfo.dependencies.length; i++) {
-            const childObjectReference = objectInfo.dependencies[i]
+            const childObjectReference = objectInfo.dependencies[i].childReference
+            const dependencyType = objectInfo.dependencies[i].dependencyType
+            const dependencyName = objectInfo.dependencies[i].dependencyName
             let childObjectVersionId
             if (!(`${currentSnapshotId};${childObjectReference}` in dependencyCache)) {
               if (childObjectReference.indexOf('/') > -1) {
@@ -125,7 +132,7 @@ const saveObjectInformation = Performance.makeMeasurable(async (databaseName, ob
 
             if (childObjectVersionId) {
               // Registry.ObjectDependency.register(new ObjectDependency(objectInfo.versionId, childObjectVersionId))
-              dependencyArr.push(new ObjectDependency(databaseName, objectInfo.versionId, childObjectVersionId))
+              dependencyArr.push(new ObjectDependency(databaseName, objectInfo.versionId, childObjectVersionId, dependencyType, dependencyName))
             } else {
               // console.warn(`Reference ${childObjectReference} was not found. Parent Snapshot Id is ${currentSnapshotId}`)
             }

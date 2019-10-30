@@ -68,10 +68,13 @@ describe('Parser - Object - Event Subscription', () => {
         id: '71.be51c18b-fbcd-4a02-a662-ac3b51507644',
         name: 'Event1',
         type: TYPES.EventSubscription,
-        dependencies: [
-          '/1.0295217c-7383-4a27-b311-333ea889f2bb',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03'
-        ],
+        dependencies: [{
+          childReference: '/1.0295217c-7383-4a27-b311-333ea889f2bb',
+          dependencyType: 'attachedService'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/24.da7e4d23-78cb-4483-98ed-b9c238308a03',
+          dependencyType: 'exposedTo'
+        }],
         versionId: 'de7fddea-d1af-4efa-8a96-a7118032d440',
         description: null,
         isExposed: true

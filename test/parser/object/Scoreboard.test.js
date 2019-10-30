@@ -68,11 +68,16 @@ describe('Parser - Object - Scoreboard', () => {
         id: '13.c6a2ed15-ce98-4ad7-b369-f4aec0d76f7b',
         name: 'Score',
         type: TYPES.Scoreboard,
-        dependencies: [
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/20.0e1432ca-ea6f-46e5-9003-df49972624ee',
-          '/24.2a87eb22-940b-4664-be65-5806a5d01ac8',
-          '/11.b744896e-f2fd-4d54-90d4-3bb6658f4690'
-        ],
+        dependencies: [{
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/20.0e1432ca-ea6f-46e5-9003-df49972624ee',
+          dependencyType: 'layout'
+        }, {
+          childReference: '/24.2a87eb22-940b-4664-be65-5806a5d01ac8',
+          dependencyType: 'exposedTo'
+        }, {
+          childReference: '/11.b744896e-f2fd-4d54-90d4-3bb6658f4690',
+          dependencyType: 'report'
+        }],
         versionId: '383f46cc-46e2-42cf-95e4-07a7bb137595',
         description: null,
         isExposed: true

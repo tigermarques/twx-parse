@@ -68,9 +68,10 @@ describe('Parser - Object - Participant', () => {
         id: '24.a776709d-cf51-4353-9ca5-42a15c712b02',
         name: 'Equipa2',
         type: TYPES.Participant,
-        dependencies: [
-          '/24.2a87eb22-940b-4664-be65-5806a5d01ac8'
-        ],
+        dependencies: [{
+          childReference: '/24.2a87eb22-940b-4664-be65-5806a5d01ac8',
+          dependencyType: 'manager'
+        }],
         versionId: 'd915fc56-f819-45ce-a879-9b798f563ae0',
         description: '',
         isExposed: true

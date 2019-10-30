@@ -1,6 +1,6 @@
 const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
-const { TYPES } = require('../../utils/Constants')
+const { TYPES, OBJECT_DEPENDENCY_TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
 
 const parseParticipant = Performance.makeMeasurable(async (databaseName, jsonData) => {
@@ -22,7 +22,10 @@ const parseParticipant = Performance.makeMeasurable(async (databaseName, jsonDat
     result.dependencies = []
 
     if (participant.managersRef && !ParseUtils.isNullXML(participant.managersRef[0])) {
-      result.dependencies.push(participant.managersRef[0])
+      result.dependencies.push({
+        childReference: participant.managersRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.Participant.Manager
+      })
     }
   }
 

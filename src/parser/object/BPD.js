@@ -1,6 +1,6 @@
 const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
-const { TYPES, SUBTYPES: { BPD: BPD_TYPES } } = require('../../utils/Constants')
+const { TYPES, SUBTYPES: { BPD: BPD_TYPES }, OBJECT_DEPENDENCY_TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
 
 const parseBPD = Performance.makeMeasurable(async (databaseName, jsonData) => {
@@ -28,30 +28,46 @@ const parseBPD = Performance.makeMeasurable(async (databaseName, jsonData) => {
 
     // Exposed to Start
     if (bpd.participantRef && !ParseUtils.isNullXML(bpd.participantRef[0])) {
-      result.dependencies.push(bpd.participantRef[0])
+      result.dependencies.push({
+        childReference: bpd.participantRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.BPD.ExposedTo
+      })
       result.isExposed = true
     }
 
     // Exposed Data
     if (bpd.businessDataParticipantRef && !ParseUtils.isNullXML(bpd.businessDataParticipantRef[0])) {
-      result.dependencies.push(bpd.businessDataParticipantRef[0])
+      result.dependencies.push({
+        childReference: bpd.businessDataParticipantRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.BPD.DataExposedTo
+      })
     }
 
     // Exposed Metrics
     if (bpd.perfMetricParticipantRef && !ParseUtils.isNullXML(bpd.perfMetricParticipantRef[0])) {
-      result.dependencies.push(bpd.perfMetricParticipantRef[0])
+      result.dependencies.push({
+        childReference: bpd.perfMetricParticipantRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.BPD.PerformanceExposedTo
+      })
     }
 
     // Owner
     if (bpd.ownerTeamParticipantRef && !ParseUtils.isNullXML(bpd.ownerTeamParticipantRef[0])) {
-      result.dependencies.push(bpd.ownerTeamParticipantRef[0])
+      result.dependencies.push({
+        childReference: bpd.ownerTeamParticipantRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.BPD.Owner
+      })
     }
 
     // Input and Output Parameters
     if (bpd.bpdParameter) {
       for (let i = 0; i < bpd.bpdParameter.length; i++) {
         if (!ParseUtils.isNullXML(bpd.bpdParameter[i]) && bpd.bpdParameter[i].classId && !ParseUtils.isNullXML(bpd.bpdParameter[i].classId[0])) {
-          result.dependencies.push(bpd.bpdParameter[i].classId[0])
+          result.dependencies.push({
+            childReference: bpd.bpdParameter[i].classId[0],
+            dependencyType: OBJECT_DEPENDENCY_TYPES.BPD.Binding,
+            dependencyName: bpd.bpdParameter[i].$.name
+          })
         }
       }
     }
@@ -63,7 +79,10 @@ const parseBPD = Performance.makeMeasurable(async (databaseName, jsonData) => {
       if (diagram.metricSettings && !ParseUtils.isNullXML(diagram.metricSettings[0]) && diagram.metricSettings[0].settings) {
         for (let i = 0; i < diagram.metricSettings[0].settings.length; i++) {
           if (!ParseUtils.isNullXML(diagram.metricSettings[0].settings[i])) {
-            result.dependencies.push(diagram.metricSettings[0].settings[i].$.metricId)
+            result.dependencies.push({
+              childReference: diagram.metricSettings[0].settings[i].$.metricId,
+              dependencyType: OBJECT_DEPENDENCY_TYPES.BPD.Metric
+            })
           }
         }
       }
@@ -75,7 +94,11 @@ const parseBPD = Performance.makeMeasurable(async (databaseName, jsonData) => {
         if (pool.privateVariable) {
           for (let i = 0; i < pool.privateVariable.length; i++) {
             if (!ParseUtils.isNullXML(pool.privateVariable[i]) && pool.privateVariable[i].classId && !ParseUtils.isNullXML(pool.privateVariable[i].classId[0])) {
-              result.dependencies.push(pool.privateVariable[i].classId[0])
+              result.dependencies.push({
+                childReference: pool.privateVariable[i].classId[0],
+                dependencyType: OBJECT_DEPENDENCY_TYPES.BPD.Variable,
+                dependencyName: ParseUtils.isNullXML(pool.privateVariable[i].name[0]) ? null : pool.privateVariable[i].name[0]
+              })
             }
           }
         }
@@ -84,7 +107,10 @@ const parseBPD = Performance.makeMeasurable(async (databaseName, jsonData) => {
         if (pool.epv) {
           for (let i = 0; i < pool.epv.length; i++) {
             if (!ParseUtils.isNullXML(pool.epv[i]) && pool.epv[i].epvId && !ParseUtils.isNullXML(pool.epv[i].epvId[0])) {
-              result.dependencies.push(pool.epv[i].epvId[0])
+              result.dependencies.push({
+                childReference: pool.epv[i].epvId[0],
+                dependencyType: OBJECT_DEPENDENCY_TYPES.BPD.EPV
+              })
             }
           }
         }
@@ -93,7 +119,10 @@ const parseBPD = Performance.makeMeasurable(async (databaseName, jsonData) => {
         const participants = ParseUtils.xpath(pool, '//attachedParticipant')
         if (participants) {
           participants.map(participantId => {
-            result.dependencies.push(participantId)
+            result.dependencies.push({
+              childReference: participantId,
+              dependencyType: OBJECT_DEPENDENCY_TYPES.BPD.Participant
+            })
           })
         }
 
@@ -101,7 +130,10 @@ const parseBPD = Performance.makeMeasurable(async (databaseName, jsonData) => {
         const teams = ParseUtils.xpath(pool, '//teamRef')
         if (teams) {
           teams.map(teamId => {
-            result.dependencies.push(teamId)
+            result.dependencies.push({
+              childReference: teamId,
+              dependencyType: OBJECT_DEPENDENCY_TYPES.BPD.Participant
+            })
           })
         }
 
@@ -109,7 +141,10 @@ const parseBPD = Performance.makeMeasurable(async (databaseName, jsonData) => {
         const attachedUCAs = ParseUtils.xpath(pool, '//attachedUcaId')
         if (attachedUCAs) {
           attachedUCAs.map(ucaId => {
-            result.dependencies.push(ucaId)
+            result.dependencies.push({
+              childReference: ucaId,
+              dependencyType: OBJECT_DEPENDENCY_TYPES.BPD.UCA
+            })
           })
         }
 
@@ -117,7 +152,10 @@ const parseBPD = Performance.makeMeasurable(async (databaseName, jsonData) => {
         const attachedActivities = ParseUtils.xpath(pool, '//attachedActivityId')
         if (attachedActivities) {
           attachedActivities.map(attachedActivityId => {
-            result.dependencies.push(attachedActivityId)
+            result.dependencies.push({
+              childReference: attachedActivityId,
+              dependencyType: OBJECT_DEPENDENCY_TYPES.BPD.AttachedActivity
+            })
           })
         }
 
@@ -125,7 +163,10 @@ const parseBPD = Performance.makeMeasurable(async (databaseName, jsonData) => {
         const attachedProcesses = ParseUtils.xpath(pool, '//attachedProcessId')
         if (attachedProcesses) {
           attachedProcesses.map(attachedProcessId => {
-            result.dependencies.push(attachedProcessId)
+            result.dependencies.push({
+              childReference: attachedProcessId,
+              dependencyType: OBJECT_DEPENDENCY_TYPES.BPD.AttachedProcess
+            })
           })
         }
 
@@ -133,7 +174,10 @@ const parseBPD = Performance.makeMeasurable(async (databaseName, jsonData) => {
         const services = ParseUtils.xpath(pool, '//serviceRef')
         if (services) {
           services.map(serviceId => {
-            result.dependencies.push(serviceId)
+            result.dependencies.push({
+              childReference: serviceId,
+              dependencyType: OBJECT_DEPENDENCY_TYPES.BPD.AttachedService
+            })
           })
         }
       }

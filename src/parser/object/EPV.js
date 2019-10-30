@@ -1,6 +1,6 @@
 const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
-const { TYPES } = require('../../utils/Constants')
+const { TYPES, OBJECT_DEPENDENCY_TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
 
 const parseEPV = Performance.makeMeasurable(async (databaseName, jsonData) => {
@@ -22,7 +22,10 @@ const parseEPV = Performance.makeMeasurable(async (databaseName, jsonData) => {
     result.dependencies = []
 
     if (epv.participantRef && !ParseUtils.isNullXML(epv.participantRef[0])) {
-      result.dependencies.push(epv.participantRef[0])
+      result.dependencies.push({
+        childReference: epv.participantRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.EPV.ExposedTo
+      })
       result.isExposed = true
     }
   }

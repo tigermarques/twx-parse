@@ -68,9 +68,10 @@ describe('Parser - Object - KPI', () => {
         id: '49.84290403-04af-4258-a028-700286b03e06',
         name: 'KPI',
         type: TYPES.KPI,
-        dependencies: [
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/49.d5da2c80-b2af-40a6-981d-9de4df12ed12'
-        ],
+        dependencies: [{
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/49.d5da2c80-b2af-40a6-981d-9de4df12ed12',
+          dependencyType: 'rollupMetric'
+        }],
         versionId: '00358551-6701-4f1f-bdcf-afde9191a189',
         description: null,
         isExposed: false

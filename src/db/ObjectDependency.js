@@ -2,7 +2,7 @@ const Performance = require('../utils/Performance')
 const { getDB } = require('./common')
 
 const getParamsFromItem = item =>
-  [item.parentObjectVersionId, item.childObjectVersionId]
+  [item.parentObjectVersionId, item.childObjectVersionId, item.dependencyType, item.dependencyName]
 
 const buildWhereQuery = obj => {
   let whereClause = '1 = 1'
@@ -25,8 +25,8 @@ module.exports = {
   register: Performance.makeMeasurable((databaseName, item) => {
     return new Promise((resolve, reject) => {
       const db = getDB(databaseName)
-      const sql = `insert into ObjectDependency (parentObjectVersionId, childObjectVersionId)
-                  values (?, ?)`
+      const sql = `insert into ObjectDependency (parentObjectVersionId, childObjectVersionId, dependencyType, dependencyName)
+                  values (?, ?, ?, ?)`
       const params = getParamsFromItem(item)
       db.run(sql, params, err => {
         if (err) {
@@ -45,8 +45,8 @@ module.exports = {
       db.exec('begin')
       for (let i = 0; i < items.length; i++) {
         const item = items[i]
-        const sql = `insert into ObjectDependency (parentObjectVersionId, childObjectVersionId)
-                  values (?, ?)`
+        const sql = `insert into ObjectDependency (parentObjectVersionId, childObjectVersionId, dependencyType, dependencyName)
+                    values (?, ?, ?, ?)`
         const params = getParamsFromItem(item)
 
         db.run(sql, params)

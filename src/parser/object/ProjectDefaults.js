@@ -1,6 +1,6 @@
 const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
-const { TYPES } = require('../../utils/Constants')
+const { TYPES, OBJECT_DEPENDENCY_TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
 
 const parseProjectDefaults = Performance.makeMeasurable(async (databaseName, jsonData) => {
@@ -22,13 +22,22 @@ const parseProjectDefaults = Performance.makeMeasurable(async (databaseName, jso
     result.dependencies = []
 
     if (projectDefaults.defaultXslRef && !ParseUtils.isNullXML(projectDefaults.defaultXslRef[0])) {
-      result.dependencies.push(projectDefaults.defaultXslRef[0])
+      result.dependencies.push({
+        childReference: projectDefaults.defaultXslRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.ProjectDefaults.XSL
+      })
     }
     if (projectDefaults.defaultCssRef && !ParseUtils.isNullXML(projectDefaults.defaultCssRef[0])) {
-      result.dependencies.push(projectDefaults.defaultCssRef[0])
+      result.dependencies.push({
+        childReference: projectDefaults.defaultCssRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.ProjectDefaults.CSS
+      })
     }
     if (projectDefaults.defaultTheme && !ParseUtils.isNullXML(projectDefaults.defaultTheme[0])) {
-      result.dependencies.push(projectDefaults.defaultTheme[0])
+      result.dependencies.push({
+        childReference: projectDefaults.defaultTheme[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.ProjectDefaults.Theme
+      })
     }
   }
 
