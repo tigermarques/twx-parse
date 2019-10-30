@@ -1,6 +1,6 @@
 const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
-const { TYPES } = require('../../utils/Constants')
+const { TYPES, OBJECT_DEPENDENCY_TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
 
 const parseSLA = Performance.makeMeasurable(async (databaseName, jsonData) => {
@@ -22,11 +22,17 @@ const parseSLA = Performance.makeMeasurable(async (databaseName, jsonData) => {
     result.dependencies = []
 
     if (sla.participantRef && !ParseUtils.isNullXML(sla.participantRef[0])) {
-      result.dependencies.push(sla.participantRef[0])
+      result.dependencies.push({
+        childReference: sla.participantRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.SLA.ExposedTo
+      })
       result.isExposed = true
     }
     if (sla.xmlData && sla.xmlData[0] && sla.xmlData[0].condition && !ParseUtils.isNullXML(sla.xmlData[0].condition[0])) {
-      result.dependencies.push(sla.xmlData[0].condition[0].$.metricId)
+      result.dependencies.push({
+        childReference: sla.xmlData[0].condition[0].$.metricId,
+        dependencyType: OBJECT_DEPENDENCY_TYPES.SLA.Metric
+      })
     }
   }
 

@@ -453,7 +453,7 @@ describe('Classes - Registry', () => {
   describe('ObjectDependency', () => {
     it('should proxy correctly the "register" method', () => {
       const stub = sinon.stub(ObjectDependency, 'register').returns(defer())
-      const obj1 = new ObjectDependency('name1', 'parent1', 'child1')
+      const obj1 = new ObjectDependency('name1', 'parent1', 'child1', 'type1', 'name1')
       expect(stub).not.to.have.been.called
       const result = Registry.ObjectDependency.register('name1', obj1)
       expect(stub).to.have.been.calledOnce
@@ -464,8 +464,8 @@ describe('Classes - Registry', () => {
 
     it('should proxy correctly the "registerMany" method', () => {
       const stub = sinon.stub(ObjectDependency, 'registerMany').returns(defer())
-      const obj1 = new ObjectDependency('name1', 'parent1', 'child1')
-      const obj2 = new ObjectDependency('name2', 'parent2', 'child2')
+      const obj1 = new ObjectDependency('name1', 'parent1', 'child1', 'type1', 'name1')
+      const obj2 = new ObjectDependency('name1', 'parent2', 'child2', 'type2', 'name2')
       expect(stub).not.to.have.been.called
       const result = Registry.ObjectDependency.registerMany('name1', [obj1, obj2])
       expect(stub).to.have.been.calledOnce

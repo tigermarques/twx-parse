@@ -1,6 +1,6 @@
 const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
-const { TYPES, SUBTYPES: { Process: PROCESS_TYPES } } = require('../../utils/Constants')
+const { TYPES, SUBTYPES: { Process: PROCESS_TYPES }, OBJECT_DEPENDENCY_TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
 
 const parseProcess = Performance.makeMeasurable(async (databaseName, jsonData) => {
@@ -33,7 +33,10 @@ const parseProcess = Performance.makeMeasurable(async (databaseName, jsonData) =
 
     // Exposed to Start
     if (process.participantRef && !ParseUtils.isNullXML(process.participantRef[0])) {
-      result.dependencies.push(process.participantRef[0])
+      result.dependencies.push({
+        childReference: process.participantRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.Process.ExposedTo
+      })
       result.isExposed = true
     }
 
@@ -41,7 +44,11 @@ const parseProcess = Performance.makeMeasurable(async (databaseName, jsonData) =
     if (process.processParameter) {
       for (let i = 0; i < process.processParameter.length; i++) {
         if (!ParseUtils.isNullXML(process.processParameter[i]) && process.processParameter[i].classId && !ParseUtils.isNullXML(process.processParameter[i].classId[0])) {
-          result.dependencies.push(process.processParameter[i].classId[0])
+          result.dependencies.push({
+            childReference: process.processParameter[i].classId[0],
+            dependencyType: OBJECT_DEPENDENCY_TYPES.Process.Binding,
+            dependencyName: process.processParameter[i].$.name
+          })
         }
       }
     }
@@ -50,7 +57,11 @@ const parseProcess = Performance.makeMeasurable(async (databaseName, jsonData) =
     if (process.processVariable) {
       for (let i = 0; i < process.processVariable.length; i++) {
         if (!ParseUtils.isNullXML(process.processVariable[i]) && process.processVariable[i].classId && !ParseUtils.isNullXML(process.processVariable[i].classId[0])) {
-          result.dependencies.push(process.processVariable[i].classId[0])
+          result.dependencies.push({
+            childReference: process.processVariable[i].classId[0],
+            dependencyType: OBJECT_DEPENDENCY_TYPES.Process.Variable,
+            dependencyName: process.processVariable[i].$.name
+          })
         }
       }
     }
@@ -59,7 +70,10 @@ const parseProcess = Performance.makeMeasurable(async (databaseName, jsonData) =
     if (process.EPV_PROCESS_LINK) {
       for (let i = 0; i < process.EPV_PROCESS_LINK.length; i++) {
         if (!ParseUtils.isNullXML(process.EPV_PROCESS_LINK[i]) && process.EPV_PROCESS_LINK[i].epvId && !ParseUtils.isNullXML(process.EPV_PROCESS_LINK[i].epvId[0])) {
-          result.dependencies.push(process.EPV_PROCESS_LINK[i].epvId[0])
+          result.dependencies.push({
+            childReference: process.EPV_PROCESS_LINK[i].epvId[0],
+            dependencyType: OBJECT_DEPENDENCY_TYPES.Process.EPV
+          })
         }
       }
     }
@@ -69,7 +83,10 @@ const parseProcess = Performance.makeMeasurable(async (databaseName, jsonData) =
       for (let i = 0; i < process.RESOURCE_PROCESS_LINK.length; i++) {
         const item = process.RESOURCE_PROCESS_LINK[i]
         if (!ParseUtils.isNullXML(item) && item.resourceBundleGroupId && !ParseUtils.isNullXML(item.resourceBundleGroupId[0])) {
-          result.dependencies.push(item.resourceBundleGroupId[0])
+          result.dependencies.push({
+            childReference: item.resourceBundleGroupId[0],
+            dependencyType: OBJECT_DEPENDENCY_TYPES.Process.Resource
+          })
         }
       }
     }
@@ -79,7 +96,10 @@ const parseProcess = Performance.makeMeasurable(async (databaseName, jsonData) =
     if (ucas) {
       ucas.map(ucaId => {
         if (!ParseUtils.isNullXML(ucaId)) {
-          result.dependencies.push(ucaId)
+          result.dependencies.push({
+            childReference: ucaId,
+            dependencyType: OBJECT_DEPENDENCY_TYPES.Process.UCA
+          })
         }
       })
     }
@@ -89,7 +109,10 @@ const parseProcess = Performance.makeMeasurable(async (databaseName, jsonData) =
     if (subProcesses) {
       subProcesses.map(subProcessId => {
         if (!ParseUtils.isNullXML(subProcessId)) {
-          result.dependencies.push(subProcessId)
+          result.dependencies.push({
+            childReference: subProcessId,
+            dependencyType: OBJECT_DEPENDENCY_TYPES.Process.AttachedService
+          })
         }
       })
     }
@@ -104,7 +127,10 @@ const parseProcess = Performance.makeMeasurable(async (databaseName, jsonData) =
           const viewIds = ParseUtils.xpath(jsonLayout, '//viewUUID')
           if (viewIds) {
             viewIds.map(viewId => {
-              result.dependencies.push(viewId)
+              result.dependencies.push({
+                childReference: viewId,
+                dependencyType: OBJECT_DEPENDENCY_TYPES.Process.CoachView
+              })
             })
           }
         }
@@ -118,7 +144,10 @@ const parseProcess = Performance.makeMeasurable(async (databaseName, jsonData) =
           const viewIds = ParseUtils.xpath(process.coachflow[i], '//viewUUID')
           if (viewIds) {
             viewIds.map(viewId => {
-              result.dependencies.push(viewId)
+              result.dependencies.push({
+                childReference: viewId,
+                dependencyType: OBJECT_DEPENDENCY_TYPES.Process.CoachView
+              })
             })
           }
         }

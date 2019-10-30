@@ -68,10 +68,13 @@ describe('Parser - Object - SLA', () => {
         id: '47.03ba18ea-b1e1-490b-b2fa-345887449938',
         name: 'SAL1',
         type: TYPES.SLA,
-        dependencies: [
-          '/24.a776709d-cf51-4353-9ca5-42a15c712b02',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/49.67cbb213-0032-4f14-be44-7e9c7a1a146f'
-        ],
+        dependencies: [{
+          childReference: '/24.a776709d-cf51-4353-9ca5-42a15c712b02',
+          dependencyType: 'exposedTo'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/49.67cbb213-0032-4f14-be44-7e9c7a1a146f',
+          dependencyType: 'metric'
+        }],
         versionId: 'fecdb217-32a8-4edb-afc6-453181302064',
         description: null,
         isExposed: true

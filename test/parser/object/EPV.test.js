@@ -68,9 +68,10 @@ describe('Parser - Object - EPV', () => {
         id: '21.ed99f470-25b4-4a03-b89d-888bc265e2aa',
         name: 'EPV1',
         type: TYPES.EPV,
-        dependencies: [
-          '/24.2a87eb22-940b-4664-be65-5806a5d01ac8'
-        ],
+        dependencies: [{
+          childReference: '/24.2a87eb22-940b-4664-be65-5806a5d01ac8',
+          dependencyType: 'exposedTo'
+        }],
         versionId: '2364dacf-6bce-4fdd-8d27-41b83f4a20e7',
         description: '',
         isExposed: true

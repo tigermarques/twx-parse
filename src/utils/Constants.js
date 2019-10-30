@@ -84,6 +84,89 @@ const BPD_TYPES_DESCRIPTION = {
   Process: 'Process'
 }
 
+const OBJECT_DEPENDENCY_TYPES = {
+  BPD: {
+    AttachedActivity: 'attachedActivity',
+    AttachedProcess: 'attachedProcess',
+    AttachedService: 'attachedService',
+    Binding: 'binding',
+    DataExposedTo: 'dataExposedTo',
+    EPV: 'epv',
+    ExposedTo: 'exposedTo',
+    Metric: 'metric',
+    Owner: 'owner',
+    Participant: 'participant',
+    PerformanceExposedTo: 'performanceExposedTo',
+    UCA: 'uca',
+    Variable: 'variable'
+  },
+  CoachView: {
+    Asset: 'asset',
+    Binding: 'binding',
+    Config: 'config',
+    CoachView: 'coachView',
+    PaletteIcon: 'paletteIcon',
+    PreviewImage: 'previewImage',
+    Resource: 'resource'
+  },
+  EPV: {
+    ExposedTo: 'exposedTo'
+  },
+  EventSubscription: {
+    AttachedService: 'attachedService',
+    ExposedTo: 'exposedTo'
+  },
+  KPI: {
+    RollupMetric: 'rollupMetric'
+  },
+  Participant: {
+    Manager: 'manager'
+  },
+  Process: {
+    AttachedService: 'attachedService',
+    Binding: 'binding',
+    CoachView: 'coachView',
+    EPV: 'epv',
+    ExposedTo: 'exposedTo',
+    Resource: 'resource',
+    UCA: 'uca',
+    Variable: 'variable'
+  },
+  ProjectDefaults: {
+    CSS: 'css',
+    Theme: 'theme',
+    XSL: 'xsl'
+  },
+  Report: {
+    EPV: 'epv',
+    ExposedTo: 'exposedTo',
+    Resource: 'resource',
+    TrackingGroup: 'trackingGroup'
+  },
+  Scoreboard: {
+    ExposedTo: 'exposedTo',
+    Layout: 'layout',
+    Report: 'report'
+  },
+  SLA: {
+    ExposedTo: 'exposedTo',
+    Metric: 'metric'
+  },
+  TWClass: {
+    DataType: 'dataType'
+  },
+  UCA: {
+    AttachedService: 'attachedService',
+    DataType: 'dataType'
+  },
+  UserAttribute: {
+    DataType: 'dataType'
+  },
+  WebService: {
+    AttachedService: 'attachedService'
+  }
+}
+
 module.exports = {
   TYPES,
   TYPES_DESCRIPTION,
@@ -94,5 +177,6 @@ module.exports = {
   SUBTYPES_DESCRIPTION: {
     Process: PROCESS_TYPES_DESCRIPTION,
     BPD: BPD_TYPES_DESCRIPTION
-  }
+  },
+  OBJECT_DEPENDENCY_TYPES
 }

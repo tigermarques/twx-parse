@@ -68,15 +68,30 @@ describe('Parser - Object - Coach View', () => {
         id: '64.393eb28a-759f-4d92-9bee-56f7dab3765f',
         name: 'Sem título2',
         type: TYPES.CoachView,
-        dependencies: [
-          '64.af46ef40-d360-4e61-a58a-5dcd3b249894',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/61.83235fb9-e985-46fe-a554-8097537e4df0',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/61.5402832f-cd2f-4953-be79-80e5421a9d88',
-          '/12.60da4770-d3a3-4937-840f-8fd74f8c33ce',
-          '/12.7425eece-319f-484b-a59f-8efeaaec2582',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/61.61ce8eed-a609-4e20-b0d0-fecea416f1d6',
-          '/50.2641e279-160b-4d0d-bc96-528b36793ecf'
-        ],
+        dependencies: [{
+          childReference: '64.af46ef40-d360-4e61-a58a-5dcd3b249894',
+          dependencyType: 'coachView'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/61.83235fb9-e985-46fe-a554-8097537e4df0',
+          dependencyType: 'previewImage'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/61.5402832f-cd2f-4953-be79-80e5421a9d88',
+          dependencyType: 'paletteIcon'
+        }, {
+          childReference: '/12.60da4770-d3a3-4937-840f-8fd74f8c33ce',
+          dependencyType: 'binding',
+          dependencyName: 'Untitled'
+        }, {
+          childReference: '/12.7425eece-319f-484b-a59f-8efeaaec2582',
+          dependencyType: 'config',
+          dependencyName: 'Untitled1'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/61.61ce8eed-a609-4e20-b0d0-fecea416f1d6',
+          dependencyType: 'asset'
+        }, {
+          childReference: '/50.2641e279-160b-4d0d-bc96-528b36793ecf',
+          dependencyType: 'resource'
+        }],
         versionId: 'cc785f21-0d04-42e2-8fd0-2a8a6d5356b9',
         description: null,
         isExposed: false

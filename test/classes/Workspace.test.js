@@ -138,7 +138,9 @@ const OBJECT3 = {
 const OBJECT_DEPENDENCY = (i, j) => {
   return {
     parentObjectVersionId: `version${i}`,
-    childObjectVersionId: `version${j}`
+    childObjectVersionId: `version${j}`,
+    dependencyType: `type${i}${j}`,
+    dependencyName: `name${i}${j}`
   }
 }
 

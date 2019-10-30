@@ -1,6 +1,6 @@
 const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
-const { TYPES } = require('../../utils/Constants')
+const { TYPES, OBJECT_DEPENDENCY_TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
 
 const parseUserAttribute = Performance.makeMeasurable(async (databaseName, jsonData) => {
@@ -22,7 +22,10 @@ const parseUserAttribute = Performance.makeMeasurable(async (databaseName, jsonD
     result.dependencies = []
 
     if (userAttribute.classRef && !ParseUtils.isNullXML(userAttribute.classRef[0])) {
-      result.dependencies.push(userAttribute.classRef[0])
+      result.dependencies.push({
+        childReference: userAttribute.classRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.UserAttribute.DataType
+      })
     }
   }
 

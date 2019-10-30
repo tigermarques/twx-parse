@@ -1,6 +1,6 @@
 const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
-const { TYPES } = require('../../utils/Constants')
+const { TYPES, OBJECT_DEPENDENCY_TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
 
 const parseTWClass = Performance.makeMeasurable(async (databaseName, jsonData) => {
@@ -25,7 +25,11 @@ const parseTWClass = Performance.makeMeasurable(async (databaseName, jsonData) =
       for (let i = 0; i < twClass.definition[0].property.length; i++) {
         const item = twClass.definition[0].property[i]
         if (!ParseUtils.isNullXML(item) && item.classRef && !ParseUtils.isNullXML(item.classRef[0])) {
-          result.dependencies.push(item.classRef[0])
+          result.dependencies.push({
+            childReference: item.classRef[0],
+            dependencyType: OBJECT_DEPENDENCY_TYPES.TWClass.DataType,
+            dependencyName: ParseUtils.isNullXML(item.name[0]) ? null : item.name[0]
+          })
         }
       }
     }

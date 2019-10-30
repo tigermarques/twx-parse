@@ -68,11 +68,16 @@ describe('Parser - Object - Project Defaults', () => {
         id: '63.550c2db6-dafa-490d-98b5-81a9097f1593',
         name: 'Toolkit Settings',
         type: TYPES.ProjectDefaults,
-        dependencies: [
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/61.140920b1-a53c-4d72-b6bb-60776f49f7f2',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/61.aabe9f91-df4b-43db-857c-41dbed4820a3',
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/72.e77f2a7e-10b4-45ee-90eb-e5b1546cc743'
-        ],
+        dependencies: [{
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/61.140920b1-a53c-4d72-b6bb-60776f49f7f2',
+          dependencyType: 'xsl'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/61.aabe9f91-df4b-43db-857c-41dbed4820a3',
+          dependencyType: 'css'
+        }, {
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/72.e77f2a7e-10b4-45ee-90eb-e5b1546cc743',
+          dependencyType: 'theme'
+        }],
         versionId: 'a7220b2e-08ab-47d7-90e8-5b71df1edba4',
         description: null,
         isExposed: false

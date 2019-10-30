@@ -68,12 +68,19 @@ describe('Parser - Object - Report', () => {
         id: '11.b744896e-f2fd-4d54-90d4-3bb6658f4690',
         name: 'Report',
         type: TYPES.Report,
-        dependencies: [
-          '/24.a776709d-cf51-4353-9ca5-42a15c712b02',
-          '/14.8ce729e5-ab2b-42ce-b6f5-6f3c94798330',
-          '/21.ed99f470-25b4-4a03-b89d-888bc265e2aa',
-          '/50.2641e279-160b-4d0d-bc96-528b36793ecf'
-        ],
+        dependencies: [{
+          childReference: '/24.a776709d-cf51-4353-9ca5-42a15c712b02',
+          dependencyType: 'exposedTo'
+        }, {
+          childReference: '/14.8ce729e5-ab2b-42ce-b6f5-6f3c94798330',
+          dependencyType: 'trackingGroup'
+        }, {
+          childReference: '/21.ed99f470-25b4-4a03-b89d-888bc265e2aa',
+          dependencyType: 'epv'
+        }, {
+          childReference: '/50.2641e279-160b-4d0d-bc96-528b36793ecf',
+          dependencyType: 'resource'
+        }],
         versionId: 'a7b0891f-97ef-4d9d-9f1b-25b5fbf61493',
         description: null,
         isExposed: true

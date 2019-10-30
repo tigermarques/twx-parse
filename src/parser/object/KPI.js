@@ -1,6 +1,6 @@
 const ParseUtils = require('../../utils/XML')
 const Registry = require('../../classes/Registry')
-const { TYPES } = require('../../utils/Constants')
+const { TYPES, OBJECT_DEPENDENCY_TYPES } = require('../../utils/Constants')
 const Performance = require('../../utils/Performance')
 
 const parseKPI = Performance.makeMeasurable(async (databaseName, jsonData) => {
@@ -22,7 +22,10 @@ const parseKPI = Performance.makeMeasurable(async (databaseName, jsonData) => {
     result.dependencies = []
 
     if (kpi.rollupMetricRef && !ParseUtils.isNullXML(kpi.rollupMetricRef[0])) {
-      result.dependencies.push(kpi.rollupMetricRef[0])
+      result.dependencies.push({
+        childReference: kpi.rollupMetricRef[0],
+        dependencyType: OBJECT_DEPENDENCY_TYPES.KPI.RollupMetric
+      })
     }
   }
 

@@ -68,10 +68,15 @@ describe('Parser - Object - WebService', () => {
         id: '7.152c331d-06cf-4333-9e3f-3d3988774954',
         name: 'Web',
         type: TYPES.WebService,
-        dependencies: [
-          '/1.143ff27f-5e08-478c-af65-06723fa26d26',
-          '/1.0295217c-7383-4a27-b311-333ea889f2bb'
-        ],
+        dependencies: [{
+          childReference: '/1.143ff27f-5e08-478c-af65-06723fa26d26',
+          dependencyName: 'one',
+          dependencyType: 'attachedService'
+        }, {
+          childReference: '/1.0295217c-7383-4a27-b311-333ea889f2bb',
+          dependencyName: 'two',
+          dependencyType: 'attachedService'
+        }],
         versionId: 'e96bfdc9-c491-4826-ab89-fd1b05425cad',
         description: null,
         isExposed: true

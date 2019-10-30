@@ -68,10 +68,15 @@ describe('Parser - Object - TWClass', () => {
         id: '12.60da4770-d3a3-4937-840f-8fd74f8c33ce',
         name: 'Dados1',
         type: TYPES.TWClass,
-        dependencies: [
-          '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
-          '/12.7425eece-319f-484b-a59f-8efeaaec2582'
-        ],
+        dependencies: [{
+          childReference: '2c7ae840-cf8c-4998-839b-2cf42b6b7656/12.db884a3c-c533-44b7-bb2d-47bec8ad4022',
+          dependencyType: 'dataType',
+          dependencyName: 'Untitled1'
+        }, {
+          childReference: '/12.7425eece-319f-484b-a59f-8efeaaec2582',
+          dependencyType: 'dataType',
+          dependencyName: 'Untitled2'
+        }],
         versionId: 'e4f50724-0f37-4374-830b-3225e60f6667',
         description: null,
         isExposed: false

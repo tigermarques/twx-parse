@@ -68,9 +68,10 @@ describe('Parser - Object - UCA', () => {
         id: '4.f32f2065-49b8-4e77-8c58-90d96ffce088',
         name: 'UCA1',
         type: TYPES.UCA,
-        dependencies: [
-          '/1.350b261f-7e76-4fd5-abe4-25817b0090f3'
-        ],
+        dependencies: [{
+          childReference: '/1.350b261f-7e76-4fd5-abe4-25817b0090f3',
+          dependencyType: 'attachedService'
+        }],
         versionId: '489feab5-9618-4da1-b827-23d616dab054',
         description: null,
         isExposed: false
