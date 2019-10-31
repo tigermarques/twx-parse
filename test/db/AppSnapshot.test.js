@@ -1,4 +1,3 @@
-
 const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
@@ -13,7 +12,6 @@ chai.use(chaiString)
 const { expect } = chai
 
 const SNAPSHOT1 = {
-  workspace: 'name1',
   snapshotId: 'snapshot1',
   appId: 'appId1',
   branchId: 'branchId1',
@@ -29,7 +27,6 @@ const SNAPSHOT1 = {
 }
 
 const SNAPSHOT2 = {
-  workspace: 'name1',
   snapshotId: 'snapshot2',
   appId: 'appId2',
   branchId: 'branchId2',

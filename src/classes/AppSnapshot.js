@@ -1,8 +1,8 @@
 const { AppSnapshot: DBAccess } = require('../db')
 
-const getObjectFromResult = workspaceName => item =>
+const getObjectFromResult = item =>
   item
-    ? new AppSnapshot(workspaceName, item.snapshotId, item.appId, item.branchId, item.appShortName, item.snapshotName, item.appName, item.branchName, item.description,
+    ? new AppSnapshot(item.snapshotId, item.appId, item.branchId, item.appShortName, item.snapshotName, item.appName, item.branchName, item.description,
       item.buildVersion, item.isToolkit === 1, item.isSystem === 1, item.isObjectsProcessed === 1)
     : null
 
@@ -25,8 +25,7 @@ const getObjectFromItem = obj =>
     : null
 
 class AppSnapshot {
-  constructor (workspaceName, id, appId, branchId, appShortName, snapshotName, appName, branchName, description, buildVersion, isToolkit, isSystem, isObjectsProcessed) {
-    this.workspace = workspaceName
+  constructor (id, appId, branchId, appShortName, snapshotName, appName, branchName, description, buildVersion, isToolkit, isSystem, isObjectsProcessed) {
     // primary key
     this.snapshotId = id
 
@@ -47,10 +46,10 @@ class AppSnapshot {
 
 AppSnapshot.register = (workspaceName, item) => DBAccess.register(workspaceName, getObjectFromItem(item))
 AppSnapshot.markObjectsProcessed = (workspaceName, snapshotId) => DBAccess.update(workspaceName, snapshotId, { isObjectsProcessed: 1 })
-AppSnapshot.getAll = (workspaceName) => DBAccess.getAll(workspaceName).then(results => results.map(getObjectFromResult(workspaceName)))
-AppSnapshot.getById = (workspaceName, snapshotId) => DBAccess.getById(workspaceName, snapshotId).then(result => getObjectFromResult(workspaceName)(result))
-AppSnapshot.where = (workspaceName, obj) => DBAccess.where(workspaceName, obj).then(results => results.map(getObjectFromResult(workspaceName)))
-AppSnapshot.find = (workspaceName, obj) => DBAccess.find(workspaceName, obj).then(result => getObjectFromResult(workspaceName)(result))
+AppSnapshot.getAll = (workspaceName) => DBAccess.getAll(workspaceName).then(results => results.map(getObjectFromResult))
+AppSnapshot.getById = (workspaceName, snapshotId) => DBAccess.getById(workspaceName, snapshotId).then(result => getObjectFromResult(result))
+AppSnapshot.where = (workspaceName, obj) => DBAccess.where(workspaceName, obj).then(results => results.map(getObjectFromResult))
+AppSnapshot.find = (workspaceName, obj) => DBAccess.find(workspaceName, obj).then(result => getObjectFromResult(result))
 AppSnapshot.remove = (workspaceName, obj) => DBAccess.remove(workspaceName, obj)
 AppSnapshot.removeOrphaned = (workspaceName) => DBAccess.removeOrphaned(workspaceName)
 AppSnapshot.getWithoutChildren = (workspaceName, snapshotIdToExclude) => DBAccess.getWithoutChildren(workspaceName, snapshotIdToExclude)

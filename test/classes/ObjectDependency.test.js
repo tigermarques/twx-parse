@@ -10,9 +10,9 @@ chai.use(sinonChai)
 chai.use(chaiAsPromised)
 const { expect } = chai
 
-const DEPENDENCY1 = () => new ObjectDependency('name1', 'parent1', 'child1', 'type1', 'name1')
+const DEPENDENCY1 = () => new ObjectDependency('parent1', 'child1', 'type1', 'name1')
 
-const DEPENDENCY2 = () => new ObjectDependency('name1', 'parent2', 'child2', 'type2', 'name2')
+const DEPENDENCY2 = () => new ObjectDependency('parent2', 'child2', 'type2', 'name2')
 
 const DEPENDENCY_STUB1 = {
   parentObjectVersionId: 'parent1',
@@ -29,7 +29,6 @@ const DEPENDENCY_STUB2 = {
 }
 
 const DEPENDENCY_RESULT1 = {
-  workspace: 'name1',
   parentObjectVersionId: 'parent1',
   childObjectVersionId: 'child1',
   dependencyType: 'type1',
@@ -37,7 +36,6 @@ const DEPENDENCY_RESULT1 = {
 }
 
 const DEPENDENCY_RESULT2 = {
-  workspace: 'name1',
   parentObjectVersionId: 'parent2',
   childObjectVersionId: 'child2',
   dependencyType: 'type2',

@@ -101,7 +101,7 @@ const saveObjectInformation = Performance.makeMeasurable(async (databaseName, ob
     for (let i = 0; i < objectInformationArray.length; i++) {
       const objectInfo = objectInformationArray[i]
       if (objectInfo && objectInfo.register) {
-        objectVersionArray.push(new ObjectVersion(databaseName, objectInfo.versionId, objectInfo.id, objectInfo.name, objectInfo.description, objectInfo.type, objectInfo.subType, objectInfo.isExposed))
+        objectVersionArray.push(new ObjectVersion(objectInfo.versionId, objectInfo.id, objectInfo.name, objectInfo.description, objectInfo.type, objectInfo.subType, objectInfo.isExposed))
 
         const dependencyArr = []
         if (objectInfo.dependencies) {
@@ -132,7 +132,7 @@ const saveObjectInformation = Performance.makeMeasurable(async (databaseName, ob
 
             if (childObjectVersionId) {
               // Registry.ObjectDependency.register(new ObjectDependency(objectInfo.versionId, childObjectVersionId))
-              dependencyArr.push(new ObjectDependency(databaseName, objectInfo.versionId, childObjectVersionId, dependencyType, dependencyName))
+              dependencyArr.push(new ObjectDependency(objectInfo.versionId, childObjectVersionId, dependencyType, dependencyName))
             } else {
               // console.warn(`Reference ${childObjectReference} was not found. Parent Snapshot Id is ${currentSnapshotId}`)
             }

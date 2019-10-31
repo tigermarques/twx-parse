@@ -11,10 +11,10 @@ chai.use(chaiAsPromised)
 const { expect } = chai
 
 const OBJECT1 = () =>
-  new ObjectVersion('name1', 'versionId1', 'objectId1', 'versionName1', 'description1', 'type1', 'subtype1', true)
+  new ObjectVersion('versionId1', 'objectId1', 'versionName1', 'description1', 'type1', 'subtype1', true)
 
 const OBJECT2 = () =>
-  new ObjectVersion('name1', 'versionId2', 'objectId2', 'versionName2', 'description2', 'type2', 'subtype2', false)
+  new ObjectVersion('versionId2', 'objectId2', 'versionName2', 'description2', 'type2', 'subtype2', false)
 
 const OBJECT_STUB1 = {
   objectVersionId: 'versionId1',
@@ -37,7 +37,6 @@ const OBJECT_STUB2 = {
 }
 
 const OBJECT_RESULT1 = {
-  workspace: 'name1',
   objectVersionId: 'versionId1',
   objectId: 'objectId1',
   name: 'versionName1',
@@ -48,7 +47,6 @@ const OBJECT_RESULT1 = {
 }
 
 const OBJECT_RESULT2 = {
-  workspace: 'name1',
   objectVersionId: 'versionId2',
   objectId: 'objectId2',
   name: 'versionName2',

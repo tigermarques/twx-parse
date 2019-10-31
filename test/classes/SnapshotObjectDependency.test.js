@@ -2,17 +2,43 @@ const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
 const chaiAsPromised = require('chai-as-promised')
-const chaiSubset = require('chai-subset')
 const SnapshotObjectDependency = require('../../src/classes/SnapshotObjectDependency')
 const { SnapshotObjectDependency: DBAccess } = require('../../src/db')
 const { defer } = require('../test-utilities')
 
 chai.use(sinonChai)
 chai.use(chaiAsPromised)
-chai.use(chaiSubset)
 const { expect } = chai
 
-describe('Classes - SnapshotDependency', () => {
+const DEPENDENCY1 = () => new SnapshotObjectDependency('snapshotId1', 'versionId1', 'objectId1')
+
+const DEPENDENCY2 = () => new SnapshotObjectDependency('snapshotId2', 'versionId2', 'objectId2')
+
+const DEPENDENCY_STUB1 = {
+  objectVersionId: 'versionId1',
+  snapshotId: 'snapshotId1',
+  objectId: 'objectId1'
+}
+
+const DEPENDENCY_STUB2 = {
+  objectVersionId: 'versionId2',
+  snapshotId: 'snapshotId2',
+  objectId: 'objectId2'
+}
+
+const DEPENDENCY_RESULT1 = {
+  objectVersionId: 'versionId1',
+  snapshotId: 'snapshotId1',
+  objectId: 'objectId1'
+}
+
+const DEPENDENCY_RESULT2 = {
+  objectVersionId: 'versionId2',
+  snapshotId: 'snapshotId2',
+  objectId: 'objectId2'
+}
+
+describe('Classes - SnapshotObjectDependency', () => {
   it('should be a class and have all the static methods', () => {
     expect(SnapshotObjectDependency).to.be.a('function')
     expect(SnapshotObjectDependency).itself.to.respondTo('register')
@@ -27,38 +53,28 @@ describe('Classes - SnapshotDependency', () => {
   })
 
   it('should create objects correctly', () => {
-    const obj1 = new SnapshotObjectDependency('name1', 'snapshotId1', 'versionId1', 'objectId1')
-    expect(obj1).to.eql({
-      workspace: 'name1',
-      objectVersionId: 'versionId1',
-      snapshotId: 'snapshotId1',
-      objectId: 'objectId1'
-    })
+    const obj1 = DEPENDENCY1()
+    expect(obj1).to.eql(DEPENDENCY_RESULT1)
 
-    const obj2 = new SnapshotObjectDependency('name2', 'snapshotId2', 'versionId2', 'objectId2')
-    expect(obj2).to.eql({
-      workspace: 'name2',
-      objectVersionId: 'versionId2',
-      snapshotId: 'snapshotId2',
-      objectId: 'objectId2'
-    })
+    const obj2 = DEPENDENCY2()
+    expect(obj2).to.eql(DEPENDENCY_RESULT2)
   })
 
   it('should invoke the correct DB handler for the "register" method', () => {
     const stubResolve = sinon.stub(DBAccess, 'register').returns(defer())
-    const obj1 = new SnapshotObjectDependency('name1', 'versionId1', 'snapshotId1', 'objectId1')
+    const obj1 = DEPENDENCY1()
     expect(stubResolve).not.to.have.been.called
     const resultResolve = SnapshotObjectDependency.register('name1', obj1)
     expect(stubResolve).to.have.been.calledOnce
-    expect(stubResolve).to.have.been.calledWith('name1', obj1)
+    expect(stubResolve).to.have.been.calledWith('name1', DEPENDENCY_STUB1)
     stubResolve.restore()
 
     const stubReject = sinon.stub(DBAccess, 'register').returns(defer(false))
-    const obj2 = new SnapshotObjectDependency('name2', 'versionId2', 'snapshotId2', 'objectId2')
+    const obj2 = DEPENDENCY2()
     expect(stubReject).not.to.have.been.called
     const resultReject = SnapshotObjectDependency.register('name2', obj2)
     expect(stubReject).to.have.been.calledOnce
-    expect(stubReject).to.have.been.calledWith('name2', obj2)
+    expect(stubReject).to.have.been.calledWith('name2', DEPENDENCY_STUB2)
     stubReject.restore()
 
     return Promise.all([
@@ -69,19 +85,19 @@ describe('Classes - SnapshotDependency', () => {
 
   it('should invoke the correct DB handler for the "registerMany" method', () => {
     const stubResolve = sinon.stub(DBAccess, 'registerMany').returns(defer())
-    const obj1 = new SnapshotObjectDependency('name1', 'versionId1', 'snapshotId1', 'objectId1')
-    const obj2 = new SnapshotObjectDependency('name2', 'versionId2', 'snapshotId2', 'objectId2')
+    const obj1 = DEPENDENCY1()
+    const obj2 = DEPENDENCY2()
     expect(stubResolve).not.to.have.been.called
     const resultResolve = SnapshotObjectDependency.registerMany('name1', [obj1, obj2])
     expect(stubResolve).to.have.been.calledOnce
-    expect(stubResolve).to.have.been.calledWith('name1', [obj1, obj2])
+    expect(stubResolve).to.have.been.calledWith('name1', [DEPENDENCY_STUB1, DEPENDENCY_STUB2])
     stubResolve.restore()
 
     const stubReject = sinon.stub(DBAccess, 'registerMany').returns(defer(false))
     expect(stubReject).not.to.have.been.called
     const resultReject = SnapshotObjectDependency.registerMany('name1', [obj1, obj2])
     expect(stubReject).to.have.been.calledOnce
-    expect(stubReject).to.have.been.calledWith('name1', [obj1, obj2])
+    expect(stubReject).to.have.been.calledWith('name1', [DEPENDENCY_STUB1, DEPENDENCY_STUB2])
     stubReject.restore()
 
     return Promise.all([
@@ -98,15 +114,7 @@ describe('Classes - SnapshotDependency', () => {
     expect(stubEmpty).to.have.been.calledWith('name1')
     stubEmpty.restore()
 
-    const stubResults = sinon.stub(DBAccess, 'getAll').returns(defer(true, [{
-      objectVersionId: 'versionId1',
-      snapshotId: 'snapshotId1',
-      objectId: 'objectId1'
-    }, {
-      objectVersionId: 'versionId2',
-      snapshotId: 'snapshotId2',
-      objectId: 'objectId2'
-    }]))
+    const stubResults = sinon.stub(DBAccess, 'getAll').returns(defer(true, [DEPENDENCY_STUB1, DEPENDENCY_STUB2]))
     expect(stubResults).not.to.have.been.called
     const resultResults = SnapshotObjectDependency.getAll('name1')
     expect(stubResults).to.have.been.calledOnce
@@ -127,17 +135,7 @@ describe('Classes - SnapshotDependency', () => {
         data.map(item => {
           expect(item).to.be.an.instanceOf(SnapshotObjectDependency)
         })
-        expect(data).to.containSubset([{
-          workspace: 'name1',
-          objectVersionId: 'versionId1',
-          snapshotId: 'snapshotId1',
-          objectId: 'objectId1'
-        }, {
-          workspace: 'name1',
-          objectVersionId: 'versionId2',
-          snapshotId: 'snapshotId2',
-          objectId: 'objectId2'
-        }])
+        expect(data).to.eql([DEPENDENCY_RESULT1, DEPENDENCY_RESULT2])
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
@@ -151,15 +149,7 @@ describe('Classes - SnapshotDependency', () => {
     expect(stubEmpty).to.have.been.calledWith('name1', { snapshotId: 'id1' })
     stubEmpty.restore()
 
-    const stubResults = sinon.stub(DBAccess, 'where').returns(defer(true, [{
-      objectVersionId: 'versionId1',
-      snapshotId: 'snapshotId1',
-      objectId: 'objectId1'
-    }, {
-      objectVersionId: 'versionId2',
-      snapshotId: 'snapshotId2',
-      objectId: 'objectId2'
-    }]))
+    const stubResults = sinon.stub(DBAccess, 'where').returns(defer(true, [DEPENDENCY_STUB1, DEPENDENCY_STUB2]))
     expect(stubResults).not.to.have.been.called
     const resultResults = SnapshotObjectDependency.getByParentId('name1', 'id1')
     expect(stubResults).to.have.been.calledOnce
@@ -180,17 +170,7 @@ describe('Classes - SnapshotDependency', () => {
         data.map(item => {
           expect(item).to.be.an.instanceOf(SnapshotObjectDependency)
         })
-        expect(data).to.containSubset([{
-          workspace: 'name1',
-          objectVersionId: 'versionId1',
-          snapshotId: 'snapshotId1',
-          objectId: 'objectId1'
-        }, {
-          workspace: 'name1',
-          objectVersionId: 'versionId2',
-          snapshotId: 'snapshotId2',
-          objectId: 'objectId2'
-        }])
+        expect(data).to.eql([DEPENDENCY_RESULT1, DEPENDENCY_RESULT2])
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
@@ -204,15 +184,7 @@ describe('Classes - SnapshotDependency', () => {
     expect(stubEmpty).to.have.been.calledWith('name1', { objectVersionId: 'id1' })
     stubEmpty.restore()
 
-    const stubResults = sinon.stub(DBAccess, 'where').returns(defer(true, [{
-      objectVersionId: 'versionId1',
-      snapshotId: 'snapshotId1',
-      objectId: 'objectId1'
-    }, {
-      objectVersionId: 'versionId2',
-      snapshotId: 'snapshotId2',
-      objectId: 'objectId2'
-    }]))
+    const stubResults = sinon.stub(DBAccess, 'where').returns(defer(true, [DEPENDENCY_STUB1, DEPENDENCY_STUB2]))
     expect(stubResults).not.to.have.been.called
     const resultResults = SnapshotObjectDependency.getByChildId('name1', 'id1')
     expect(stubResults).to.have.been.calledOnce
@@ -233,17 +205,7 @@ describe('Classes - SnapshotDependency', () => {
         data.map(item => {
           expect(item).to.be.an.instanceOf(SnapshotObjectDependency)
         })
-        expect(data).to.containSubset([{
-          workspace: 'name1',
-          objectVersionId: 'versionId1',
-          snapshotId: 'snapshotId1',
-          objectId: 'objectId1'
-        }, {
-          workspace: 'name1',
-          objectVersionId: 'versionId2',
-          snapshotId: 'snapshotId2',
-          objectId: 'objectId2'
-        }])
+        expect(data).to.eql([DEPENDENCY_RESULT1, DEPENDENCY_RESULT2])
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
@@ -257,15 +219,7 @@ describe('Classes - SnapshotDependency', () => {
     expect(stubEmpty).to.have.been.calledWith('name1', { objectId: 'objectId1' })
     stubEmpty.restore()
 
-    const stubResults = sinon.stub(DBAccess, 'where').returns(defer(true, [{
-      objectVersionId: 'versionId1',
-      snapshotId: 'snapshotId1',
-      objectId: 'objectId1'
-    }, {
-      objectVersionId: 'versionId2',
-      snapshotId: 'snapshotId2',
-      objectId: 'objectId2'
-    }]))
+    const stubResults = sinon.stub(DBAccess, 'where').returns(defer(true, [DEPENDENCY_STUB1, DEPENDENCY_STUB2]))
     expect(stubResults).not.to.have.been.called
     const resultResults = SnapshotObjectDependency.where('name1', { objectId: 'objectId1' })
     expect(stubResults).to.have.been.calledOnce
@@ -286,17 +240,7 @@ describe('Classes - SnapshotDependency', () => {
         data.map(item => {
           expect(item).to.be.an.instanceOf(SnapshotObjectDependency)
         })
-        expect(data).to.containSubset([{
-          workspace: 'name1',
-          objectVersionId: 'versionId1',
-          snapshotId: 'snapshotId1',
-          objectId: 'objectId1'
-        }, {
-          workspace: 'name1',
-          objectVersionId: 'versionId2',
-          snapshotId: 'snapshotId2',
-          objectId: 'objectId2'
-        }])
+        expect(data).to.eql([DEPENDENCY_RESULT1, DEPENDENCY_RESULT2])
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
@@ -310,11 +254,7 @@ describe('Classes - SnapshotDependency', () => {
     expect(stubEmpty).to.have.been.calledWith('name1', { objectId: 'objectId1' })
     stubEmpty.restore()
 
-    const stubResults = sinon.stub(DBAccess, 'find').returns(defer(true, {
-      objectVersionId: 'versionId1',
-      snapshotId: 'snapshotId1',
-      objectId: 'objectId1'
-    }))
+    const stubResults = sinon.stub(DBAccess, 'find').returns(defer(true, DEPENDENCY_STUB1))
     expect(stubResults).not.to.have.been.called
     const resultResults = SnapshotObjectDependency.find('name1', { objectId: 'objectId1' })
     expect(stubResults).to.have.been.calledOnce
@@ -332,12 +272,7 @@ describe('Classes - SnapshotDependency', () => {
       expect(resultEmpty).to.eventually.become(null),
       expect(resultResults).to.eventually.be.fulfilled.then(data => {
         expect(data).to.be.an.instanceOf(SnapshotObjectDependency)
-        expect(data).to.containSubset({
-          workspace: 'name1',
-          objectVersionId: 'versionId1',
-          snapshotId: 'snapshotId1',
-          objectId: 'objectId1'
-        })
+        expect(data).to.eql(DEPENDENCY_RESULT1)
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
