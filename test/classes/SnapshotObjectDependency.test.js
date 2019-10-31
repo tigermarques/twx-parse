@@ -2,14 +2,12 @@ const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
 const chaiAsPromised = require('chai-as-promised')
-const chaiSubset = require('chai-subset')
 const SnapshotObjectDependency = require('../../src/classes/SnapshotObjectDependency')
 const { SnapshotObjectDependency: DBAccess } = require('../../src/db')
 const { defer } = require('../test-utilities')
 
 chai.use(sinonChai)
 chai.use(chaiAsPromised)
-chai.use(chaiSubset)
 const { expect } = chai
 
 const DEPENDENCY1 = () => new SnapshotObjectDependency('name1', 'snapshotId1', 'versionId1', 'objectId1')
@@ -139,7 +137,7 @@ describe('Classes - SnapshotObjectDependency', () => {
         data.map(item => {
           expect(item).to.be.an.instanceOf(SnapshotObjectDependency)
         })
-        expect(data).to.containSubset([DEPENDENCY_RESULT1, DEPENDENCY_RESULT2])
+        expect(data).to.eql([DEPENDENCY_RESULT1, DEPENDENCY_RESULT2])
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
@@ -174,7 +172,7 @@ describe('Classes - SnapshotObjectDependency', () => {
         data.map(item => {
           expect(item).to.be.an.instanceOf(SnapshotObjectDependency)
         })
-        expect(data).to.containSubset([DEPENDENCY_RESULT1, DEPENDENCY_RESULT2])
+        expect(data).to.eql([DEPENDENCY_RESULT1, DEPENDENCY_RESULT2])
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
@@ -209,7 +207,7 @@ describe('Classes - SnapshotObjectDependency', () => {
         data.map(item => {
           expect(item).to.be.an.instanceOf(SnapshotObjectDependency)
         })
-        expect(data).to.containSubset([DEPENDENCY_RESULT1, DEPENDENCY_RESULT2])
+        expect(data).to.eql([DEPENDENCY_RESULT1, DEPENDENCY_RESULT2])
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
@@ -244,7 +242,7 @@ describe('Classes - SnapshotObjectDependency', () => {
         data.map(item => {
           expect(item).to.be.an.instanceOf(SnapshotObjectDependency)
         })
-        expect(data).to.containSubset([DEPENDENCY_RESULT1, DEPENDENCY_RESULT2])
+        expect(data).to.eql([DEPENDENCY_RESULT1, DEPENDENCY_RESULT2])
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
@@ -276,7 +274,7 @@ describe('Classes - SnapshotObjectDependency', () => {
       expect(resultEmpty).to.eventually.become(null),
       expect(resultResults).to.eventually.be.fulfilled.then(data => {
         expect(data).to.be.an.instanceOf(SnapshotObjectDependency)
-        expect(data).to.containSubset(DEPENDENCY_RESULT1)
+        expect(data).to.eql(DEPENDENCY_RESULT1)
       }),
       expect(resultReject).to.eventually.be.rejected
     ])
