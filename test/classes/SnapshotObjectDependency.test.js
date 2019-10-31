@@ -10,9 +10,9 @@ chai.use(sinonChai)
 chai.use(chaiAsPromised)
 const { expect } = chai
 
-const DEPENDENCY1 = () => new SnapshotObjectDependency('name1', 'snapshotId1', 'versionId1', 'objectId1')
+const DEPENDENCY1 = () => new SnapshotObjectDependency('snapshotId1', 'versionId1', 'objectId1')
 
-const DEPENDENCY2 = () => new SnapshotObjectDependency('name1', 'snapshotId2', 'versionId2', 'objectId2')
+const DEPENDENCY2 = () => new SnapshotObjectDependency('snapshotId2', 'versionId2', 'objectId2')
 
 const DEPENDENCY_STUB1 = {
   objectVersionId: 'versionId1',
@@ -27,14 +27,12 @@ const DEPENDENCY_STUB2 = {
 }
 
 const DEPENDENCY_RESULT1 = {
-  workspace: 'name1',
   objectVersionId: 'versionId1',
   snapshotId: 'snapshotId1',
   objectId: 'objectId1'
 }
 
 const DEPENDENCY_RESULT2 = {
-  workspace: 'name1',
   objectVersionId: 'versionId2',
   snapshotId: 'snapshotId2',
   objectId: 'objectId2'

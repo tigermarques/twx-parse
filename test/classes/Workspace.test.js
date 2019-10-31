@@ -14,7 +14,6 @@ chai.use(chaiSubset)
 const { expect } = chai
 
 const SNAPSHOT1 = {
-  workspace: 'name1',
   snapshotId: 'snapshot1',
   appId: 'appId1',
   branchId: 'branchId1',
@@ -30,7 +29,6 @@ const SNAPSHOT1 = {
 }
 
 const SNAPSHOT2 = {
-  workspace: 'name1',
   snapshotId: 'snapshot2',
   appId: 'appId2',
   branchId: 'branchId2',
@@ -46,7 +44,6 @@ const SNAPSHOT2 = {
 }
 
 const SNAPSHOT3 = {
-  workspace: 'name1',
   snapshotId: 'snapshot3',
   appId: 'appId3',
   branchId: 'branchId3',
@@ -62,7 +59,6 @@ const SNAPSHOT3 = {
 }
 
 const SNAPSHOT4 = {
-  workspace: 'name1',
   snapshotId: 'snapshot4',
   appId: 'appId4',
   branchId: 'branchId4',
@@ -78,7 +74,6 @@ const SNAPSHOT4 = {
 }
 
 const SNAPSHOT5 = {
-  workspace: 'name1',
   snapshotId: 'snapshot5',
   appId: 'appId5',
   branchId: 'branchId5',
@@ -103,7 +98,6 @@ const SNAPSHOT_DEPENDENCY = (i, j) => {
 }
 
 const OBJECT1 = {
-  workspace: 'name1',
   objectVersionId: 'version1',
   objectId: 'objectId1',
   name: 'name1',
@@ -114,7 +108,6 @@ const OBJECT1 = {
 }
 
 const OBJECT2 = {
-  workspace: 'name1',
   objectVersionId: 'version2',
   objectId: 'objectId2',
   name: 'name2',
@@ -125,7 +118,6 @@ const OBJECT2 = {
 }
 
 const OBJECT3 = {
-  workspace: 'name1',
   objectVersionId: 'version3',
   objectId: 'objectId3',
   name: 'name3',

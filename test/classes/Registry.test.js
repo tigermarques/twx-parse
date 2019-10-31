@@ -75,7 +75,7 @@ describe('Classes - Registry', () => {
   describe('AppSnapshot', () => {
     it('should proxy correctly the "register" method', () => {
       const stub = sinon.stub(AppSnapshot, 'register').returns(defer())
-      const obj1 = new AppSnapshot('name1', 'id1', 'appId1', 'branchId1', 'appShortName1', 'snapshotName1', 'appName1', 'branchName1', 'description1', 'buildVersion1', true, true, true)
+      const obj1 = new AppSnapshot('id1', 'appId1', 'branchId1', 'appShortName1', 'snapshotName1', 'appName1', 'branchName1', 'description1', 'buildVersion1', true, true, true)
       expect(stub).not.to.have.been.called
       const result = Registry.AppSnapshot.register('name1', obj1)
       expect(stub).to.have.been.calledOnce
@@ -178,7 +178,7 @@ describe('Classes - Registry', () => {
   describe('ObjectVersion', () => {
     it('should proxy correctly the "register" method', () => {
       const stub = sinon.stub(ObjectVersion, 'register').returns(defer())
-      const obj1 = new ObjectVersion('name1', 'versionId1', 'objectId1', 'versionName1', 'description1', 'type1', 'subtype1', true)
+      const obj1 = new ObjectVersion('versionId1', 'objectId1', 'versionName1', 'description1', 'type1', 'subtype1', true)
       expect(stub).not.to.have.been.called
       const result = Registry.ObjectVersion.register('name1', obj1)
       expect(stub).to.have.been.calledOnce
@@ -189,8 +189,8 @@ describe('Classes - Registry', () => {
 
     it('should proxy correctly the "registerMany" method', () => {
       const stub = sinon.stub(ObjectVersion, 'registerMany').returns(defer())
-      const obj1 = new ObjectVersion('name1', 'versionId1', 'objectId1', 'versionName1', 'description1', 'type1', 'subtype1', true)
-      const obj2 = new ObjectVersion('name1', 'versionId2', 'objectId2', 'versionName2', 'description2', 'type2', 'subtype2', false)
+      const obj1 = new ObjectVersion('versionId1', 'objectId1', 'versionName1', 'description1', 'type1', 'subtype1', true)
+      const obj2 = new ObjectVersion('versionId2', 'objectId2', 'versionName2', 'description2', 'type2', 'subtype2', false)
       expect(stub).not.to.have.been.called
       const result = Registry.ObjectVersion.registerMany('name1', [obj1, obj2])
       expect(stub).to.have.been.calledOnce
@@ -263,7 +263,7 @@ describe('Classes - Registry', () => {
   describe('SnapshotDependency', () => {
     it('should proxy correctly the "register" method', () => {
       const stub = sinon.stub(SnapshotDependency, 'register').returns(defer())
-      const obj1 = new SnapshotDependency('name1', 'parent1', 'child1', 1, 'dependencyId1')
+      const obj1 = new SnapshotDependency('parent1', 'child1', 1, 'dependencyId1')
       expect(stub).not.to.have.been.called
       const result = Registry.SnapshotDependency.register('name1', obj1)
       expect(stub).to.have.been.calledOnce
@@ -274,8 +274,8 @@ describe('Classes - Registry', () => {
 
     it('should proxy correctly the "registerMany" method', () => {
       const stub = sinon.stub(SnapshotDependency, 'registerMany').returns(defer())
-      const obj1 = new SnapshotDependency('name1', 'parent1', 'child1', 1, 'dependencyId1')
-      const obj2 = new SnapshotDependency('name2', 'parent2', 'child2', 2, 'dependencyId2')
+      const obj1 = new SnapshotDependency('parent1', 'child1', 1, 'dependencyId1')
+      const obj2 = new SnapshotDependency('parent2', 'child2', 2, 'dependencyId2')
       expect(stub).not.to.have.been.called
       const result = Registry.SnapshotDependency.registerMany('name1', [obj1, obj2])
       expect(stub).to.have.been.calledOnce
@@ -358,7 +358,7 @@ describe('Classes - Registry', () => {
   describe('SnapshotObjectDependency', () => {
     it('should proxy correctly the "register" method', () => {
       const stub = sinon.stub(SnapshotObjectDependency, 'register').returns(defer())
-      const obj1 = new SnapshotObjectDependency('name1', 'snapshotId1', 'versionId1', 'objectId1')
+      const obj1 = new SnapshotObjectDependency('snapshotId1', 'versionId1', 'objectId1')
       expect(stub).not.to.have.been.called
       const result = Registry.SnapshotObjectDependency.register('name1', obj1)
       expect(stub).to.have.been.calledOnce
@@ -369,8 +369,8 @@ describe('Classes - Registry', () => {
 
     it('should proxy correctly the "registerMany" method', () => {
       const stub = sinon.stub(SnapshotObjectDependency, 'registerMany').returns(defer())
-      const obj1 = new SnapshotObjectDependency('name1', 'snapshotId1', 'versionId1', 'objectId1')
-      const obj2 = new SnapshotObjectDependency('name2', 'snapshotId2', 'versionId2', 'objectId2')
+      const obj1 = new SnapshotObjectDependency('snapshotId1', 'versionId1', 'objectId1')
+      const obj2 = new SnapshotObjectDependency('snapshotId2', 'versionId2', 'objectId2')
       expect(stub).not.to.have.been.called
       const result = Registry.SnapshotObjectDependency.registerMany('name1', [obj1, obj2])
       expect(stub).to.have.been.calledOnce
@@ -453,7 +453,7 @@ describe('Classes - Registry', () => {
   describe('ObjectDependency', () => {
     it('should proxy correctly the "register" method', () => {
       const stub = sinon.stub(ObjectDependency, 'register').returns(defer())
-      const obj1 = new ObjectDependency('name1', 'parent1', 'child1', 'type1', 'name1')
+      const obj1 = new ObjectDependency('parent1', 'child1', 'type1', 'name1')
       expect(stub).not.to.have.been.called
       const result = Registry.ObjectDependency.register('name1', obj1)
       expect(stub).to.have.been.calledOnce
@@ -464,8 +464,8 @@ describe('Classes - Registry', () => {
 
     it('should proxy correctly the "registerMany" method', () => {
       const stub = sinon.stub(ObjectDependency, 'registerMany').returns(defer())
-      const obj1 = new ObjectDependency('name1', 'parent1', 'child1', 'type1', 'name1')
-      const obj2 = new ObjectDependency('name1', 'parent2', 'child2', 'type2', 'name2')
+      const obj1 = new ObjectDependency('parent1', 'child1', 'type1', 'name1')
+      const obj2 = new ObjectDependency('parent2', 'child2', 'type2', 'name2')
       expect(stub).not.to.have.been.called
       const result = Registry.ObjectDependency.registerMany('name1', [obj1, obj2])
       expect(stub).to.have.been.calledOnce

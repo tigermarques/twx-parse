@@ -17,7 +17,7 @@ const addPackage = async (databaseName, zipFile, fileName, startCallback, progre
   // only parse the package if it hasn't been added yet
   const existingAppSnapshot = await Registry.AppSnapshot.getById(databaseName, parentSnapshotId)
   if (!existingAppSnapshot) {
-    const appSnapshot = new AppSnapshot(databaseName, parentSnapshotId, project.$.id, branch.$.id, project.$.shortName, snapshot.$.name, project.$.name, branch.$.name,
+    const appSnapshot = new AppSnapshot(parentSnapshotId, project.$.id, branch.$.id, project.$.shortName, snapshot.$.name, project.$.name, branch.$.name,
       project.$.description, jsonData.package.$.buildVersion, project.$.isToolkit === 'true', project.$.isSystem === 'true', false)
     await Registry.AppSnapshot.register(databaseName, appSnapshot)
 
@@ -31,7 +31,7 @@ const addPackage = async (databaseName, zipFile, fileName, startCallback, progre
 
     if (jsonData.package.dependencies[0].dependency) {
       const objectsToAdd = jsonData.package.dependencies[0].dependency.map(dependency =>
-        new SnapshotDependency(databaseName, parentSnapshotId, dependency.snapshot[0].$.id, Number(dependency.$.rank), dependency.$.id))
+        new SnapshotDependency(parentSnapshotId, dependency.snapshot[0].$.id, Number(dependency.$.rank), dependency.$.id))
       await Registry.SnapshotDependency.registerMany(databaseName, objectsToAdd)
       progressCallback({
         id: parentSnapshotId,
@@ -41,7 +41,7 @@ const addPackage = async (databaseName, zipFile, fileName, startCallback, progre
 
     if (jsonData.package.objects[0].object) {
       const objectsToAdd = jsonData.package.objects[0].object.filter(obj => obj.$.type !== 'SmartFolder').map(obj =>
-        new SnapshotObjectDependency(databaseName, parentSnapshotId, obj.$.versionId, obj.$.id))
+        new SnapshotObjectDependency(parentSnapshotId, obj.$.versionId, obj.$.id))
       await Registry.SnapshotObjectDependency.registerMany(databaseName, objectsToAdd)
       progressCallback({
         id: parentSnapshotId,

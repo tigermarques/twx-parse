@@ -11,10 +11,10 @@ chai.use(chaiAsPromised)
 const { expect } = chai
 
 const APP_SNAPSHOT1 = () =>
-  new AppSnapshot('name1', 'snapshot1', 'appId1', 'branchId1', 'appShortName1', 'snapshotName1', 'appName1', 'branchName1', 'description1', 'buildVersion1', true, true, true)
+  new AppSnapshot('snapshot1', 'appId1', 'branchId1', 'appShortName1', 'snapshotName1', 'appName1', 'branchName1', 'description1', 'buildVersion1', true, true, true)
 
 const APP_SNAPSHOT2 = () =>
-  new AppSnapshot('name1', 'snapshot2', 'appId2', 'branchId2', 'appShortName2', 'snapshotName2', 'appName2', 'branchName2', 'description2', 'buildVersion2', false, false, false)
+  new AppSnapshot('snapshot2', 'appId2', 'branchId2', 'appShortName2', 'snapshotName2', 'appName2', 'branchName2', 'description2', 'buildVersion2', false, false, false)
 
 const APP_SNAPSHOT_STUB1 = {
   snapshotId: 'snapshot1',
@@ -47,7 +47,6 @@ const APP_SNAPSHOT_STUB2 = {
 }
 
 const APP_SNAPSHOT_RESULT1 = {
-  workspace: 'name1',
   snapshotId: 'snapshot1',
   appId: 'appId1',
   branchId: 'branchId1',
@@ -63,7 +62,6 @@ const APP_SNAPSHOT_RESULT1 = {
 }
 
 const APP_SNAPSHOT_RESULT2 = {
-  workspace: 'name1',
   snapshotId: 'snapshot2',
   appId: 'appId2',
   branchId: 'branchId2',

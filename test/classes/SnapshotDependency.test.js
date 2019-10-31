@@ -10,9 +10,9 @@ chai.use(sinonChai)
 chai.use(chaiAsPromised)
 const { expect } = chai
 
-const DEPENDENCY1 = () => new SnapshotDependency('name1', 'parent1', 'child1', 1, 'dependencyId1')
+const DEPENDENCY1 = () => new SnapshotDependency('parent1', 'child1', 1, 'dependencyId1')
 
-const DEPENDENCY2 = () => new SnapshotDependency('name1', 'parent2', 'child2', 2, 'dependencyId2')
+const DEPENDENCY2 = () => new SnapshotDependency('parent2', 'child2', 2, 'dependencyId2')
 
 const DEPENDENCY_STUB1 = {
   parentSnapshotId: 'parent1',
@@ -29,7 +29,6 @@ const DEPENDENCY_STUB2 = {
 }
 
 const DEPENDENCY_RESULT1 = {
-  workspace: 'name1',
   parentSnapshotId: 'parent1',
   childSnapshotId: 'child1',
   rank: 1,
@@ -37,7 +36,6 @@ const DEPENDENCY_RESULT1 = {
 }
 
 const DEPENDENCY_RESULT2 = {
-  workspace: 'name1',
   parentSnapshotId: 'parent2',
   childSnapshotId: 'child2',
   rank: 2,
