@@ -1,14 +1,27 @@
-
 const chai = require('chai')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
 const chaiAsPromised = require('chai-as-promised')
+const chaiString = require('chai-string')
 let SnapshotObjectDependency = require('../../src/db/SnapshotObjectDependency')
 let commonDB = require('../../src/db/common')
 
 chai.use(sinonChai)
 chai.use(chaiAsPromised)
+chai.use(chaiString)
 const { expect } = chai
+
+const DEPENDENCY1 = {
+  objectVersionId: 'version1',
+  snapshotId: 'snapshot1',
+  objectId: 'object1'
+}
+
+const DEPENDENCY2 = {
+  objectVersionId: 'version2',
+  snapshotId: 'snapshot2',
+  objectId: 'object2'
+}
 
 describe('DB - SnapshotObjectDependency', () => {
   let dbStub
@@ -46,16 +59,14 @@ describe('DB - SnapshotObjectDependency', () => {
     })
     expect(runStub).not.to.have.been.called
     expect(closeStub).not.to.have.been.called
-    const result = SnapshotObjectDependency.register('test.db', {
-      objectVersionId: 'version1',
-      snapshotId: 'snapshot1',
-      objectId: 'object1'
-    })
+    const result = SnapshotObjectDependency.register('test.db', DEPENDENCY1)
     return expect(result).to.eventually.be.rejected.then(error => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(runStub).to.have.been.calledOnce
       const args = runStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces(`insert into SnapshotObjectDependency (objectVersionId, snapshotId, objectId)
+                                          values (?, ?, ?)`)
       expect(args[1]).to.eql(['version1', 'snapshot1', 'object1'])
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
@@ -71,16 +82,8 @@ describe('DB - SnapshotObjectDependency', () => {
     })
     expect(runStub).not.to.have.been.called
     expect(closeStub).not.to.have.been.called
-    const result1 = SnapshotObjectDependency.register('test.db', {
-      objectVersionId: 'version1',
-      snapshotId: 'snapshot1',
-      objectId: 'object1'
-    })
-    const result2 = SnapshotObjectDependency.register('test.db', {
-      objectVersionId: 'version2',
-      snapshotId: 'snapshot2',
-      objectId: 'object2'
-    })
+    const result1 = SnapshotObjectDependency.register('test.db', DEPENDENCY1)
+    const result2 = SnapshotObjectDependency.register('test.db', DEPENDENCY2)
     return Promise.all([
       expect(result1).to.eventually.be.fulfilled,
       expect(result2).to.eventually.be.fulfilled
@@ -88,8 +91,12 @@ describe('DB - SnapshotObjectDependency', () => {
       expect(dbStub).to.have.been.calledTwice
       expect(dbStub).to.have.been.calledWith('test.db')
       const args1 = runStub.getCall(0).args
+      expect(args1[0]).to.equalIgnoreSpaces(`insert into SnapshotObjectDependency (objectVersionId, snapshotId, objectId)
+                                          values (?, ?, ?)`)
       expect(args1[1]).to.eql(['version1', 'snapshot1', 'object1'])
       const args2 = runStub.getCall(1).args
+      expect(args2[0]).to.equalIgnoreSpaces(`insert into SnapshotObjectDependency (objectVersionId, snapshotId, objectId)
+                                          values (?, ?, ?)`)
       expect(args2[1]).to.eql(['version2', 'snapshot2', 'object2'])
       expect(closeStub).to.have.been.calledTwice
     })
@@ -106,15 +113,7 @@ describe('DB - SnapshotObjectDependency', () => {
     })
     expect(runStub).not.to.have.been.called
     expect(closeStub).not.to.have.been.called
-    const result = SnapshotObjectDependency.registerMany('test.db', [{
-      objectVersionId: 'version1',
-      snapshotId: 'snapshot1',
-      objectId: 'object1'
-    }, {
-      objectVersionId: 'version2',
-      snapshotId: 'snapshot2',
-      objectId: 'object2'
-    }])
+    const result = SnapshotObjectDependency.registerMany('test.db', [DEPENDENCY1, DEPENDENCY2])
     return expect(result).to.eventually.be.rejected.then(error => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
@@ -123,8 +122,12 @@ describe('DB - SnapshotObjectDependency', () => {
       expect(execStub).to.have.been.calledWith('commit')
       expect(runStub).to.have.been.calledTwice
       const args1 = runStub.getCall(0).args
+      expect(args1[0]).to.equalIgnoreSpaces(`insert into SnapshotObjectDependency (objectVersionId, snapshotId, objectId)
+                                          values (?, ?, ?)`)
       expect(args1[1]).to.eql(['version1', 'snapshot1', 'object1'])
       const args2 = runStub.getCall(1).args
+      expect(args2[0]).to.equalIgnoreSpaces(`insert into SnapshotObjectDependency (objectVersionId, snapshotId, objectId)
+                                          values (?, ?, ?)`)
       expect(args2[1]).to.eql(['version2', 'snapshot2', 'object2'])
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
@@ -142,15 +145,7 @@ describe('DB - SnapshotObjectDependency', () => {
     })
     expect(runStub).not.to.have.been.called
     expect(closeStub).not.to.have.been.called
-    const result = SnapshotObjectDependency.registerMany('test.db', [{
-      objectVersionId: 'version1',
-      snapshotId: 'snapshot1',
-      objectId: 'object1'
-    }, {
-      objectVersionId: 'version2',
-      snapshotId: 'snapshot2',
-      objectId: 'object2'
-    }])
+    const result = SnapshotObjectDependency.registerMany('test.db', [DEPENDENCY1, DEPENDENCY2])
     return expect(result).to.eventually.be.fulfilled.then(() => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
@@ -159,8 +154,12 @@ describe('DB - SnapshotObjectDependency', () => {
       expect(execStub).to.have.been.calledWith('commit')
       expect(runStub).to.have.been.calledTwice
       const args1 = runStub.getCall(0).args
+      expect(args1[0]).to.equalIgnoreSpaces(`insert into SnapshotObjectDependency (objectVersionId, snapshotId, objectId)
+                                          values (?, ?, ?)`)
       expect(args1[1]).to.eql(['version1', 'snapshot1', 'object1'])
       const args2 = runStub.getCall(1).args
+      expect(args2[0]).to.equalIgnoreSpaces(`insert into SnapshotObjectDependency (objectVersionId, snapshotId, objectId)
+                                          values (?, ?, ?)`)
       expect(args2[1]).to.eql(['version2', 'snapshot2', 'object2'])
       expect(closeStub).to.have.been.calledOnce
     })
@@ -180,17 +179,15 @@ describe('DB - SnapshotObjectDependency', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(allStub).to.have.been.calledOnce
+      const args = allStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('select * from SnapshotObjectDependency')
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
     })
   })
 
   it('should resolve the "getAll" method when query execution succeeds', () => {
-    const allStub = sinon.stub().callsArgWithAsync(1, null, [{
-      objectVersionId: 'version1',
-      snapshotId: 'snapshot1',
-      objectId: 'object1'
-    }])
+    const allStub = sinon.stub().callsArgWithAsync(1, null, [DEPENDENCY1])
     const closeStub = sinon.stub()
     dbStub.returns({
       all: allStub,
@@ -203,12 +200,10 @@ describe('DB - SnapshotObjectDependency', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(allStub).to.have.been.calledOnce
+      const args = allStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('select * from SnapshotObjectDependency')
       expect(closeStub).to.have.been.calledOnce
-      expect(results).to.eql([{
-        objectVersionId: 'version1',
-        snapshotId: 'snapshot1',
-        objectId: 'object1'
-      }])
+      expect(results).to.eql([DEPENDENCY1])
     })
   })
 
@@ -228,17 +223,15 @@ describe('DB - SnapshotObjectDependency', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(allStub).to.have.been.calledOnce
+      const args = allStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('select * from SnapshotObjectDependency where 1 = 1 and objectId = \'object1\'')
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
     })
   })
 
   it('should resolve the "where" method when query execution succeeds', () => {
-    const allStub = sinon.stub().callsArgWithAsync(2, null, [{
-      objectVersionId: 'version1',
-      snapshotId: 'snapshot1',
-      objectId: 'object1'
-    }])
+    const allStub = sinon.stub().callsArgWithAsync(2, null, [DEPENDENCY1])
     const closeStub = sinon.stub()
     dbStub.returns({
       all: allStub,
@@ -253,12 +246,10 @@ describe('DB - SnapshotObjectDependency', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(allStub).to.have.been.calledOnce
+      const args = allStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('select * from SnapshotObjectDependency where 1 = 1 and objectId = \'object1\'')
       expect(closeStub).to.have.been.calledOnce
-      expect(results).to.eql([{
-        objectVersionId: 'version1',
-        snapshotId: 'snapshot1',
-        objectId: 'object1'
-      }])
+      expect(results).to.eql([DEPENDENCY1])
     })
   })
 
@@ -278,17 +269,15 @@ describe('DB - SnapshotObjectDependency', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(getStub).to.have.been.calledOnce
+      const args = getStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('select * from SnapshotObjectDependency where 1 = 1 and objectId = \'object1\'')
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
     })
   })
 
   it('should resolve the "find" method when query execution succeeds', () => {
-    const getStub = sinon.stub().callsArgWithAsync(2, null, {
-      objectVersionId: 'version1',
-      snapshotId: 'snapshot1',
-      objectId: 'object1'
-    })
+    const getStub = sinon.stub().callsArgWithAsync(2, null, DEPENDENCY1)
     const closeStub = sinon.stub()
     dbStub.returns({
       get: getStub,
@@ -303,12 +292,10 @@ describe('DB - SnapshotObjectDependency', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(getStub).to.have.been.calledOnce
+      const args = getStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('select * from SnapshotObjectDependency where 1 = 1 and objectId in (\'object1\', \'object2\')')
       expect(closeStub).to.have.been.calledOnce
-      expect(results).to.eql({
-        objectVersionId: 'version1',
-        snapshotId: 'snapshot1',
-        objectId: 'object1'
-      })
+      expect(results).to.eql(DEPENDENCY1)
     })
   })
 
@@ -328,6 +315,8 @@ describe('DB - SnapshotObjectDependency', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(runStub).to.have.been.calledOnce
+      const args = runStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('delete from SnapshotObjectDependency where 1 = 1 and objectId = \'object1\'')
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
     })
@@ -347,6 +336,8 @@ describe('DB - SnapshotObjectDependency', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(runStub).to.have.been.calledOnce
+      const args = runStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces('delete from SnapshotObjectDependency where 1 = 1')
       expect(closeStub).to.have.been.calledOnce
     })
   })
@@ -365,6 +356,14 @@ describe('DB - SnapshotObjectDependency', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(runStub).to.have.been.calledOnce
+      const args = runStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces(`delete from SnapshotObjectDependency
+                                          where rowid in (
+                                            select sod.rowid
+                                            from SnapshotObjectDependency sod
+                                            left join AppSnapshot a on a.snapshotId = sod.snapshotId
+                                            where a.snapshotId is null
+                                          )`)
       expect(closeStub).to.have.been.calledOnce
       expect(error.message).to.equal('error')
     })
@@ -384,6 +383,14 @@ describe('DB - SnapshotObjectDependency', () => {
       expect(dbStub).to.have.been.calledOnce
       expect(dbStub).to.have.been.calledWith('test.db')
       expect(runStub).to.have.been.calledOnce
+      const args = runStub.getCall(0).args
+      expect(args[0]).to.equalIgnoreSpaces(`delete from SnapshotObjectDependency
+                                          where rowid in (
+                                            select sod.rowid
+                                            from SnapshotObjectDependency sod
+                                            left join AppSnapshot a on a.snapshotId = sod.snapshotId
+                                            where a.snapshotId is null
+                                          )`)
       expect(closeStub).to.have.been.calledOnce
     })
   })
