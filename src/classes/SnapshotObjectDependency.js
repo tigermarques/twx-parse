@@ -5,6 +5,15 @@ const getObjectFromResult = workspaceName => item =>
     ? new SnapshotObjectDependency(workspaceName, item.snapshotId, item.objectVersionId, item.objectId)
     : null
 
+const getObjectFromItem = obj =>
+  obj
+    ? {
+      snapshotId: obj.snapshotId,
+      objectVersionId: obj.objectVersionId,
+      objectId: obj.objectId
+    }
+    : null
+
 class SnapshotObjectDependency {
   constructor (workspaceName, snapshotId, objectVersionId, objectId) {
     this.workspace = workspaceName
@@ -15,8 +24,8 @@ class SnapshotObjectDependency {
   }
 }
 
-SnapshotObjectDependency.register = (workspaceName, item) => DBAccess.register(workspaceName, item)
-SnapshotObjectDependency.registerMany = (workspaceName, items) => DBAccess.registerMany(workspaceName, items)
+SnapshotObjectDependency.register = (workspaceName, item) => DBAccess.register(workspaceName, getObjectFromItem(item))
+SnapshotObjectDependency.registerMany = (workspaceName, items) => DBAccess.registerMany(workspaceName, items.map(getObjectFromItem))
 SnapshotObjectDependency.getAll = (workspaceName) => DBAccess.getAll(workspaceName).then(results => results.map(getObjectFromResult(workspaceName)))
 SnapshotObjectDependency.getByParentId = (workspaceName, snapshotId) => DBAccess.where(workspaceName, { snapshotId }).then(results => results.map(getObjectFromResult(workspaceName)))
 SnapshotObjectDependency.getByChildId = (workspaceName, objectVersionId) => DBAccess.where(workspaceName, { objectVersionId }).then(results => results.map(getObjectFromResult(workspaceName)))
