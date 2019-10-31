@@ -44,7 +44,7 @@ const DEPENDENCY_RESULT2 = {
   dependencyId: 'dependencyId2'
 }
 
-describe.only('Classes - SnapshotDependency', () => {
+describe('Classes - SnapshotDependency', () => {
   it('should be a class and have all the static methods', () => {
     expect(SnapshotDependency).to.be.a('function')
     expect(SnapshotDependency).itself.to.respondTo('register')
